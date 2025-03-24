@@ -30,7 +30,10 @@ export const NavigationBar: React.FC = () => {
         </div>
 
         <nav className="hidden md:flex items-center gap-4">
-          <Link href="#" className="text-sm font-medium text-gray-700 hover:text-gray-900">
+          <Link
+            href="#"
+            className="text-sm font-medium text-gray-700 hover:text-gray-900"
+          >
             <ShoppingCart className="w-5 h-5" />
           </Link>
           <Link href="/login">
@@ -42,10 +45,7 @@ export const NavigationBar: React.FC = () => {
             </Button>
           </Link>
           <Link href="/signup">
-            <Button
-              variant="primary"
-              className="rounded-md"
-            >
+            <Button variant="primary" className="rounded-md">
               Sign up
             </Button>
           </Link>

@@ -20,7 +20,7 @@ const Loader: React.FC<LoaderProps> = ({ size = "medium", className }) => {
       className={cn(
         "animate-spin rounded-full border-4 border-t-transparent",
         sizeClasses[size],
-        className
+        className,
       )}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

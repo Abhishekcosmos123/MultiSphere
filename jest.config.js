@@ -1,27 +1,27 @@
-const nextJest = require('next/jest');
+const nextJest = require("next/jest");
 
 const createJestConfig = nextJest({
-  dir: './',
+  dir: "./",
 });
 
 const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  testEnvironment: 'jest-environment-jsdom',
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  testEnvironment: "jest-environment-jsdom",
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
+    "^@/(.*)$": "<rootDir>/src/$1",
   },
   collectCoverage: true,
   collectCoverageFrom: [
-    'src/**/*.{js,jsx,ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/*.stories.{js,jsx,ts,tsx}',
-    '!src/**/*.test.{js,jsx,ts,tsx}',
-    '!src/**/index.{js,jsx,ts,tsx}',
-    '!src/**/*.styles.{js,jsx,ts,tsx}',
-    '!src/**/*.e2e.{js,jsx,ts,tsx}',
-    '!src/pages/_app.tsx',
-    '!src/pages/_document.tsx',
-    '!tests/**/*',
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!src/**/*.d.ts",
+    "!src/**/*.stories.{js,jsx,ts,tsx}",
+    "!src/**/*.test.{js,jsx,ts,tsx}",
+    "!src/**/index.{js,jsx,ts,tsx}",
+    "!src/**/*.styles.{js,jsx,ts,tsx}",
+    "!src/**/*.e2e.{js,jsx,ts,tsx}",
+    "!src/pages/_app.tsx",
+    "!src/pages/_document.tsx",
+    "!tests/**/*",
   ],
   coverageThreshold: {
     global: {
@@ -32,15 +32,15 @@ const customJestConfig = {
     },
   },
   testPathIgnorePatterns: [
-    '<rootDir>/node_modules/',
-    '<rootDir>/.next/',
-    '<rootDir>/tests/',
+    "<rootDir>/node_modules/",
+    "<rootDir>/.next/",
+    "<rootDir>/tests/",
   ],
   transformIgnorePatterns: [
-    '/node_modules/',
-    '^.+\\.module\\.(css|sass|scss)$',
+    "/node_modules/",
+    "^.+\\.module\\.(css|sass|scss)$",
   ],
-  moduleDirectories: ['node_modules', '<rootDir>/'],
+  moduleDirectories: ["node_modules", "<rootDir>/"],
 };
 
 module.exports = createJestConfig(customJestConfig);

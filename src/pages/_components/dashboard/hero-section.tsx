@@ -1,6 +1,6 @@
 // import { Button } from "@/components/ui/button"
-import { Button } from "@/ui/button"
-import { Search } from "lucide-react"
+import { Button } from "@/ui/button";
+import { Search } from "lucide-react";
 
 export function HeroSection() {
   return (
@@ -35,6 +35,5 @@ export function HeroSection() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

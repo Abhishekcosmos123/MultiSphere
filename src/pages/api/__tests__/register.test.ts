@@ -1,39 +1,39 @@
-import { createMocks } from 'node-mocks-http';
-import registerHandler from '../register';
-import { User } from '@/backend/models/user';
-import dbConnect from '@/lib/dbConnect';
+import { createMocks } from "node-mocks-http";
+import registerHandler from "../register";
+import { User } from "@/backend/models/user";
+import dbConnect from "@/lib/dbConnect";
 
-jest.mock('@/lib/dbConnect');
-jest.mock('@/backend/models/user', () => ({
+jest.mock("@/lib/dbConnect");
+jest.mock("@/backend/models/user", () => ({
   User: {
     findOne: jest.fn(),
     create: jest.fn(),
   },
 }));
 
-describe('Register API Endpoint', () => {
+describe("Register API Endpoint", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('returns 405 for non-POST requests', async () => {
+  it("returns 405 for non-POST requests", async () => {
     const { req, res } = createMocks({
-      method: 'GET',
+      method: "GET",
     });
 
     await registerHandler(req, res);
 
     expect(res._getStatusCode()).toBe(405);
     expect(JSON.parse(res._getData())).toEqual({
-      message: 'Method not allowed',
+      message: "Method not allowed",
     });
   });
 
-  it('returns 400 if required fields are missing', async () => {
+  it("returns 400 if required fields are missing", async () => {
     const { req, res } = createMocks({
-      method: 'POST',
+      method: "POST",
       body: {
-        firstName: 'John',
+        firstName: "John",
         // Missing other required fields
       },
     });
@@ -42,49 +42,49 @@ describe('Register API Endpoint', () => {
 
     expect(res._getStatusCode()).toBe(400);
     expect(JSON.parse(res._getData())).toEqual({
-      message: 'Please provide all required fields',
+      message: "Please provide all required fields",
     });
   });
 
-  it('returns 400 if user already exists', async () => {
+  it("returns 400 if user already exists", async () => {
     const { req, res } = createMocks({
-      method: 'POST',
+      method: "POST",
       body: {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'existing@example.com',
-        password: 'password123',
+        firstName: "John",
+        lastName: "Doe",
+        email: "existing@example.com",
+        password: "password123",
       },
     });
 
     (User.findOne as jest.Mock).mockResolvedValueOnce({
-      email: 'existing@example.com',
+      email: "existing@example.com",
     });
 
     await registerHandler(req, res);
 
     expect(res._getStatusCode()).toBe(400);
     expect(JSON.parse(res._getData())).toEqual({
-      message: 'User already exists',
+      message: "User already exists",
     });
   });
 
-  it('successfully registers a new user', async () => {
+  it("successfully registers a new user", async () => {
     const mockCreatedUser = {
-      _id: 'user_id',
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john@example.com',
-      password: 'hashedPassword',
+      _id: "user_id",
+      firstName: "John",
+      lastName: "Doe",
+      email: "john@example.com",
+      password: "hashedPassword",
     };
 
     const { req, res } = createMocks({
-      method: 'POST',
+      method: "POST",
       body: {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        password: 'password123',
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@example.com",
+        password: "password123",
       },
     });
 
@@ -95,7 +95,7 @@ describe('Register API Endpoint', () => {
 
     expect(res._getStatusCode()).toBe(201);
     expect(JSON.parse(res._getData())).toEqual({
-      message: 'User registered successfully',
+      message: "User registered successfully",
       user: {
         _id: mockCreatedUser._id,
         firstName: mockCreatedUser.firstName,
@@ -105,24 +105,26 @@ describe('Register API Endpoint', () => {
     });
   });
 
-  it('handles database connection errors', async () => {
+  it("handles database connection errors", async () => {
     const { req, res } = createMocks({
-      method: 'POST',
+      method: "POST",
       body: {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        password: 'password123',
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@example.com",
+        password: "password123",
       },
     });
 
-    (dbConnect as jest.Mock).mockRejectedValueOnce(new Error('Database connection failed'));
+    (dbConnect as jest.Mock).mockRejectedValueOnce(
+      new Error("Database connection failed"),
+    );
 
     await registerHandler(req, res);
 
     expect(res._getStatusCode()).toBe(500);
     expect(JSON.parse(res._getData())).toEqual({
-      message: 'Database connection failed',
+      message: "Database connection failed",
     });
   });
 });

@@ -2,7 +2,7 @@ export const navigationLinks = [
   { name: "Plans & Pricing", href: "#" },
   { name: "Live Classes", href: "#" },
   { name: "Tech on Udemy", href: "#" },
-]
+];
 
 export const categories: string[] = [
   "Data Science",
@@ -11,7 +11,7 @@ export const categories: string[] = [
   "Web Development",
   "Communication",
   "Business Analytics & Intelligence",
-]
+];
 
 export const popularTopics = [
   { name: "Data Science", count: "7M+ learners" },
@@ -21,7 +21,7 @@ export const popularTopics = [
   { name: "Artificial Intelligence (AI)", count: "8M+ learners" },
   { name: "Statistics", count: "9M+ learners" },
   { name: "R", count: "8M+ learners" },
-]
+];
 
 export const featuredCourses = [
   {
@@ -33,7 +33,8 @@ export const featuredCourses = [
     students: "124,532",
     price: 549,
     originalPrice: 1699,
-    image: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
     bestseller: true,
   },
   {
@@ -45,7 +46,8 @@ export const featuredCourses = [
     students: "98,432",
     price: 549,
     originalPrice: 1699,
-    image: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
   },
   {
     id: 3,
@@ -57,7 +59,8 @@ export const featuredCourses = [
     price: 549,
     originalPrice: 1799,
     bestseller: true,
-    image: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
   },
   {
     id: 4,
@@ -68,7 +71,8 @@ export const featuredCourses = [
     students: "112,345",
     price: 499,
     originalPrice: 1799,
-    image: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
   },
   {
     id: 4,
@@ -79,7 +83,8 @@ export const featuredCourses = [
     students: "112,345",
     price: 499,
     originalPrice: 1799,
-    image: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
   },
   {
     id: 4,
@@ -90,7 +95,8 @@ export const featuredCourses = [
     students: "112,345",
     price: 499,
     originalPrice: 1799,
-    image: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
   },
   {
     id: 4,
@@ -101,7 +107,8 @@ export const featuredCourses = [
     students: "112,345",
     price: 499,
     originalPrice: 1799,
-    image: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
   },
   {
     id: 4,
@@ -112,9 +119,10 @@ export const featuredCourses = [
     students: "112,345",
     price: 499,
     originalPrice: 1799,
-    image: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
   },
-]
+];
 
 export const popularCourses = [
   {
@@ -126,7 +134,8 @@ export const popularCourses = [
     students: "1,452,344",
     price: 549,
     originalPrice: 1699,
-    image: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
     // bestseller: true,
   },
   {
@@ -138,7 +147,8 @@ export const popularCourses = [
     students: "654,321",
     price: 499,
     originalPrice: 1699,
-    image: "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=600&h=400&auto=format&fit=crop",
     // bestseller: true,
   },
   {
@@ -150,7 +160,8 @@ export const popularCourses = [
     students: "876,543",
     price: 549,
     originalPrice: 1699,
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&h=400&auto=format&fit=crop",
     // bestseller: true,
   },
   {
@@ -162,7 +173,8 @@ export const popularCourses = [
     students: "932,456",
     price: 549,
     originalPrice: 1699,
-    image: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=600&h=400&auto=format&fit=crop",
     // bestseller: true,
   },
   {
@@ -174,7 +186,8 @@ export const popularCourses = [
     students: "932,456",
     price: 549,
     originalPrice: 1699,
-    image: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=600&h=400&auto=format&fit=crop",
     // bestseller: true,
   },
   {
@@ -186,7 +199,8 @@ export const popularCourses = [
     students: "932,456",
     price: 549,
     originalPrice: 1699,
-    image: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=600&h=400&auto=format&fit=crop",
     // bestseller: true,
   },
   {
@@ -198,10 +212,11 @@ export const popularCourses = [
     students: "932,456",
     price: 549,
     originalPrice: 1699,
-    image: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=600&h=400&auto=format&fit=crop",
     // bestseller: true,
   },
-]
+];
 
 export const luxuryHomes = [
   {
@@ -215,7 +230,8 @@ export const luxuryHomes = [
     state: "WA",
     zip: "99208",
     type: "Multi-Family Home",
-    image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=600&h=400&auto=format&fit=crop",
     new: true,
   },
   {
@@ -229,7 +245,8 @@ export const luxuryHomes = [
     state: "WA",
     zip: "99207",
     type: "Single-Family Home",
-    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=600&h=400&auto=format&fit=crop",
     new: true,
   },
   {
@@ -243,7 +260,8 @@ export const luxuryHomes = [
     state: "WA",
     zip: "99207",
     type: "Multi-Family Home",
-    image: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?q=80&w=600&h=400&auto=format&fit=crop",
     new: true,
     lot: "0.25 acre lot",
   },
@@ -258,10 +276,11 @@ export const luxuryHomes = [
     state: "WA",
     zip: "99207",
     type: "Single-Family Home",
-    image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?q=80&w=600&h=400&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1613977257363-707ba9348227?q=80&w=600&h=400&auto=format&fit=crop",
     new: true,
   },
-]
+];
 
 export const testimonials = [
   {
@@ -288,7 +307,7 @@ export const testimonials = [
     author: "Anna P.",
     course: "Web Development course",
   },
-]
+];
 
 export const footerLinks = [
   { name: "About us", href: "#" },
@@ -306,7 +325,7 @@ export const footerLinks = [
   { name: "Agent Blog", href: "#" },
   { name: "Sitemap", href: "#" },
   { name: "Do Not Sell or Share My Personal Information", href: "#" },
-]
+];
 
 export const socialLinks = [
   { name: "Facebook", href: "#", icon: "facebook" },
@@ -314,21 +333,49 @@ export const socialLinks = [
   { name: "LinkedIn", href: "#", icon: "linkedin" },
   { name: "Instagram", href: "#", icon: "instagram" },
   { name: "YouTube", href: "#", icon: "youtube" },
-]
+];
 
 export const trustedCompanies = [
-  { id: 1, name: "Volkswagen", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/2048px-Volkswagen_logo_2019.svg.png" },
-  { id: 2, name: "Samsung", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Samsung_wordmark.svg/1280px-Samsung_wordmark.svg.png" },
-  { id: 3, name: "Cisco", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Cisco_logo_blue_2016.svg/1280px-Cisco_logo_blue_2016.svg.png" },
-  { id: 4, name: "Vimeo", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/2048px-Volkswagen_logo_2019.svg.png" },
-  { id: 5, name: "P&G", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Procter_%26_Gamble_logo.svg/1024px-Procter_%26_Gamble_logo.svg.png" },
-  { id: 6, name: "HP", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Samsung_wordmark.svg/1280px-Samsung_wordmark.svg.png" },
-  { id: 7, name: "Citi", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/2048px-Volkswagen_logo_2019.svg.png" },
+  {
+    id: 1,
+    name: "Volkswagen",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/2048px-Volkswagen_logo_2019.svg.png",
+  },
+  {
+    id: 2,
+    name: "Samsung",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Samsung_wordmark.svg/1280px-Samsung_wordmark.svg.png",
+  },
+  {
+    id: 3,
+    name: "Cisco",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Cisco_logo_blue_2016.svg/1280px-Cisco_logo_blue_2016.svg.png",
+  },
+  {
+    id: 4,
+    name: "Vimeo",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/2048px-Volkswagen_logo_2019.svg.png",
+  },
+  {
+    id: 5,
+    name: "P&G",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Procter_%26_Gamble_logo.svg/1024px-Procter_%26_Gamble_logo.svg.png",
+  },
+  {
+    id: 6,
+    name: "HP",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Samsung_wordmark.svg/1280px-Samsung_wordmark.svg.png",
+  },
+  {
+    id: 7,
+    name: "Citi",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/2048px-Volkswagen_logo_2019.svg.png",
+  },
 ];
 
 export const BUSINESS_TYPES = {
-  "Restaurant": ["Manager", "User"],
-  "E-Learning": ["Teacher", "Student"], 
+  Restaurant: ["Manager", "User"],
+  "E-Learning": ["Teacher", "Student"],
   "Real Estate": ["Agent", "Buyer"],
-  "CRM": ["HR", "User"]
+  CRM: ["HR", "User"],
 } as const;

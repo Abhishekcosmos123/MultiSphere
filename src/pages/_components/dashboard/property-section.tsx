@@ -1,12 +1,16 @@
-import { PropertyCard } from "../../_components/dashboard/property-card"
+import { PropertyCard } from "../../_components/dashboard/property-card";
 
 interface PropertySectionProps {
-  title: string
-  location: string
-  properties: any[]
+  title: string;
+  location: string;
+  properties: any[];
 }
 
-export function PropertySection({ title, location, properties }: PropertySectionProps) {
+export function PropertySection({
+  title,
+  location,
+  properties,
+}: PropertySectionProps) {
   return (
     <div className="py-12 bg-white">
       <div className="px-4 mx-auto max-w-7xl">
@@ -38,6 +42,5 @@ export function PropertySection({ title, location, properties }: PropertySection
         </div>
       </div>
     </div>
-  )
+  );
 }
-

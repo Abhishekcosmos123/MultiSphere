@@ -3,9 +3,9 @@ import authReducer, {
   loginSuccess,
   loginFailure,
   logout,
-} from '../authSlice';
+} from "../authSlice";
 
-describe('Auth Slice', () => {
+describe("Auth Slice", () => {
   const initialState = {
     user: null,
     token: null,
@@ -13,22 +13,25 @@ describe('Auth Slice', () => {
     error: null,
   };
 
-  it('should handle initial state', () => {
-    expect(authReducer(undefined, { type: 'unknown' })).toEqual(initialState);
+  it("should handle initial state", () => {
+    expect(authReducer(undefined, { type: "unknown" })).toEqual(initialState);
   });
 
-  it('should handle loginRequest', () => {
-    const actual = authReducer(initialState, loginRequest({ email: 'test@example.com', password: 'password' }));
+  it("should handle loginRequest", () => {
+    const actual = authReducer(
+      initialState,
+      loginRequest({ email: "test@example.com", password: "password" }),
+    );
     expect(actual.loading).toBe(true);
     expect(actual.error).toBe(null);
   });
 
-  it('should handle loginSuccess', () => {
-    const user = { id: 1, email: 'test@example.com' };
-    const token = 'test-token';
+  it("should handle loginSuccess", () => {
+    const user = { id: 1, email: "test@example.com" };
+    const token = "test-token";
     const actual = authReducer(
       { ...initialState, loading: true },
-      loginSuccess({ user, token })
+      loginSuccess({ user, token }),
     );
     expect(actual.loading).toBe(false);
     expect(actual.user).toEqual(user);
@@ -36,20 +39,20 @@ describe('Auth Slice', () => {
     expect(actual.error).toBe(null);
   });
 
-  it('should handle loginFailure', () => {
-    const error = 'Invalid credentials';
+  it("should handle loginFailure", () => {
+    const error = "Invalid credentials";
     const actual = authReducer(
       { ...initialState, loading: true },
-      loginFailure(error)
+      loginFailure(error),
     );
     expect(actual.loading).toBe(false);
     expect(actual.error).toBe(error);
   });
 
-  it('should handle logout', () => {
+  it("should handle logout", () => {
     const loggedInState = {
-      user: { id: 1, email: 'test@example.com' },
-      token: 'test-token',
+      user: { id: 1, email: "test@example.com" },
+      token: "test-token",
       loading: false,
       error: null,
     };

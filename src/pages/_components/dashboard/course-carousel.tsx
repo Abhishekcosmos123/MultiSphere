@@ -1,32 +1,35 @@
-"use client"
+"use client";
 
-import { useState, useRef } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { CourseCard } from "../../_components/dashboard/course-card"
-import { Button } from "@/ui/button"
+import { useState, useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { CourseCard } from "../../_components/dashboard/course-card";
+import { Button } from "@/ui/button";
 
 interface CourseCarouselProps {
-  title: string
-  courses: any[]
+  title: string;
+  courses: any[];
 }
 
 export function CourseCarousel({ title, courses }: CourseCarouselProps) {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [scrollPosition, setScrollPosition] = useState(0)
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      const { scrollLeft, clientWidth, scrollWidth } = scrollRef.current
-      const scrollTo = direction === "left" ? scrollLeft - clientWidth / 2 : scrollLeft + clientWidth / 2
+      const { scrollLeft, clientWidth, scrollWidth } = scrollRef.current;
+      const scrollTo =
+        direction === "left"
+          ? scrollLeft - clientWidth / 2
+          : scrollLeft + clientWidth / 2;
 
       scrollRef.current.scrollTo({
         left: scrollTo,
         behavior: "smooth",
-      })
+      });
 
-      setScrollPosition(scrollTo)
+      setScrollPosition(scrollTo);
     }
-  }
+  };
 
   return (
     <div className="py-8">
@@ -77,5 +80,5 @@ export function CourseCarousel({ title, courses }: CourseCarouselProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

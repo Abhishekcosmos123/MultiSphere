@@ -19,7 +19,7 @@ interface ButtonWithLoaderProps {
 
 /**
  * ButtonBox Component
- * 
+ *
  * A reusable animated button component with loading state.
  * Features:
  * - Animated entrance using Framer Motion
@@ -27,7 +27,7 @@ interface ButtonWithLoaderProps {
  * - Gradient background with hover effects
  * - Customizable through className prop
  * - Accessible focus states
- * 
+ *
  * @example
  * <ButtonBox loading={isLoading} type="submit">
  *   Submit Form

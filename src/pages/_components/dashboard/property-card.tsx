@@ -1,20 +1,20 @@
-import Image from "next/image"
-import { Heart } from "lucide-react"
-import { Badge } from "@/ui/badge"
+import Image from "next/image";
+import { Heart } from "lucide-react";
+import { Badge } from "@/ui/badge";
 
 interface PropertyCardProps {
-  price: number
-  beds: number
-  baths: number
-  sqft: number
-  address: string
-  city: string
-  state: string
-  zip: string
-  type: string
-  image: string
-  new?: boolean
-  lot?: string
+  price: number;
+  beds: number;
+  baths: number;
+  sqft: number;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  type: string;
+  image: string;
+  new?: boolean;
+  lot?: string;
 }
 
 export function PropertyCard({
@@ -40,8 +40,9 @@ export function PropertyCard({
           fill
           className="object-cover"
           onError={(e) => {
-            const target = e.target as HTMLImageElement
-            target.src = "https://via.placeholder.com/600x400/eeeeee/999999?text=Property+Image"
+            const target = e.target as HTMLImageElement;
+            target.src =
+              "https://via.placeholder.com/600x400/eeeeee/999999?text=Property+Image";
           }}
         />
 
@@ -59,7 +60,9 @@ export function PropertyCard({
       <div className="p-4">
         <div className="text-xs font-medium text-gray-500">{type}</div>
 
-        <div className="mt-1 text-2xl font-bold text-gray-900">${price.toLocaleString()}</div>
+        <div className="mt-1 text-2xl font-bold text-gray-900">
+          ${price.toLocaleString()}
+        </div>
 
         <div className="flex items-center gap-2 mt-2 text-sm text-gray-700">
           <span>
@@ -80,5 +83,5 @@ export function PropertyCard({
         </div>
       </div>
     </div>
-  )
+  );
 }

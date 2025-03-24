@@ -1,16 +1,16 @@
-import Image from "next/image"
-import { Star } from "lucide-react"
+import Image from "next/image";
+import { Star } from "lucide-react";
 
 interface CourseCardProps {
-  title: string
-  instructors: string
-  rating: number
-  reviewCount: string
-  students: string
-  price: number
-  originalPrice: number
-  image: string
-  bestseller?: boolean
+  title: string;
+  instructors: string;
+  rating: number;
+  reviewCount: string;
+  students: string;
+  price: number;
+  originalPrice: number;
+  image: string;
+  bestseller?: boolean;
 }
 
 export function CourseCard({
@@ -33,8 +33,9 @@ export function CourseCard({
           fill
           className="object-cover"
           onError={(e) => {
-            const target = e.target as HTMLImageElement
-            target.src = "https://via.placeholder.com/600x400/eeeeee/999999?text=Course+Image"
+            const target = e.target as HTMLImageElement;
+            target.src =
+              "https://via.placeholder.com/600x400/eeeeee/999999?text=Course+Image";
           }}
         />
       </div>
@@ -60,14 +61,17 @@ export function CourseCard({
 
         <div className="flex items-center mt-auto">
           <span className="font-bold text-gray-900">${price}</span>
-          <span className="ml-2 text-sm text-gray-500 line-through">${originalPrice}</span>
+          <span className="ml-2 text-sm text-gray-500 line-through">
+            ${originalPrice}
+          </span>
         </div>
 
         {bestseller && (
-          <div className="absolute top-2 left-2 px-2 py-1 text-xs font-bold text-white bg-yellow-500">Bestseller</div>
+          <div className="absolute top-2 left-2 px-2 py-1 text-xs font-bold text-white bg-yellow-500">
+            Bestseller
+          </div>
         )}
       </div>
     </div>
-  )
+  );
 }
-

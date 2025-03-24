@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
-import { User } from '../user';
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+import { User } from "../user";
 
 // Mock mongoose
-jest.mock('mongoose', () => {
-  const actualMongoose = jest.requireActual('mongoose');
+jest.mock("mongoose", () => {
+  const actualMongoose = jest.requireActual("mongoose");
   return {
     ...actualMongoose,
     model: jest.fn().mockImplementation((modelName, schema) => {
@@ -14,64 +14,64 @@ jest.mock('mongoose', () => {
 });
 
 // Mock bcrypt
-jest.mock('bcryptjs', () => ({
-  genSalt: jest.fn().mockResolvedValue('salt'),
-  hash: jest.fn().mockResolvedValue('hashedPassword'),
+jest.mock("bcryptjs", () => ({
+  genSalt: jest.fn().mockResolvedValue("salt"),
+  hash: jest.fn().mockResolvedValue("hashedPassword"),
   compare: jest.fn(),
 }));
 
-describe('User Model', () => {
+describe("User Model", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('User Validation', () => {
-    it('should validate required fields', () => {
+  describe("User Validation", () => {
+    it("should validate required fields", () => {
       const user = new User({});
       const validationError = user.validateSync();
-      
+
       expect(validationError.errors.firstName).toBeDefined();
       expect(validationError.errors.lastName).toBeDefined();
       expect(validationError.errors.email).toBeDefined();
       expect(validationError.errors.password).toBeDefined();
     });
 
-    it('should validate password length', () => {
+    it("should validate password length", () => {
       const user = new User({
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        password: '12345' // Less than 6 characters
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@example.com",
+        password: "12345", // Less than 6 characters
       });
 
       const validationError = user.validateSync();
       expect(validationError.errors.password).toBeDefined();
     });
 
-    it('should convert email to lowercase', () => {
+    it("should convert email to lowercase", () => {
       const user = new User({
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'JOHN@EXAMPLE.COM',
-        password: 'password123'
+        firstName: "John",
+        lastName: "Doe",
+        email: "JOHN@EXAMPLE.COM",
+        password: "password123",
       });
 
-      expect(user.email).toBe('john@example.com');
+      expect(user.email).toBe("john@example.com");
     });
   });
 
-  describe('Password Handling', () => {
-    it('should hash password before save', async () => {
+  describe("Password Handling", () => {
+    it("should hash password before save", async () => {
       const user = new User({
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        password: 'password123'
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@example.com",
+        password: "password123",
       });
 
       // Mock save method
-      user.save = jest.fn().mockImplementation(async function() {
-        if (this.isModified('password')) {
+      user.save = jest.fn().mockImplementation(async function () {
+        if (this.isModified("password")) {
           const salt = await bcrypt.genSalt(10);
           this.password = await bcrypt.hash(this.password, salt);
         }
@@ -81,39 +81,45 @@ describe('User Model', () => {
       await user.save();
 
       expect(bcrypt.genSalt).toHaveBeenCalledWith(10);
-      expect(bcrypt.hash).toHaveBeenCalledWith('password123', 'salt');
-      expect(user.password).toBe('hashedPassword');
+      expect(bcrypt.hash).toHaveBeenCalledWith("password123", "salt");
+      expect(user.password).toBe("hashedPassword");
     }, 10000); // Increase timeout to 10 seconds
 
-    it('should correctly match password', async () => {
+    it("should correctly match password", async () => {
       const user = new User({
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        password: 'hashedPassword'
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@example.com",
+        password: "hashedPassword",
       });
 
       // Test successful match
       (bcrypt.compare as jest.Mock).mockResolvedValueOnce(true);
-      const isMatch = await user.matchPassword('password123');
+      const isMatch = await user.matchPassword("password123");
       expect(isMatch).toBe(true);
-      expect(bcrypt.compare).toHaveBeenCalledWith('password123', 'hashedPassword');
+      expect(bcrypt.compare).toHaveBeenCalledWith(
+        "password123",
+        "hashedPassword",
+      );
 
       // Test failed match
       (bcrypt.compare as jest.Mock).mockResolvedValueOnce(false);
-      const isNotMatch = await user.matchPassword('wrongpassword');
+      const isNotMatch = await user.matchPassword("wrongpassword");
       expect(isNotMatch).toBe(false);
-      expect(bcrypt.compare).toHaveBeenCalledWith('wrongpassword', 'hashedPassword');
+      expect(bcrypt.compare).toHaveBeenCalledWith(
+        "wrongpassword",
+        "hashedPassword",
+      );
     });
   });
 
-  describe('Schema Options', () => {
-    it('should have timestamp fields', () => {
+  describe("Schema Options", () => {
+    it("should have timestamp fields", () => {
       const user = new User({
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        password: 'password123'
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@example.com",
+        password: "password123",
       });
 
       expect(user.schema.options.timestamps).toBe(true);

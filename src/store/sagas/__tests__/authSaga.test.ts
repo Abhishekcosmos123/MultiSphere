@@ -1,13 +1,13 @@
-import { runSaga } from 'redux-saga';
-import { loginSaga, registerSaga } from '../authSaga';
+import { runSaga } from "redux-saga";
+import { loginSaga, registerSaga } from "../authSaga";
 import {
   loginSuccess,
   loginFailure,
   registerSuccess,
   registerFailure,
-} from '../../slices/authSlice';
+} from "../../slices/authSlice";
 
-describe('Auth Sagas', () => {
+describe("Auth Sagas", () => {
   beforeEach(() => {
     global.fetch = jest.fn();
   });
@@ -16,16 +16,16 @@ describe('Auth Sagas', () => {
     jest.clearAllMocks();
   });
 
-  describe('loginSaga', () => {
+  describe("loginSaga", () => {
     const loginData = {
-      email: 'test@example.com',
-      password: 'password123',
+      email: "test@example.com",
+      password: "password123",
     };
 
-    it('should handle successful login', async () => {
+    it("should handle successful login", async () => {
       const mockResponse = {
         ok: true,
-        json: () => Promise.resolve({ user: { id: 1 }, token: 'test-token' }),
+        json: () => Promise.resolve({ user: { id: 1 }, token: "test-token" }),
       };
       (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
 
@@ -37,16 +37,16 @@ describe('Auth Sagas', () => {
         },
         // @ts-ignore - ignore generator function type error for testing
         loginSaga,
-        { type: 'auth/loginRequest', payload: loginData }
+        { type: "auth/loginRequest", payload: loginData },
       ).toPromise();
 
       expect(dispatched).toEqual([
-        loginSuccess({ user: { id: 1 }, token: 'test-token' }),
+        loginSuccess({ user: { id: 1 }, token: "test-token" }),
       ]);
     });
 
-    it('should handle login failure', async () => {
-      const errorMessage = 'Invalid credentials';
+    it("should handle login failure", async () => {
+      const errorMessage = "Invalid credentials";
       const mockResponse = {
         ok: false,
         json: () => Promise.resolve({ message: errorMessage }),
@@ -61,26 +61,26 @@ describe('Auth Sagas', () => {
         },
         // @ts-ignore - ignore generator function type error for testing
         loginSaga,
-        { type: 'auth/loginRequest', payload: loginData }
+        { type: "auth/loginRequest", payload: loginData },
       ).toPromise();
 
       expect(dispatched).toEqual([loginFailure(errorMessage)]);
     });
   });
 
-  describe('registerSaga', () => {
+  describe("registerSaga", () => {
     const registerData = {
-      email: 'test@example.com',
-      password: 'password123',
-      firstName: 'John',
-      lastName: 'Doe',
-      confirmPassword: 'password123'
+      email: "test@example.com",
+      password: "password123",
+      firstName: "John",
+      lastName: "Doe",
+      confirmPassword: "password123",
     };
 
-    it('should handle successful registration', async () => {
+    it("should handle successful registration", async () => {
       const mockResponse = {
         ok: true,
-        json: () => Promise.resolve({ user: { id: 1 }, token: 'test-token' }),
+        json: () => Promise.resolve({ user: { id: 1 }, token: "test-token" }),
       };
       (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
 
@@ -92,16 +92,16 @@ describe('Auth Sagas', () => {
         },
         // @ts-ignore - ignore generator function type error for testing
         registerSaga,
-        { type: 'auth/registerRequest', payload: registerData }
+        { type: "auth/registerRequest", payload: registerData },
       ).toPromise();
 
       expect(dispatched).toEqual([
-        registerSuccess({ user: { id: 1 }, token: 'test-token' }),
+        registerSuccess({ user: { id: 1 }, token: "test-token" }),
       ]);
     });
 
-    it('should handle registration failure', async () => {
-      const errorMessage = 'Email already exists';
+    it("should handle registration failure", async () => {
+      const errorMessage = "Email already exists";
       const mockResponse = {
         ok: false,
         json: () => Promise.resolve({ message: errorMessage }),
@@ -116,7 +116,7 @@ describe('Auth Sagas', () => {
         },
         // @ts-ignore - ignore generator function type error for testing
         registerSaga,
-        { type: 'auth/registerRequest', payload: registerData }
+        { type: "auth/registerRequest", payload: registerData },
       ).toPromise();
 
       expect(dispatched).toEqual([registerFailure(errorMessage)]);

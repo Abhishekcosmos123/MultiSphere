@@ -1,12 +1,12 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
-import { PayloadAction } from '@reduxjs/toolkit';
+import { call, put, takeLatest } from "redux-saga/effects";
+import { PayloadAction } from "@reduxjs/toolkit";
 import {
   loginSuccess,
   loginFailure,
   registerSuccess,
   registerFailure,
-} from '../slices/authSlice';
-import { LoginFormData, RegisterFormData } from '@/lib/validations/auth';
+} from "../slices/authSlice";
+import { LoginFormData, RegisterFormData } from "@/lib/validations/auth";
 
 /**
  * Makes API call to login endpoint
@@ -15,17 +15,17 @@ import { LoginFormData, RegisterFormData } from '@/lib/validations/auth';
  * @throws Error if login fails
  */
 async function loginApi(data: LoginFormData) {
-  const response = await fetch('/api/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const response = await fetch("/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  
+
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || 'Login failed');
+    throw new Error(error.message || "Login failed");
   }
-  
+
   return response.json();
 }
 
@@ -36,17 +36,17 @@ async function loginApi(data: LoginFormData) {
  * @throws Error if registration fails
  */
 async function registerApi(data: RegisterFormData) {
-  const response = await fetch('/api/register', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const response = await fetch("/api/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  
+
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || 'Registration failed');
+    throw new Error(error.message || "Registration failed");
   }
-  
+
   return response.json();
 }
 
@@ -61,13 +61,13 @@ export function* loginSaga(action: PayloadAction<LoginFormData>) {
   try {
     const response = yield call(loginApi, action.payload);
     yield put(loginSuccess(response));
-    
+
     // Store in localStorage
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
-    
+    localStorage.setItem("token", response.token);
+    localStorage.setItem("user", JSON.stringify(response.user));
+
     // Redirect to home
-    window.location.href = '/';
+    window.location.href = "/";
   } catch (error: any) {
     yield put(loginFailure(error.message));
   }
@@ -84,13 +84,13 @@ export function* registerSaga(action: PayloadAction<RegisterFormData>) {
   try {
     const response = yield call(registerApi, action.payload);
     yield put(registerSuccess(response));
-    
+
     // Store in localStorage
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
-    
+    localStorage.setItem("token", response.token);
+    localStorage.setItem("user", JSON.stringify(response.user));
+
     // Redirect to home
-    window.location.href = '/';
+    window.location.href = "/";
   } catch (error: any) {
     yield put(registerFailure(error.message));
   }
@@ -102,6 +102,6 @@ export function* registerSaga(action: PayloadAction<RegisterFormData>) {
  * - Handles registration requests
  */
 export function* watchAuth() {
-  yield takeLatest('auth/loginRequest', loginSaga);
-  yield takeLatest('auth/registerRequest', registerSaga);
+  yield takeLatest("auth/loginRequest", loginSaga);
+  yield takeLatest("auth/registerRequest", registerSaga);
 }

@@ -1,17 +1,17 @@
-const { TextEncoder, TextDecoder } = require('util');
+const { TextEncoder, TextDecoder } = require("util");
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 
 // Mock next/router
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
   useRouter() {
     return {
-      route: '/',
-      pathname: '',
-      query: '',
-      asPath: '',
+      route: "/",
+      pathname: "",
+      query: "",
+      asPath: "",
       push: jest.fn(),
       replace: jest.fn(),
     };
@@ -19,7 +19,7 @@ jest.mock('next/router', () => ({
 }));
 
 // Mock next/navigation
-jest.mock('next/navigation', () => ({
+jest.mock("next/navigation", () => ({
   useRouter() {
     return {
       push: jest.fn(),
@@ -28,7 +28,7 @@ jest.mock('next/navigation', () => ({
     };
   },
   usePathname() {
-    return '';
+    return "";
   },
   useSearchParams() {
     return new URLSearchParams();
@@ -36,7 +36,7 @@ jest.mock('next/navigation', () => ({
 }));
 
 // Mock Redux store
-jest.mock('@/store', () => ({
+jest.mock("@/store", () => ({
   useAppDispatch: () => jest.fn(),
   useAppSelector: jest.fn(),
 }));

@@ -1,24 +1,24 @@
-import Link from "next/link"
-import { footerLinks, socialLinks } from "@/lib/content"
-import { Facebook, Twitter, Linkedin, Instagram, Youtube } from "lucide-react"
+import Link from "next/link";
+import { footerLinks, socialLinks } from "@/lib/content";
+import { Facebook, Twitter, Linkedin, Instagram, Youtube } from "lucide-react";
 
 export function Footer() {
   const getSocialIcon = (icon: string) => {
     switch (icon) {
       case "facebook":
-        return <Facebook className="w-5 h-5" />
+        return <Facebook className="w-5 h-5" />;
       case "twitter":
-        return <Twitter className="w-5 h-5" />
+        return <Twitter className="w-5 h-5" />;
       case "linkedin":
-        return <Linkedin className="w-5 h-5" />
+        return <Linkedin className="w-5 h-5" />;
       case "instagram":
-        return <Instagram className="w-5 h-5" />
+        return <Instagram className="w-5 h-5" />;
       case "youtube":
-        return <Youtube className="w-5 h-5" />
+        return <Youtube className="w-5 h-5" />;
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
     <footer className="py-12 bg-black text-white">
@@ -41,8 +41,11 @@ export function Footer() {
             <Link
               key={link.name}
               href={link.href}
-              className={`text-sm hover:text-white ${link.name === "Do Not Sell or Share My Personal Information" ? "text-yellow-400" : "text-gray-400"
-                }`}
+              className={`text-sm hover:text-white ${
+                link.name === "Do Not Sell or Share My Personal Information"
+                  ? "text-yellow-400"
+                  : "text-gray-400"
+              }`}
             >
               {link.name}
             </Link>
@@ -70,17 +73,22 @@ export function Footer() {
             </div>
           </div>
 
-
           <div className="text-xs text-gray-400 space-y-3">
             <p>
-              Any mortgage-related information or activity is performed by NMLS LLC (NMLS #12345), a subsidiary of Home,
-              Inc.
+              Any mortgage-related information or activity is performed by NMLS
+              LLC (NMLS #12345), a subsidiary of Home, Inc.
             </p>
-            <p>*Based on an avg 2023 popularity survey among real estate professionals.</p>
-            <p>© 1995-2025 National Association of REALTORS® and Home, Inc. All rights reserved.</p>
+            <p>
+              *Based on an avg 2023 popularity survey among real estate
+              professionals.
+            </p>
+            <p>
+              © 1995-2025 National Association of REALTORS® and Home, Inc. All
+              rights reserved.
+            </p>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

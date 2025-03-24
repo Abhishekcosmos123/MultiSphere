@@ -17,23 +17,23 @@ import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
  * @property register - React Hook Form register object
  */
 interface InputBoxProps {
-    id: string;
-    type?: string;
-    value?: string;
-    label: string;
-    placeholder?: string;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    showPasswordToggle?: boolean;
-    showPassword?: boolean;
-    setShowPassword?: (show: boolean) => void;
-    error?: string;
-    name?: string;
-    register?: any;
+  id: string;
+  type?: string;
+  value?: string;
+  label: string;
+  placeholder?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  showPasswordToggle?: boolean;
+  showPassword?: boolean;
+  setShowPassword?: (show: boolean) => void;
+  error?: string;
+  name?: string;
+  register?: any;
 }
 
 /**
  * InputBox Component
- * 
+ *
  * A reusable animated input field component with integrated features.
  * Features:
  * - Animated entrance effects using Framer Motion
@@ -42,7 +42,7 @@ interface InputBoxProps {
  * - React Hook Form integration
  * - Accessible form controls
  * - Customizable styling with error states
- * 
+ *
  * @example
  * <InputBox
  *   id="password"
@@ -54,70 +54,81 @@ interface InputBoxProps {
  * />
  */
 const InputBox: React.FC<InputBoxProps> = ({
-    id,
-    type = "text",
-    value,
-    label,
-    placeholder = "",
-    onChange,
-    showPasswordToggle = false,
-    showPassword,
-    setShowPassword,
-    error,
-    name,
-    register,
+  id,
+  type = "text",
+  value,
+  label,
+  placeholder = "",
+  onChange,
+  showPasswordToggle = false,
+  showPassword,
+  setShowPassword,
+  error,
+  name,
+  register,
 }) => {
-    return (
-        <div className="mb-4" style={{ position: 'relative' }}>
-            {/* Accessible label for the input field */}
-            <label htmlFor={id} className="block text-sm font-medium text-gray-700">
-                {label}
-            </label>
-            {/* Animated input field */}
-            <motion.input
-                // Animation properties for smooth entrance
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.4 }}
-                id={id}
-                // Dynamic type handling for password fields
-                type={showPasswordToggle ? (showPassword ? "text" : "password") : type}
-                value={value}
-                placeholder={placeholder}
-                {...register} // Spread React Hook Form register properties
-                // Dynamic classes for styling and error states
-                className={`mt-1 block w-full p-3 border rounded-md shadow-sm focus:ring-green-300 focus:border-green-300 sm:text-sm text-gray-800 ${
-                    error ? 'border-red-500' : 'border-gray-300'
-                }`}
-                required
-                style={{ paddingRight: '2.5rem' }} // Space for password toggle icon
+  return (
+    <div className="mb-4" style={{ position: "relative" }}>
+      {/* Accessible label for the input field */}
+      <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+        {label}
+      </label>
+      {/* Animated input field */}
+      <motion.input
+        // Animation properties for smooth entrance
+        initial={{ x: -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.4 }}
+        id={id}
+        // Dynamic type handling for password fields
+        type={showPasswordToggle ? (showPassword ? "text" : "password") : type}
+        value={value}
+        placeholder={placeholder}
+        {...register} // Spread React Hook Form register properties
+        // Dynamic classes for styling and error states
+        className={`mt-1 block w-full p-3 border rounded-md shadow-sm focus:ring-green-300 focus:border-green-300 sm:text-sm text-gray-800 ${
+          error ? "border-red-500" : "border-gray-300"
+        }`}
+        required
+        style={{ paddingRight: "2.5rem" }} // Space for password toggle icon
+      />
+      {/* Error message display */}
+      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+      {/* Password visibility toggle button */}
+      {showPasswordToggle && setShowPassword && (
+        <motion.span
+          // Animation for the toggle icon
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          data-testid="password-toggle"
+          className="cursor-pointer text-green-500 hover:text-green-700"
+          onClick={() => setShowPassword(!showPassword)}
+          style={{
+            position: "absolute",
+            top: "50%",
+            right: "0.75rem",
+            transform: "translateY(-50%)",
+          }}
+        >
+          {/* Toggle between show/hide password icons */}
+          {showPassword ? (
+            <BsFillEyeSlashFill
+              size={24}
+              className="text-green-500"
+              style={{ color: "#6366f1" }}
             />
-            {/* Error message display */}
-            {error && (
-                <p className="mt-1 text-sm text-red-500">{error}</p>
-            )}
-            {/* Password visibility toggle button */}
-            {showPasswordToggle && setShowPassword && (
-                <motion.span
-                    // Animation for the toggle icon
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                    data-testid="password-toggle"
-                    className="cursor-pointer text-green-500 hover:text-green-700"
-                    onClick={() => setShowPassword(!showPassword)}
-                    style={{ position: 'absolute', top: '50%', right: '0.75rem', transform: 'translateY(-50%)' }}
-                >
-                    {/* Toggle between show/hide password icons */}
-                    {showPassword ? (
-                        <BsFillEyeSlashFill size={24} className="text-green-500" style={{color: '#6366f1'}} />
-                    ) : (
-                        <BsFillEyeFill size={24} className="text-green-500" style={{color: '#6366f1'}}/>
-                    )}
-                </motion.span>
-            )}
-        </div>
-    );
+          ) : (
+            <BsFillEyeFill
+              size={24}
+              className="text-green-500"
+              style={{ color: "#6366f1" }}
+            />
+          )}
+        </motion.span>
+      )}
+    </div>
+  );
 };
 
 export default InputBox;

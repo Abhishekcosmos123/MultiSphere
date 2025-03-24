@@ -1,10 +1,13 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import dbConnect from '@/lib/dbConnect';
-import { User } from '@/backend/models/user';
+import type { NextApiRequest, NextApiResponse } from "next";
+import dbConnect from "@/lib/dbConnect";
+import { User } from "@/backend/models/user";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
   }
 
   try {
@@ -14,13 +17,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Check if all required fields are provided
     if (!firstName || !lastName || !email || !password) {
-      return res.status(400).json({ message: 'Please provide all required fields' });
+      return res
+        .status(400)
+        .json({ message: "Please provide all required fields" });
     }
 
     // Check if user already exists
     const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ message: "User already exists" });
     }
 
     // Create new user
@@ -39,9 +44,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       email: user.email,
     };
 
-    res.status(201).json({ message: 'User registered successfully', user: userResponse });
+    res
+      .status(201)
+      .json({ message: "User registered successfully", user: userResponse });
   } catch (error: any) {
-    console.error('Registration error:', error);
-    res.status(500).json({ message: error.message || 'Error registering user' });
+    console.error("Registration error:", error);
+    res
+      .status(500)
+      .json({ message: error.message || "Error registering user" });
   }
 }

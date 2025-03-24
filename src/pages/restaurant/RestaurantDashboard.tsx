@@ -1,10 +1,17 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/ui/button";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 const mockUser = {
-  name: "Admin User", 
+  name: "Admin User",
   role: "admin", // Change to "consumer" to see the consumer view
 };
 
@@ -38,7 +45,9 @@ const RestaurantDashboard = () => {
             <Card>
               <CardContent>
                 <h2 className="text-lg font-semibold">Pending Orders</h2>
-                <p className="text-2xl font-bold">{orders.filter(o => o.status === "Pending").length}</p>
+                <p className="text-2xl font-bold">
+                  {orders.filter((o) => o.status === "Pending").length}
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -56,7 +65,9 @@ const RestaurantDashboard = () => {
           {user?.role === "admin" && (
             <div className="bg-white p-4 rounded-xl shadow">
               <h2 className="text-lg font-semibold mb-4">Manage Orders</h2>
-              <Button className="bg-green-500 hover:bg-green-700 text-white">Add New Order</Button>
+              <Button className="bg-green-500 hover:bg-green-700 text-white">
+                Add New Order
+              </Button>
             </div>
           )}
           {user?.role === "consumer" && (

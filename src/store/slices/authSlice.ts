@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { LoginFormData, RegisterFormData } from '@/lib/validations/auth';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { LoginFormData, RegisterFormData } from "@/lib/validations/auth";
 
 /**
  * Authentication state interface
@@ -21,7 +21,7 @@ interface AuthState {
  */
 const initialState: AuthState = {
   user: null,
-  token: typeof window !== 'undefined' ? localStorage.getItem('token') : null,
+  token: typeof window !== "undefined" ? localStorage.getItem("token") : null,
   loading: false,
   error: null,
 };
@@ -34,7 +34,7 @@ const initialState: AuthState = {
  * - Logout
  */
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     // Login actions
@@ -42,7 +42,10 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    loginSuccess: (state, action: PayloadAction<{ user: any; token: string }>) => {
+    loginSuccess: (
+      state,
+      action: PayloadAction<{ user: any; token: string }>,
+    ) => {
       state.loading = false;
       state.user = action.payload.user;
       state.token = action.payload.token;
@@ -58,7 +61,10 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    registerSuccess: (state, action: PayloadAction<{ user: any; token: string }>) => {
+    registerSuccess: (
+      state,
+      action: PayloadAction<{ user: any; token: string }>,
+    ) => {
       state.loading = false;
       state.user = action.payload.user;
       state.token = action.payload.token;
@@ -74,9 +80,9 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.error = null;
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
       }
     },
   },

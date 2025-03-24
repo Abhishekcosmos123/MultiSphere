@@ -1,8 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
-import createSagaMiddleware from 'redux-saga';
-import { all } from 'redux-saga/effects';
-import authReducer from './slices/authSlice';
-import { watchAuth } from './sagas/authSaga';
+import { configureStore } from "@reduxjs/toolkit";
+import createSagaMiddleware from "redux-saga";
+import { all } from "redux-saga/effects";
+import authReducer from "./slices/authSlice";
+import { watchAuth } from "./sagas/authSaga";
 
 /**
  * Root saga that combines all individual sagas
