@@ -56,7 +56,6 @@ export default function SignupPage() {
     const [isOtpVerification, setIsOtpVerification] = useState(false);
     const [otp, setOtp] = useState(Array(6).fill(""));
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [errors, setErrors] = useState<FormErrors>(initialErrors);
     const router = useRouter();
@@ -374,7 +373,7 @@ export default function SignupPage() {
                                                 ))}
                                             </div>
                                             <p className="text-sm text-center text-gray-600">
-                                                Didn't receive the code? <button type="button" className="text-blue-600 hover:underline">Resend</button>
+                                                Didn&apos;t receive the code? <button type="button" className="text-blue-600 hover:underline">Resend</button>
                                             </p>
                                         </div>
                                         <Button type="submit" className="w-full bg-green-600 hover:bg-green-700">

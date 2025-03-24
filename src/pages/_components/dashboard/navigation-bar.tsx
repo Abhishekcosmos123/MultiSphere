@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/ui/button";
 
@@ -10,9 +11,11 @@ export const NavigationBar: React.FC = () => {
       <div className="container flex items-center justify-between h-16 px-4 mx-auto">
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center">
-            <img
+            <Image
               src="https://upload.wikimedia.org/wikipedia/commons/e/e3/Udemy_logo.svg"
               alt="Udemy Logo"
+              width={96}
+              height={32}
               className="h-8"
             />
           </Link>

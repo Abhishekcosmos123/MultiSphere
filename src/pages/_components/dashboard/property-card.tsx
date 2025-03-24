@@ -14,7 +14,7 @@ interface PropertyCardProps {
   type: string
   image: string
   new?: boolean
-  lot?: string
+  lot?: number
 }
 
 export function PropertyCard({
@@ -29,7 +29,6 @@ export function PropertyCard({
   type,
   image,
   new: isNew = false,
-  lot,
 }: PropertyCardProps) {
   return (
     <div className="overflow-hidden bg-white border border-gray-200 rounded-lg">

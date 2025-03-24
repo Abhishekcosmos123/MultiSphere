@@ -1,15 +1,17 @@
-// import { Button } from "@/components/ui/button"
-import { Button } from "@/ui/button"
 import { Search } from "lucide-react"
+import Image from "next/image"
 
 export function HeroSection() {
   return (
     <div className="relative">
       <div className="absolute inset-0">
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1600&h=600&auto=format&fit=crop"
           alt="Real estate background"
-          className="object-cover w-full h-full"
+          className="object-cover"
+          fill
+          priority
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-black/30" />
       </div>
@@ -37,4 +39,3 @@ export function HeroSection() {
     </div>
   )
 }
-

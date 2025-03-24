@@ -2,11 +2,6 @@ import { toast } from 'react-hot-toast';
 
 type ToastType = 'success' | 'error' | 'info' | 'warning';
 
-interface ToastOptions {
-  duration?: number;
-  position?: 'top-right' | 'top-center' | 'top-left' | 'bottom-right' | 'bottom-center' | 'bottom-left';
-}
-
 export const showToast = (message: string, type: ToastType = 'info') => {
   // Create toast element
   const toast = document.createElement('div');

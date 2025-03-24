@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 /**
  * Props interface for InputBox component
@@ -28,7 +29,7 @@ interface InputBoxProps {
     setShowPassword?: (show: boolean) => void;
     error?: string;
     name?: string;
-    register?: any;
+    register?: UseFormRegisterReturn;
 }
 
 /**
@@ -59,12 +60,10 @@ const InputBox: React.FC<InputBoxProps> = ({
     value,
     label,
     placeholder = "",
-    onChange,
     showPasswordToggle = false,
     showPassword,
     setShowPassword,
     error,
-    name,
     register,
 }) => {
     return (

@@ -40,8 +40,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     };
 
     res.status(201).json({ message: 'User registered successfully', user: userResponse });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Registration error:', error);
-    res.status(500).json({ message: error.message || 'Error registering user' });
+    res.status(500).json({ 
+      message: error instanceof Error ? error.message : 'Error registering user'
+    });
   }
 }

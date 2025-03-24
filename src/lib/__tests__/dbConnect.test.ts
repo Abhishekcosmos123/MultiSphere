@@ -7,7 +7,11 @@ jest.mock('mongoose', () => ({
 
 describe('Database Connection', () => {
   let mockConnect: jest.Mock;
-  let mockConnection: any;
+  let mockConnection: {
+    connection: {
+      readyState: number;
+    };
+  };
 
   beforeEach(() => {
     jest.resetModules();

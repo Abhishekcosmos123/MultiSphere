@@ -1,35 +1,42 @@
 import mongoose from 'mongoose';
 
+interface MongooseConnection {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
 declare global {
-  var mongoose: { conn: any; promise: Promise<any> | null };
+  var mongoose: MongooseConnection | undefined;
 }
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/quiznation';
 
-if (!global.mongoose) {
-  global.mongoose = { conn: null, promise: null };
+if (!globalThis.mongoose) {
+  globalThis.mongoose = { conn: null, promise: null };
 }
 
 const dbConnect = async () => {
   try {
-    if (global.mongoose.conn) {
-      return global.mongoose.conn;
+    if (globalThis.mongoose!.conn) {
+      return globalThis.mongoose!.conn;
     }
 
-    if (!global.mongoose.promise) {
+    if (!globalThis.mongoose!.promise) {
       const opts = {
         bufferCommands: false,
       };
 
-      global.mongoose.promise = mongoose.connect(MONGODB_URI, opts);
+      globalThis.mongoose!.promise = mongoose.connect(MONGODB_URI, opts);
     }
 
-    const conn = await global.mongoose.promise;
-    global.mongoose.conn = conn;
+    const conn = await globalThis.mongoose!.promise;
+    globalThis.mongoose!.conn = conn;
 
     return conn;
   } catch (error) {
-    global.mongoose.promise = null;
+    if (globalThis.mongoose) {
+      globalThis.mongoose.promise = null;
+    }
     throw error;
   }
 };

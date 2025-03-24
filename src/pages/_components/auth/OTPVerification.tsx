@@ -44,7 +44,7 @@ export default function OTPVerification({ email, onVerify }: OTPVerificationProp
                                 }
                             }}
                             onKeyDown={(e) => {
-                                if (e.key === 'Backspace' && !digit && index > 0) {
+                                if (e.key === "Backspace" && !digit && index > 0) {
                                     const prevInput = e.currentTarget.previousElementSibling as HTMLElement;
                                     prevInput?.focus();
                                 }
@@ -53,7 +53,7 @@ export default function OTPVerification({ email, onVerify }: OTPVerificationProp
                     ))}
                 </div>
                 <p className="text-sm text-center text-gray-600">
-                    Didn't receive the code? <button type="button" className="text-blue-600 hover:underline">Resend</button>
+                    Didn&apos;t receive the code? <button type="button" className="text-blue-600 hover:underline">Resend</button>
                 </p>
             </div>
             <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700">

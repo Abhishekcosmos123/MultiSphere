@@ -57,9 +57,9 @@ async function registerApi(data: RegisterFormData) {
  * - Handles failure by dispatching error
  * - Redirects to home page on success
  */
-export function* loginSaga(action: PayloadAction<LoginFormData>) {
+export function* loginSaga(action: PayloadAction<LoginFormData>): Generator<unknown, void, unknown> {
   try {
-    const response = yield call(loginApi, action.payload);
+    const response = (yield call(loginApi, action.payload)) as { user: Record<string, unknown>; token: string };
     yield put(loginSuccess(response));
     
     // Store in localStorage
@@ -68,8 +68,12 @@ export function* loginSaga(action: PayloadAction<LoginFormData>) {
     
     // Redirect to home
     window.location.href = '/';
-  } catch (error: any) {
-    yield put(loginFailure(error.message));
+  } catch (error) {
+    if (error instanceof Error) {
+      yield put(loginFailure(error.message));
+    } else {
+      yield put(loginFailure('An unknown error occurred'));
+    }
   }
 }
 
@@ -80,9 +84,9 @@ export function* loginSaga(action: PayloadAction<LoginFormData>) {
  * - Handles failure by dispatching error
  * - Redirects to home page on success
  */
-export function* registerSaga(action: PayloadAction<RegisterFormData>) {
+export function* registerSaga(action: PayloadAction<RegisterFormData>): Generator<unknown, void, unknown> {
   try {
-    const response = yield call(registerApi, action.payload);
+    const response = (yield call(registerApi, action.payload)) as { user: Record<string, unknown>; token: string };
     yield put(registerSuccess(response));
     
     // Store in localStorage
@@ -91,8 +95,12 @@ export function* registerSaga(action: PayloadAction<RegisterFormData>) {
     
     // Redirect to home
     window.location.href = '/';
-  } catch (error: any) {
-    yield put(registerFailure(error.message));
+  } catch (error) {
+    if (error instanceof Error) {
+      yield put(registerFailure(error.message));
+    } else {
+      yield put(registerFailure('An unknown error occurred'));
+    }
   }
 }
 

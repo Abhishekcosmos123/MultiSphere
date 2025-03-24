@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { footerLinks, socialLinks } from "@/lib/content"
 import { Facebook, Twitter, Linkedin, Instagram, Youtube } from "lucide-react"
 
@@ -54,17 +55,21 @@ export function Footer() {
             <p>Get the app</p>
             <div className="flex gap-2 mt-2">
               <Link href="#" className="block">
-                <img
+                <Image
                   src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
                   alt="Download on the App Store"
-                  className="h-10"
+                  width={120}
+                  height={40}
+                  className="h-10 w-auto"
                 />
               </Link>
               <Link href="#" className="block">
-                <img
+                <Image
                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/200px-Google_Play_Store_badge_EN.svg.png"
                   alt="Get it on Google Play"
-                  className="h-10"
+                  width={120}
+                  height={40}
+                  className="h-10 w-auto"
                 />
               </Link>
             </div>

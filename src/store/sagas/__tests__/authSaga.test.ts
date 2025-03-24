@@ -29,13 +29,12 @@ describe('Auth Sagas', () => {
       };
       (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
 
-      const dispatched: any[] = [];
+      const dispatched: Array<ReturnType<typeof loginSuccess | typeof loginFailure>> = [];
       await runSaga(
         {
-          dispatch: (action) => dispatched.push(action),
+          dispatch: (action: ReturnType<typeof loginSuccess | typeof loginFailure>) => dispatched.push(action),
           getState: () => ({}),
         },
-        // @ts-ignore - ignore generator function type error for testing
         loginSaga,
         { type: 'auth/loginRequest', payload: loginData }
       ).toPromise();
@@ -53,13 +52,12 @@ describe('Auth Sagas', () => {
       };
       (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
 
-      const dispatched: any[] = [];
+      const dispatched: Array<ReturnType<typeof loginSuccess | typeof loginFailure>> = [];
       await runSaga(
         {
-          dispatch: (action) => dispatched.push(action),
+          dispatch: (action: ReturnType<typeof loginSuccess | typeof loginFailure>) => dispatched.push(action),
           getState: () => ({}),
         },
-        // @ts-ignore - ignore generator function type error for testing
         loginSaga,
         { type: 'auth/loginRequest', payload: loginData }
       ).toPromise();
@@ -84,13 +82,12 @@ describe('Auth Sagas', () => {
       };
       (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
 
-      const dispatched: any[] = [];
+      const dispatched: Array<ReturnType<typeof registerSuccess | typeof registerFailure>> = [];
       await runSaga(
         {
-          dispatch: (action) => dispatched.push(action),
+          dispatch: (action: ReturnType<typeof registerSuccess | typeof registerFailure>) => dispatched.push(action),
           getState: () => ({}),
         },
-        // @ts-ignore - ignore generator function type error for testing
         registerSaga,
         { type: 'auth/registerRequest', payload: registerData }
       ).toPromise();
@@ -108,13 +105,12 @@ describe('Auth Sagas', () => {
       };
       (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
 
-      const dispatched: any[] = [];
+      const dispatched: Array<ReturnType<typeof registerSuccess | typeof registerFailure>> = [];
       await runSaga(
         {
-          dispatch: (action) => dispatched.push(action),
+          dispatch: (action: ReturnType<typeof registerSuccess | typeof registerFailure>) => dispatched.push(action),
           getState: () => ({}),
         },
-        // @ts-ignore - ignore generator function type error for testing
         registerSaga,
         { type: 'auth/registerRequest', payload: registerData }
       ).toPromise();

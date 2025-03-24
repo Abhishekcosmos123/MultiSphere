@@ -1,4 +1,4 @@
-import { featuredCourses, popularCourses, luxuryHomes, testimonials } from "@/lib/content"
+import { popularCourses, luxuryHomes, testimonials } from "@/lib/content"
 import { Footer } from "./_components/dashboard/footer"
 import { TestimonialSection } from "./_components/dashboard/testimonial-section"
 import { CTASection } from "./_components/dashboard/cta-section"

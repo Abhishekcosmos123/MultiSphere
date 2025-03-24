@@ -1,4 +1,5 @@
 import { trustedCompanies } from "@/lib/content"
+import Image from "next/image"
 
 export function TrustedSection() {
   return (
@@ -11,9 +12,11 @@ export function TrustedSection() {
         <div className="flex flex-wrap items-center justify-center gap-8 mt-8">
           {trustedCompanies.map((company) => (
             <div key={company.id} className="flex items-center justify-center h-16">
-              <img
+              <Image
                 src={company.logo}
                 alt={company.name}
+                width={48}
+                height={48}
                 className="h-12 grayscale opacity-70 hover:opacity-100 transition-opacity"
               />
             </div>
@@ -23,4 +26,3 @@ export function TrustedSection() {
     </div>
   );
 }
-

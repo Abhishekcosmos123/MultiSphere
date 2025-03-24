@@ -5,9 +5,22 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { CourseCard } from "../../_components/dashboard/course-card"
 import { Button } from "@/ui/button"
 
+interface Course {
+  id: string | number
+  title: string
+  instructors: string[]
+  rating: number
+  reviewCount: number
+  students: number
+  price: number
+  originalPrice: number
+  image: string
+  bestseller?: boolean
+}
+
 interface CourseCarouselProps {
   title: string
-  courses: any[]
+  courses: Course[]
 }
 
 export function CourseCarousel({ title, courses }: CourseCarouselProps) {
@@ -16,7 +29,7 @@ export function CourseCarousel({ title, courses }: CourseCarouselProps) {
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      const { scrollLeft, clientWidth, scrollWidth } = scrollRef.current
+      const { scrollLeft, clientWidth } = scrollRef.current
       const scrollTo = direction === "left" ? scrollLeft - clientWidth / 2 : scrollLeft + clientWidth / 2
 
       scrollRef.current.scrollTo({
@@ -53,10 +66,10 @@ export function CourseCarousel({ title, courses }: CourseCarouselProps) {
               <div key={course.id} className="w-64 flex-shrink-0">
                 <CourseCard
                   title={course.title}
-                  instructors={course.instructors}
+                  instructors={course.instructors.join(", ")}
                   rating={course.rating}
-                  reviewCount={course.reviewCount}
-                  students={course.students}
+                  reviewCount={course.reviewCount.toString()}
+                  students={course.students.toString()}
                   price={course.price}
                   originalPrice={course.originalPrice}
                   image={course.image}

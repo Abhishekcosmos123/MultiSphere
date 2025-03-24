@@ -1,9 +1,25 @@
 import { PropertyCard } from "../../_components/dashboard/property-card"
 
+interface Property {
+  id: string | number
+  price: number
+  beds: number
+  baths: number
+  sqft: number
+  address: string
+  city: string
+  state: string
+  zip: string
+  type: string
+  image: string
+  new: boolean
+  lot?: number
+}
+
 interface PropertySectionProps {
   title: string
   location: string
-  properties: any[]
+  properties: Property[]
 }
 
 export function PropertySection({ title, location, properties }: PropertySectionProps) {
@@ -40,4 +56,3 @@ export function PropertySection({ title, location, properties }: PropertySection
     </div>
   )
 }
-

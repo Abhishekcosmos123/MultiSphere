@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { LoginFormData, RegisterFormData } from '@/lib/validations/auth';
 
 /**
  * Authentication state interface
@@ -9,7 +8,7 @@ import { LoginFormData, RegisterFormData } from '@/lib/validations/auth';
  * @property error - Error message if auth operation fails
  */
 interface AuthState {
-  user: any | null;
+  user: Record<string, unknown> | null;
   token: string | null;
   loading: boolean;
   error: string | null;
@@ -38,11 +37,11 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     // Login actions
-    loginRequest: (state, action: PayloadAction<LoginFormData>) => {
+    loginRequest: (state) => {
       state.loading = true;
       state.error = null;
     },
-    loginSuccess: (state, action: PayloadAction<{ user: any; token: string }>) => {
+    loginSuccess: (state, action: PayloadAction<{ user: Record<string, unknown>; token: string }>) => {
       state.loading = false;
       state.user = action.payload.user;
       state.token = action.payload.token;
@@ -54,11 +53,11 @@ const authSlice = createSlice({
     },
 
     // Register actions
-    registerRequest: (state, action: PayloadAction<RegisterFormData>) => {
+    registerRequest: (state) => {
       state.loading = true;
       state.error = null;
     },
-    registerSuccess: (state, action: PayloadAction<{ user: any; token: string }>) => {
+    registerSuccess: (state, action: PayloadAction<{ user: Record<string, unknown>; token: string }>) => {
       state.loading = false;
       state.user = action.payload.user;
       state.token = action.payload.token;

@@ -1,6 +1,5 @@
-import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import { User } from '../user';
+import { User, IUser } from '../user';
 
 // Mock mongoose
 jest.mock('mongoose', () => {
@@ -70,7 +69,7 @@ describe('User Model', () => {
       });
 
       // Mock save method
-      user.save = jest.fn().mockImplementation(async function() {
+      user.save = jest.fn().mockImplementation(async function(this: IUser) {
         if (this.isModified('password')) {
           const salt = await bcrypt.genSalt(10);
           this.password = await bcrypt.hash(this.password, salt);
