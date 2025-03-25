@@ -8,23 +8,41 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaApple, FaMicrosoft, FaEnvelope, FaEye, FaEyeSlash, FaPhone } from "react-icons/fa";
 import { validateEmail, validatePassword, validationMessages } from "@/lib/validations";
 import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
-// import { NavigationBar } from "../_components/dashboard/navigation-bar";
 import { Footer } from "@/components/dashboard/footer";
 import { useRouter } from "next/router";
 import { NavigationBar } from "@/components/dashboard/navigation-bar";
+import OTPValidation from "@/components/auth/OTPVerification";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import '@/styles/phone-input.css';
 
 export default function LoginPage() {
 	const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email');
 	const [email, setEmail] = useState("");
 	const [phone, setPhone] = useState("");
+	const [countryCode, setCountryCode] = useState("+1");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
+	const [isOtpVerification, setIsOtpVerification] = useState(false);
 	const router = useRouter();
 	const [errors, setErrors] = useState({
 		email: "",
 		phone: "",
 		password: "",
 	});
+
+	const countryCodes = [
+		{ code: "+1", country: "US" },
+		{ code: "+44", country: "UK" },
+		{ code: "+91", country: "IN" },
+		{ code: "+61", country: "AU" },
+		{ code: "+86", country: "CN" },
+		{ code: "+49", country: "DE" },
+		{ code: "+33", country: "FR" },
+		{ code: "+81", country: "JP" },
+		{ code: "+82", country: "KR" },
+		{ code: "+55", country: "BR" },
+	];
 
 	const validateForm = () => {
 		const newErrors = {
@@ -46,16 +64,16 @@ export default function LoginPage() {
 			if (!phone) {
 				newErrors.phone = validationMessages.required;
 				isValid = false;
-			} else if (!/^\+?[\d\s-]{10,}$/.test(phone)) {
+			} else if (phone.length < 10) {
 				newErrors.phone = "Please enter a valid phone number";
 				isValid = false;
 			}
 		}
 
-		if (!password) {
+		if (loginMethod === 'email' && !password) {
 			newErrors.password = validationMessages.required;
 			isValid = false;
-		} else if (!validatePassword(password)) {
+		} else if (loginMethod === 'email' && !validatePassword(password)) {
 			newErrors.password = validationMessages.password;
 			isValid = false;
 		}
@@ -71,10 +89,15 @@ export default function LoginPage() {
 			// TODO: Implement login logic
 			const credentials = loginMethod === 'email' 
 				? { email, password }
-				: { phone, password };
+				: { phone };
 			console.log("Login attempt with:", credentials);
 			showSuccessToast("Login successful!");
-			router.push("/restaurant");
+			if (loginMethod === 'email') {
+				router.push("/restaurant");
+			} else {
+				// Simulate successful API call for OTP
+				setIsOtpVerification(true);
+			}
 		} else {
 			showErrorToast("Please fix the errors before submitting");
 		}
@@ -121,126 +144,140 @@ export default function LoginPage() {
 										<FaPhone className="inline mr-2" /> Phone
 									</button>
 								</div>
-								<form onSubmit={handleSubmit} className="space-y-6">
-									{loginMethod === 'email' ? (
-										<div>
-											<label htmlFor="email" className="block text-sm font-medium text-gray-700">
-												Email
-											</label>
-											<Input
-												id="email"
-												type="email"
-												required
-												value={email}
-												onChange={(e) => setEmail(e.target.value)}
-												className={`mt-1 ${errors.email ? "border-red-500" : ""}`}
-												placeholder="Enter your email"
-											/>
-											{errors.email && (
-												<p className="mt-1 text-sm text-red-500">{errors.email}</p>
-											)}
-										</div>
-									) : (
-										<div>
-											<label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-												Phone Number
-											</label>
-											<Input
-												id="phone"
-												type="tel"
-												required
-												value={phone}
-												onChange={(e) => setPhone(e.target.value)}
-												className={`mt-1 ${errors.phone ? "border-red-500" : ""}`}
-												placeholder="Enter your phone number"
-											/>
-											{errors.phone && (
-												<p className="mt-1 text-sm text-red-500">{errors.phone}</p>
-											)}
-										</div>
-									)}
-									<div>
-										<label htmlFor="password" className="block text-sm font-medium text-gray-700">
-											Password
-										</label>
-										<div className="relative">
-											<Input
-												id="password"
-												type={showPassword ? "text" : "password"}
-												required
-												value={password}
-												onChange={(e) => setPassword(e.target.value)}
-												className={`mt-1 ${errors.password ? "border-red-500" : ""}`}
-												placeholder="Enter your password"
-											/>
-											<button
-												type="button"
-												className="absolute right-3 top-1/2 transform -translate-y-1/2"
-												onClick={() => setShowPassword(!showPassword)}
-											>
-												{showPassword ? <FaEyeSlash /> : <FaEye />}
-											</button>
-										</div>
-										{errors.password && (
-											<p className="mt-1 text-sm text-red-500">{errors.password}</p>
-										)}
-										<div className="mt-1">
-											<Link href="/reset" className="text-sm text-blue-600 hover:text-blue-500">
-												Forgot password?
-											</Link>
-										</div>
-									</div>
-									<Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700">
+								{isOtpVerification ? (
+									<OTPValidation 
+										email={phone} 
+										onVerify={() => router.push("/restaurant")}
+										role="user"
+									/>
+								) : (
+									<form onSubmit={handleSubmit} className="space-y-6">
 										{loginMethod === 'email' ? (
-											<><FaEnvelope className="mr-2" /> Continue with email</>
+											<>
+												<div>
+													<label htmlFor="email" className="block text-sm font-medium text-gray-700">
+														Email
+													</label>
+													<Input
+														id="email"
+														type="email"
+														required
+														value={email}
+														onChange={(e) => setEmail(e.target.value)}
+														className={`mt-1 ${errors.email ? "border-red-500" : ""}`}
+														placeholder="Enter your email"
+													/>
+													{errors.email && (
+														<p className="mt-1 text-sm text-red-500">{errors.email}</p>
+													)}
+												</div>
+												<div>
+													<label htmlFor="password" className="block text-sm font-medium text-gray-700">
+														Password
+													</label>
+													<div className="relative">
+														<Input
+															id="password"
+															type={showPassword ? "text" : "password"}
+															required
+															value={password}
+															onChange={(e) => setPassword(e.target.value)}
+															className={`mt-1 ${errors.password ? "border-red-500" : ""}`}
+															placeholder="Enter your password"
+														/>
+														<button
+															type="button"
+															className="absolute right-3 top-1/2 transform -translate-y-1/2"
+															onClick={() => setShowPassword(!showPassword)}
+														>
+															{showPassword ? <FaEyeSlash /> : <FaEye />}
+														</button>
+													</div>
+													{errors.password && (
+														<p className="mt-1 text-sm text-red-500">{errors.password}</p>
+													)}
+													<div className="mt-1">
+														<Link href="/reset" className="text-sm text-blue-600 hover:text-blue-500">
+															Forgot password?
+														</Link>
+													</div>
+												</div>
+											</>
 										) : (
-											<><FaPhone className="mr-2" /> Continue with phone</>
+											<div>
+												<label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+													Phone Number
+												</label>
+												<div className="mt-1">
+													<PhoneInput
+														country={'us'}
+														value={phone}
+														onChange={(value) => setPhone(value)}
+														inputClass={`w-full ${errors.phone ? "border-red-500" : ""}`}
+														containerClass="phone-input-container"
+														buttonClass="phone-input-button"
+														dropdownClass="phone-input-dropdown"
+														searchClass="phone-input-search"
+														placeholder="Enter your phone number"
+													/>
+												</div>
+												{errors.phone && (
+													<p className="mt-1 text-sm text-red-500">{errors.phone}</p>
+												)}
+											</div>
 										)}
-									</Button>
+										<Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700">
+											{loginMethod === 'email' ? (
+												<><FaEnvelope className="mr-2" /> Continue with email</>
+											) : (
+												<><FaPhone className="mr-2" /> Continue with phone</>
+											)}
+										</Button>
 
-									<div className="relative mt-4">
-										<div className="absolute inset-0 flex items-center">
-											<div className="w-full border-t border-gray-300"></div>
+										<div className="relative mt-4">
+											<div className="absolute inset-0 flex items-center">
+												<div className="w-full border-t border-gray-300"></div>
+											</div>
+											<div className="relative flex justify-center text-sm">
+												<span className="px-2 bg-white text-gray-500">Or continue with</span>
+											</div>
 										</div>
-										<div className="relative flex justify-center text-sm">
-											<span className="px-2 bg-white text-gray-500">Or continue with</span>
-										</div>
-									</div>
 
-									<div className="flex justify-center space-x-4">
-										<Button
-											type="button"
-											variant="outline"
-											onClick={() => handleSocialLogin('Google')}
-										>
-											<FcGoogle size={24} />
-										</Button>
-										<Button
-											type="button"
-											variant="outline"
-											onClick={() => handleSocialLogin('Facebook')}
-										>
-											<FaFacebook size={24} className="text-blue-600" />
-										</Button>
-										<Button
-											type="button"
-											variant="outline"
-											onClick={() => handleSocialLogin('Microsoft')}
-										>
-											<FaMicrosoft size={24} />
-										</Button>
-										<Button
-											type="button"
-											variant="outline"
-											onClick={() => handleSocialLogin('Apple')}
-										>
-											<FaApple size={24} />
-										</Button>
-									</div>
-									<div className="text-center text-sm">
-										Don&apos;t have an account? <Link href="/signup" className="text-blue-600 hover:text-blue-500">Sign up</Link>
-									</div>
-								</form>
+										<div className="flex justify-center space-x-4">
+											<Button
+												type="button"
+												variant="outline"
+												onClick={() => handleSocialLogin('Google')}
+											>
+												<FcGoogle size={24} />
+											</Button>
+											<Button
+												type="button"
+												variant="outline"
+												onClick={() => handleSocialLogin('Facebook')}
+											>
+												<FaFacebook size={24} className="text-blue-600" />
+											</Button>
+											<Button
+												type="button"
+												variant="outline"
+												onClick={() => handleSocialLogin('Microsoft')}
+											>
+												<FaMicrosoft size={24} />
+											</Button>
+											<Button
+												type="button"
+												variant="outline"
+												onClick={() => handleSocialLogin('Apple')}
+											>
+												<FaApple size={24} />
+											</Button>
+										</div>
+										<div className="text-center text-sm">
+											Don&apos;t have an account? <Link href="/signup" className="text-blue-600 hover:text-blue-500">Sign up</Link>
+										</div>
+									</form>
+								)}
 							</CardContent>
 						</Card>
 					</div>

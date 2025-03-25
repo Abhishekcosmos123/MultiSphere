@@ -5,7 +5,7 @@ import { Button } from "@/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
-import { FaEnvelope, FaEye, FaEyeSlash, FaPhone } from "react-icons/fa";
+import { FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
 import { validateEmail, validatePassword, validationMessages } from "@/lib/validations";
 import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
 import { NavigationBar } from "@/components/dashboard/navigation-bar";
@@ -13,9 +13,7 @@ import { Footer } from "@/components/dashboard/footer";
 import OTPVerification from "@/components/auth/OTPVerification";
 
 export default function ResetPasswordPage() {
-    const [resetMethod, setResetMethod] = useState<'email' | 'phone'>('email');
     const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
     const [showOTPVerification, setShowOTPVerification] = useState(false);
     const [showNewPasswordForm, setShowNewPasswordForm] = useState(false);
     const [newPassword, setNewPassword] = useState("");
@@ -24,7 +22,6 @@ export default function ResetPasswordPage() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [errors, setErrors] = useState({
         email: "",
-        phone: "",
         newPassword: "",
         confirmPassword: ""
     });
@@ -34,35 +31,23 @@ export default function ResetPasswordPage() {
         const { email: queryEmail } = router.query;
         if (queryEmail && typeof queryEmail === 'string') {
             setEmail(queryEmail);
-            setResetMethod('email');
         }
     }, [router.query]);
 
     const validateForm = () => {
         const newErrors = {
             email: "",
-            phone: "",
             newPassword: "",
             confirmPassword: ""
         };
         let isValid = true;
 
-        if (resetMethod === 'email') {
-            if (!email) {
-                newErrors.email = validationMessages.required;
-                isValid = false;
-            } else if (!validateEmail(email)) {
-                newErrors.email = validationMessages.email;
-                isValid = false;
-            }
-        } else {
-            if (!phone) {
-                newErrors.phone = validationMessages.required;
-                isValid = false;
-            } else if (!/^\+?[\d\s-]{10,}$/.test(phone)) {
-                newErrors.phone = "Please enter a valid phone number";
-                isValid = false;
-            }
+        if (!email) {
+            newErrors.email = validationMessages.required;
+            isValid = false;
+        } else if (!validateEmail(email)) {
+            newErrors.email = validationMessages.email;
+            isValid = false;
         }
 
         if (showNewPasswordForm) {
@@ -92,8 +77,7 @@ export default function ResetPasswordPage() {
 
         if (validateForm()) {
             if (!showOTPVerification) {
-                const destination = resetMethod === 'email' ? 'email' : 'phone number';
-                showSuccessToast(`Verification code sent to your ${destination}!`);
+                showSuccessToast(`Verification code sent to your email!`);
                 setShowOTPVerification(true);
             }
         } else {
@@ -169,8 +153,13 @@ export default function ResetPasswordPage() {
                             <CardContent>
                                 {showOTPVerification ? (
                                     <OTPVerification 
-                                        email={resetMethod === 'email' ? email : phone}
+                                        email={email}
                                         onVerify={handleOTPVerification}
+                                        role="user"
+                                        onResendOTP={() => {
+                                            showSuccessToast("OTP resent successfully!");
+                                            setShowOTPVerification(true);
+                                        }}
                                     />
                                 ) : showNewPasswordForm ? (
                                     <form onSubmit={handlePasswordReset} className="space-y-6">
@@ -232,67 +221,26 @@ export default function ResetPasswordPage() {
                                     </form>
                                 ) : (
                                     <form onSubmit={handleSubmit} className="space-y-6">
-                                        <div className="flex border-b border-gray-200 mb-6">
-                                            <button
-                                                type="button"
-                                                className={`flex-1 py-2 text-center ${resetMethod === 'email' ? 'border-b-2 border-purple-600 text-purple-600' : 'text-gray-500'}`}
-                                                onClick={() => setResetMethod('email')}
-                                            >
-                                                <FaEnvelope className="inline mr-2" /> Email
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className={`flex-1 py-2 text-center ${resetMethod === 'phone' ? 'border-b-2 border-purple-600 text-purple-600' : 'text-gray-500'}`}
-                                                onClick={() => setResetMethod('phone')}
-                                            >
-                                                <FaPhone className="inline mr-2" /> Phone
-                                            </button>
+                                        <div>
+                                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                                Email
+                                            </label>
+                                            <Input
+                                                id="email"
+                                                type="email"
+                                                required
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                className={`mt-1 ${errors.email ? "border-red-500" : ""}`}
+                                                placeholder="Enter your email"
+                                            />
+                                            {errors.email && (
+                                                <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+                                            )}
                                         </div>
 
-                                        {resetMethod === 'email' ? (
-                                            <div>
-                                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                                                    Email
-                                                </label>
-                                                <Input
-                                                    id="email"
-                                                    type="email"
-                                                    required
-                                                    value={email}
-                                                    onChange={(e) => setEmail(e.target.value)}
-                                                    className={`mt-1 ${errors.email ? "border-red-500" : ""}`}
-                                                    placeholder="Enter your email"
-                                                />
-                                                {errors.email && (
-                                                    <p className="mt-1 text-sm text-red-500">{errors.email}</p>
-                                                )}
-                                            </div>
-                                        ) : (
-                                            <div>
-                                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                                                    Phone Number
-                                                </label>
-                                                <Input
-                                                    id="phone"
-                                                    type="tel"
-                                                    required
-                                                    value={phone}
-                                                    onChange={(e) => setPhone(e.target.value)}
-                                                    className={`mt-1 ${errors.phone ? "border-red-500" : ""}`}
-                                                    placeholder="Enter your phone number"
-                                                />
-                                                {errors.phone && (
-                                                    <p className="mt-1 text-sm text-red-500">{errors.phone}</p>
-                                                )}
-                                            </div>
-                                        )}
-
                                         <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700">
-                                            {resetMethod === 'email' ? (
-                                                <><FaEnvelope className="mr-2" /> Send Reset Instructions</>
-                                            ) : (
-                                                <><FaPhone className="mr-2" /> Send Verification Code</>
-                                            )}
+                                            <FaEnvelope className="mr-2" /> Send Reset Instructions
                                         </Button>
                                         <div className="text-center text-sm">
                                             Remember your password? <Link href="/login" className="text-blue-600 hover:text-blue-500">Back to Login</Link>

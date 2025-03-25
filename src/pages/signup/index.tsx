@@ -12,6 +12,9 @@ import { NavigationBar } from "@/components/dashboard/navigation-bar";
 import { Footer } from "@/components/dashboard/footer";
 import { useRouter } from "next/router";
 import { BUSINESS_TYPES } from "@/lib/content";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import '@/styles/phone-input.css';
 
 type BusinessType = keyof typeof BUSINESS_TYPES;
 
@@ -124,6 +127,7 @@ export default function SignupPage() {
                 return true;
             },
             password: () => {
+                if (signupMethod === 'phone') return true;
                 if (!formData.password) {
                     newErrors.password = validationMessages.required;
                     return false;
@@ -135,6 +139,7 @@ export default function SignupPage() {
                 return true;
             },
             confirmPassword: () => {
+                if (signupMethod === 'phone') return true;
                 if (!formData.confirmPassword) {
                     newErrors.confirmPassword = validationMessages.required;
                     return false;
@@ -224,37 +229,68 @@ export default function SignupPage() {
         </div>
     );
 
-    const renderInput = (name: keyof FormData, label: string, type: string = "text") => (
-        <div>
-            <label htmlFor={name} className="block text-sm font-medium text-gray-700">
-                {label}
-            </label>
-            <div className="relative">
-                <Input
-                    id={name}
-                    name={name}
-                    type={type === "password" ? (showPassword ? "text" : "password") : type}
-                    required
-                    value={formData[name]}
-                    onChange={handleInputChange}
-                    className={`mt-1 ${errors[name as keyof FormErrors] ? "border-red-500" : ""}`}
-                    placeholder={`Enter your ${label.toLowerCase()}`}
-                />
-                {type === "password" && (
-                    <button
-                        type="button"
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                        onClick={() => setShowPassword(!showPassword)}
-                    >
-                        {showPassword ? <FaEyeSlash /> : <FaEye />}
-                    </button>
+    const renderInput = (name: keyof FormData, label: string, type: string = "text") => {
+        if (name === "phone" && signupMethod === 'phone') {
+            return (
+                <div>
+                    <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+                        {label}
+                    </label>
+                    <div className="mt-1">
+                        <PhoneInput
+                            country={'us'}
+                            value={formData[name]}
+                            onChange={(value) => {
+                                setFormData(prev => ({ ...prev, [name]: value }));
+                                setErrors(prev => ({ ...prev, [name]: "" }));
+                            }}
+                            inputClass={`w-full ${errors[name] ? "border-red-500" : ""}`}
+                            containerClass="phone-input-container"
+                            buttonClass="phone-input-button"
+                            dropdownClass="phone-input-dropdown"
+                            searchClass="phone-input-search"
+                            placeholder={`Enter your ${label.toLowerCase()}`}
+                        />
+                    </div>
+                    {errors[name] && (
+                        <p className="mt-1 text-sm text-red-500">{errors[name]}</p>
+                    )}
+                </div>
+            );
+        }
+
+        return (
+            <div>
+                <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+                    {label}
+                </label>
+                <div className="relative">
+                    <Input
+                        id={name}
+                        name={name}
+                        type={type === "password" ? (showPassword ? "text" : "password") : type}
+                        required
+                        value={formData[name]}
+                        onChange={handleInputChange}
+                        className={`mt-1 ${errors[name as keyof FormErrors] ? "border-red-500" : ""}`}
+                        placeholder={`Enter your ${label.toLowerCase()}`}
+                    />
+                    {type === "password" && (
+                        <button
+                            type="button"
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                    )}
+                </div>
+                {errors[name as keyof FormErrors] && (
+                    <p className="mt-1 text-sm text-red-500">{errors[name as keyof FormErrors]}</p>
                 )}
             </div>
-            {errors[name as keyof FormErrors] && (
-                <p className="mt-1 text-sm text-red-500">{errors[name as keyof FormErrors]}</p>
-            )}
-        </div>
-    );
+        );
+    };
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -304,8 +340,12 @@ export default function SignupPage() {
                                             renderInput("phone", "Phone Number", "tel")
                                         }
                                         
-                                        {renderInput("password", "Password", "password")}
-                                        {renderInput("confirmPassword", "Confirm Password", "password")}
+                                        {signupMethod === 'email' && (
+                                            <>
+                                                {renderInput("password", "Password", "password")}
+                                                {renderInput("confirmPassword", "Confirm Password", "password")}
+                                            </>
+                                        )}
 
                                         <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700">
                                             {signupMethod === 'email' ? 
