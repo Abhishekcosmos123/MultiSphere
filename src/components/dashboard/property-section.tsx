@@ -2,28 +2,30 @@
 
 import { useState, useRef } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { CourseCard } from "../../_components/dashboard/course-card"
-import { Button } from "@/ui/button"
+import { PropertyCard } from "./property-card"
 
-interface Course {
+interface Property {
   id: string | number
-  title: string
-  instructors: string[]
-  rating: number
-  reviewCount: number
-  students: number
   price: number
-  originalPrice: number
+  beds: number
+  baths: number
+  sqft: number
+  address: string
+  city: string
+  state: string
+  zip: string
+  type: string
   image: string
-  bestseller?: boolean
+  new: boolean
 }
 
-interface CourseCarouselProps {
+interface PropertySectionProps {
   title: string
-  courses: Course[]
+  location: string
+  properties: Property[]
 }
 
-export function CourseCarousel({ title, courses }: CourseCarouselProps) {
+export function PropertySection({ title, location, properties }: PropertySectionProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollPosition, setScrollPosition] = useState(0)
 
@@ -42,51 +44,54 @@ export function CourseCarousel({ title, courses }: CourseCarouselProps) {
   }
 
   return (
-    <div className="py-8">
-      <div className="px-2 mx-auto max-w-7xl">
-        <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+    <div className="py-12 bg-white">
+      <div className="px-4 mx-auto max-w-7xl">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+            <p className="mt-1 text-sm text-gray-600">View all in {location}</p>
+          </div>
+        </div>
 
         <div className="relative flex items-center mt-6">
-          <Button
-            variant="ghost"
-            size="icon"
+          <button
             className="absolute left-0 z-10 flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-md"
             onClick={() => scroll("left")}
             disabled={scrollPosition <= 0}
           >
             <ChevronLeft className="w-6 h-6" />
-          </Button>
+          </button>
 
           <div
             ref={scrollRef}
             className="flex gap-4 px-12 overflow-x-auto scrollbar-hide scroll-smooth"
             onScroll={(e) => setScrollPosition(e.currentTarget.scrollLeft)}
           >
-            {courses.map((course) => (
-              <div key={course.id} className="w-64 flex-shrink-0">
-                <CourseCard
-                  title={course.title}
-                  instructors={course.instructors.join(", ")}
-                  rating={course.rating}
-                  reviewCount={course.reviewCount.toString()}
-                  students={course.students.toString()}
-                  price={course.price}
-                  originalPrice={course.originalPrice}
-                  image={course.image}
-                  bestseller={course.bestseller}
+            {properties.map((property) => (
+              <div key={property.id} className="w-64 flex-shrink-0">
+                <PropertyCard
+                  price={property.price}
+                  beds={property.beds}
+                  baths={property.baths}
+                  sqft={property.sqft}
+                  address={property.address}
+                  city={property.city}
+                  state={property.state}
+                  zip={property.zip}
+                  type={property.type}
+                  image={property.image}
+                  new={property.new}
                 />
               </div>
             ))}
           </div>
 
-          <Button
-            variant="ghost"
-            size="icon"
+          <button
             className="absolute right-0 z-10 flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-md"
             onClick={() => scroll("right")}
           >
             <ChevronRight className="w-6 h-6" />
-          </Button>
+          </button>
         </div>
       </div>
     </div>

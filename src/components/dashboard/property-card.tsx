@@ -14,7 +14,7 @@ interface PropertyCardProps {
   type: string
   image: string
   new?: boolean
-  lot?: number
+  lot?: string
 }
 
 export function PropertyCard({

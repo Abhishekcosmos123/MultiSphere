@@ -58,7 +58,7 @@ export default async function handler(
       },
       token,
     });
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Error logging in' });
   }

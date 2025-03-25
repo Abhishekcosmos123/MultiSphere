@@ -8,9 +8,9 @@ import Image from "next/image";
 import { FaEnvelope, FaEye, FaEyeSlash, FaPhone } from "react-icons/fa";
 import { validateEmail, validatePassword, validationMessages } from "@/lib/validations";
 import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
-import { NavigationBar } from "../_components/dashboard/navigation-bar";
-import { Footer } from "../_components/dashboard/footer";
-import OTPVerification from "../_components/auth/OTPVerification";
+import { NavigationBar } from "@/components/dashboard/navigation-bar";
+import { Footer } from "@/components/dashboard/footer";
+import OTPVerification from "@/components/auth/OTPVerification";
 
 export default function ResetPasswordPage() {
     const [resetMethod, setResetMethod] = useState<'email' | 'phone'>('email');

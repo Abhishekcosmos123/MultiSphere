@@ -103,6 +103,17 @@ export const featuredCourses = [
     originalPrice: 1799,
     image: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
   },
+  {
+    id: 4,
+    title: "The Complete ChatGPT Guide From Zero to Hero - 2025",
+    instructors: "A.I. Jeff Masters, Robert H. Smith, Tyler A.",
+    rating: 4.8,
+    reviewCount: "9,876",
+    students: "112,345",
+    price: 499,
+    originalPrice: 1799,
+    image: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=600&h=400&auto=format&fit=crop",
+  },
 ]
 
 export const popularCourses = [
@@ -185,6 +196,7 @@ export const popularCourses = [
   }
 ]
 
+
 export const luxuryHomes = [
   {
     id: 1,
@@ -231,6 +243,48 @@ export const luxuryHomes = [
   },
   {
     id: 4,
+    price: 4300000,
+    beds: 6,
+    baths: 7,
+    sqft: 5267,
+    address: "4507 N Boulder Park Ln",
+    city: "Spokane",
+    state: "WA",
+    zip: "99207",
+    type: "Single-Family Home",
+    image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?q=80&w=600&h=400&auto=format&fit=crop",
+    new: true,
+  },
+  {
+    id: 5,
+    price: 4300000,
+    beds: 6,
+    baths: 7,
+    sqft: 5267,
+    address: "4507 N Boulder Park Ln",
+    city: "Spokane",
+    state: "WA",
+    zip: "99207",
+    type: "Single-Family Home",
+    image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?q=80&w=600&h=400&auto=format&fit=crop",
+    new: true,
+  },
+  {
+    id: 6,
+    price: 4300000,
+    beds: 6,
+    baths: 7,
+    sqft: 5267,
+    address: "4507 N Boulder Park Ln",
+    city: "Spokane",
+    state: "WA",
+    zip: "99207",
+    type: "Single-Family Home",
+    image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?q=80&w=600&h=400&auto=format&fit=crop",
+    new: true,
+  },
+  {
+    id: 7,
     price: 4300000,
     beds: 6,
     baths: 7,

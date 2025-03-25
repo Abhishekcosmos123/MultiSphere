@@ -8,8 +8,8 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaApple, FaMicrosoft, FaEnvelope, FaEye, FaEyeSlash, FaChevronDown, FaPhone } from "react-icons/fa";
 import { validateEmail, validatePassword, validateName, validateConfirmPassword, validationMessages } from "@/lib/validations";
 import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
-import { NavigationBar } from "../_components/dashboard/navigation-bar";
-import { Footer } from "../_components/dashboard/footer";
+import { NavigationBar } from "@/components/dashboard/navigation-bar";    
+import { Footer } from "@/components/dashboard/footer";
 import { useRouter } from "next/router";
 import { BUSINESS_TYPES } from "@/lib/content";
 
@@ -56,6 +56,7 @@ export default function SignupPage() {
     const [isOtpVerification, setIsOtpVerification] = useState(false);
     const [otp, setOtp] = useState(Array(6).fill(""));
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [errors, setErrors] = useState<FormErrors>(initialErrors);
     const router = useRouter();

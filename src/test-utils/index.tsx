@@ -3,15 +3,15 @@ import { render as rtlRender } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { AuthState } from '@/store/slices/authSlice';
+import { AnyAction } from '@reduxjs/toolkit';
 
-const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
+const middlewares = [thunk as any];
+const mockStore = configureMockStore<{}, AnyAction>(middlewares);
 
 function render(
   ui: React.ReactElement,
   {
-    preloadedState = { auth: {} as AuthState },
+    preloadedState = {},
     store = mockStore(preloadedState),
     ...renderOptions
   } = {}

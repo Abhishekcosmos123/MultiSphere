@@ -10,8 +10,7 @@ const mockUser = {
 
 const RestaurantDashboard = () => {
   const user = mockUser;
-  // Removed setOrders since it's not being used
-  const [orders] = useState([
+  const [orders, setOrders] = useState([
     { id: 1, customer: "John Doe", total: 25, status: "Pending" },
     { id: 2, customer: "Jane Smith", total: 42, status: "Completed" },
   ]);
