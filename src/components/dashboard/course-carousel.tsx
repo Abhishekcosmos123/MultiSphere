@@ -42,7 +42,7 @@ export function CourseCarousel({ title, courses }: CourseCarouselProps) {
   }
 
   return (
-    <div className="py-8">
+    <div className="py-4">
       <div className="px-2 mx-auto max-w-7xl">
         <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
 
@@ -59,7 +59,7 @@ export function CourseCarousel({ title, courses }: CourseCarouselProps) {
 
           <div
             ref={scrollRef}
-            className="flex gap-4 px-12 overflow-x-auto scrollbar-hide scroll-smooth"
+            className="flex gap-4 px-6 overflow-x-auto scrollbar-hide scroll-smooth" 
             onScroll={(e) => setScrollPosition(e.currentTarget.scrollLeft)}
           >
             {courses.map((course) => (

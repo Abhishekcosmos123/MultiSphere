@@ -2,12 +2,12 @@ import { Button } from "@/ui/button";
 
 export function CTASection() {
   return (
-    <div className="py-16 bg-white">
+    <div className="py-8 bg-white">
       <div className="px-4 mx-auto max-w-7xl">
         <h2 className="text-3xl font-bold text-gray-900 mb-6">Have a property to sell?</h2>
 
         <div
-          className="relative w-full bg-cover bg-center rounded-2xl p-10 shadow-md flex flex-col items-center justify-center text-center"
+          className="relative w-full bg-cover bg-center rounded-2xl p-6 shadow-md flex flex-col items-center justify-center text-center" // Reduced padding from p-10 to p-6
           style={{
             backgroundImage: "url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1500&h=500&auto=format&fit=crop')",
             backgroundSize: "cover",

@@ -17,8 +17,8 @@ export default function Home() {
         <HeroSection />
         <CategorySection />
         <TrustedSection />
-       <CourseCarousel title="Learners are viewing" courses={popularCourses} />
-        <PropertySection title="Featured Properties" location="All Locations" properties={luxuryHomes} />
+       <CourseCarousel title="Trending Courses" courses={popularCourses} />
+        <PropertySection title="Top Trainers" location="All Locations" properties={luxuryHomes} />
         <TestimonialSection testimonials={testimonials} />
         <CTASection />
       </main>

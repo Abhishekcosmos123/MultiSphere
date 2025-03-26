@@ -7,7 +7,7 @@ interface TestimonialSectionProps {
 
 export function TestimonialSection({ testimonials }: TestimonialSectionProps) {
   return (
-    <div className="py-16 bg-white">
+    <div className="py-8 bg-white"> {/* Reduced padding from py-16 to py-8 */}
       <div className="px-4 mx-auto max-w-7xl">
         <h2 className="text-3xl font-bold text-center text-gray-900">See what others are achieving through learning</h2>
 
@@ -20,7 +20,7 @@ export function TestimonialSection({ testimonials }: TestimonialSectionProps) {
               .toUpperCase()
 
             return (
-              <div key={testimonial.id} className="flex flex-col p-6 bg-white border border-gray-200 rounded-lg">
+              <div key={testimonial.id} className="flex flex-col p-4 bg-white border border-gray-200 rounded-lg"> {/* Reduced padding from p-6 to p-4 */}
                 <QuoteIcon className="w-8 h-8 mb-4 text-black transform rotate-180" />
                 
                 <p className="flex-1 text-gray-700">{testimonial.text}</p>

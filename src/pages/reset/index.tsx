@@ -146,7 +146,7 @@ export default function ResetPasswordPage() {
                             <CardHeader>
                                 <CardTitle className="text-2xl font-bold text-center">
                                     {showNewPasswordForm ? "Set New Password" : 
-                                     showOTPVerification ? "OTP Verification" : 
+                                     showOTPVerification ? "" : 
                                      "Reset your password"}
                                 </CardTitle>
                             </CardHeader>

@@ -44,7 +44,7 @@ export function PropertySection({ title, location, properties }: PropertySection
   }
 
   return (
-    <div className="py-12 bg-white">
+    <div className="py-6 bg-white">
       <div className="px-4 mx-auto max-w-7xl">
         <div className="flex items-center justify-between">
           <div>
@@ -53,7 +53,7 @@ export function PropertySection({ title, location, properties }: PropertySection
           </div>
         </div>
 
-        <div className="relative flex items-center mt-6">
+        <div className="relative flex items-center mt-4">
           <button
             className="absolute left-0 z-10 flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-md"
             onClick={() => scroll("left")}
@@ -64,7 +64,7 @@ export function PropertySection({ title, location, properties }: PropertySection
 
           <div
             ref={scrollRef}
-            className="flex gap-4 px-12 overflow-x-auto scrollbar-hide scroll-smooth"
+            className="flex gap-4 px-6 overflow-x-auto scrollbar-hide scroll-smooth" 
             onScroll={(e) => setScrollPosition(e.currentTarget.scrollLeft)}
           >
             {properties.map((property) => (

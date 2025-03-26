@@ -1,4 +1,4 @@
- "use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
@@ -12,7 +12,7 @@ import { categories, popularTopics } from "@/lib/content"
 export function CategorySection() {
   const [selectedCategory, setSelectedCategory] = useState<string>("Data Science")
   const [selectedTopic, setSelectedTopic] = useState<string>("Data Science")
-  const [courses, setCourses] = useState<Course[]>([]) 
+  const [courses, setCourses] = useState<Course[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export function CategorySection() {
       <section className="container mx-auto px-4 py-6 md:py-8">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900">All the skills you need in one place</h1>
         <p className="text-lg text-gray-600 mt-2">
-          From critical skills to technical topics, Udemy supports your professional development.
+          From critical skills to technical topics, Cosmostaker supports your professional development.
         </p>
       </section>
 
@@ -46,9 +46,8 @@ export function CategorySection() {
           {categories.map((category, index) => (
             <button
               key={index}
-              className={`whitespace-nowrap pb-2 px-1 font-medium hover:text-gray-900 ${
-                category === selectedCategory ? "border-b-2 border-gray-900 text-gray-900" : "text-gray-700"
-              }`}
+              className={`whitespace-nowrap pb-2 px-1 font-medium hover:text-gray-900 ${category === selectedCategory ? "border-b-2 border-gray-900 text-gray-900" : "text-gray-700"
+                }`}
               onClick={() => setSelectedCategory(category)}
             >
               {category}
@@ -64,9 +63,8 @@ export function CategorySection() {
             {popularTopics.map((topic, index) => (
               <div
                 key={index}
-                className={`flex-shrink-0 rounded-full px-3 py-1.5 border cursor-pointer ${
-                  topic.name === selectedTopic ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
+                className={`flex-shrink-0 rounded-full px-3 py-1.5 border cursor-pointer ${topic.name === selectedTopic ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
                 onClick={() => setSelectedTopic(topic.name)}
               >
                 <div className="font-medium">{topic.name}</div>
@@ -124,11 +122,10 @@ export function CategorySection() {
                             .map((_, i) => (
                               <svg
                                 key={i}
-                                className={`w-4 h-4 ${
-                                  i < Math.floor(course.rating)
+                                className={`w-4 h-4 ${i < Math.floor(course.rating)
                                     ? "text-amber-500 fill-amber-500"
                                     : "text-gray-300 fill-gray-300"
-                                }`}
+                                  }`}
                                 viewBox="0 0 24 24"
                               >
                                 <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z" />
@@ -146,11 +143,10 @@ export function CategorySection() {
                       {course.badges.map((badge, index) => (
                         <Badge
                           key={index}
-                          className={`${
-                            badge === "Premium"
+                          className={`${badge === "Premium"
                               ? "bg-indigo-600 hover:bg-indigo-700"
                               : "bg-teal-100 text-teal-800 hover:bg-teal-200"
-                          }`}
+                            }`}
                         >
                           {badge}
                         </Badge>

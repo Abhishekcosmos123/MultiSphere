@@ -3,7 +3,7 @@ import AuthLayout from "@/components/auth/AuthLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/ui/button";
 import { Input } from "@/components/ui/input";
-import { FaEnvelope, FaArrowLeft, FaShieldAlt } from "react-icons/fa";
+import { FaEnvelope, FaArrowLeft, FaShieldAlt, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { validateEmail, validationMessages } from "@/lib/validations";
 import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
 import { useRouter } from "next/router";
@@ -13,14 +13,23 @@ import Link from "next/link";
 export default function SuperAdminForgotPasswordPage() {
     const [email, setEmail] = useState("");
     const [isOtpVerification, setIsOtpVerification] = useState(false);
+    const [showPasswordFields, setShowPasswordFields] = useState(false);
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const router = useRouter();
     const [errors, setErrors] = useState({
         email: "",
+        newPassword: "",
+        confirmPassword: "",
     });
 
     const validateForm = () => {
         const newErrors = {
             email: "",
+            newPassword: "",
+            confirmPassword: "",
         };
         let isValid = true;
 
@@ -32,6 +41,24 @@ export default function SuperAdminForgotPasswordPage() {
             isValid = false;
         }
 
+        if (showPasswordFields) {
+            if (!newPassword) {
+                newErrors.newPassword = validationMessages.required;
+                isValid = false;
+            } else if (newPassword.length < 8) {
+                newErrors.newPassword = "Password must be at least 8 characters long";
+                isValid = false;
+            }
+
+            if (!confirmPassword) {
+                newErrors.confirmPassword = validationMessages.required;
+                isValid = false;
+            } else if (newPassword !== confirmPassword) {
+                newErrors.confirmPassword = "Passwords do not match";
+                isValid = false;
+            }
+        }
+
         setErrors(newErrors);
         return isValid;
     };
@@ -40,58 +67,141 @@ export default function SuperAdminForgotPasswordPage() {
         e.preventDefault();
 
         if (validateForm()) {
-            const data = { email };
-            console.log("Super Admin forgot password request:", data);
-            
-            // Simulate successful API call
-            setIsOtpVerification(true);
-            showSuccessToast("Reset instructions sent successfully!");
+            if (!showPasswordFields) {
+                const data = { email };
+                console.log("Super Admin forgot password request:", data);
+                setIsOtpVerification(true);
+                showSuccessToast("Reset instructions sent successfully!");
+            } else {
+                const data = { email, newPassword };
+                console.log("Super Admin password reset:", data);
+                showSuccessToast("Password reset successfully!");
+                router.push("/super-admin/login");
+            }
         } else {
             showErrorToast("Please fix the errors before submitting");
         }
     };
 
     const handleResendOTP = () => {
-        // TODO: Implement resend OTP logic
         console.log("Resending OTP to:", email);
+    };
+
+    const handleOTPVerify = () => {
+        setIsOtpVerification(false);
+        setShowPasswordFields(true);
     };
 
     return (
         <AuthLayout>
             <div className="max-w-md w-full">
-                {!isOtpVerification && (
+                {isOtpVerification ? (
+                    <OTPVerification 
+                        email={email}
+                        onVerify={handleOTPVerify}
+                        role="super-admin"
+                        onResendOTP={handleResendOTP}
+                    />
+                ) : (
                     <Card className="bg-white shadow-xl">
                         <CardHeader>
                             <div className="flex flex-col items-center">
                                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
-                                    <FaShieldAlt className="w-8 h-8 text-red-600" />
+                                    {showPasswordFields ? (
+                                        <FaLock className="w-8 h-8 text-red-600" />
+                                    ) : (
+                                        <FaShieldAlt className="w-8 h-8 text-red-600" />
+                                    )}
                                 </div>
                                 <CardTitle className="text-2xl font-bold text-center text-gray-900">
-                                    Reset Super Admin Password
+                                    {showPasswordFields ? "Set New Password" : "Reset Super Admin Password"}
                                 </CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={handleSubmit} className="space-y-6">
-                                <div>
-                                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                                        Super Admin Email
-                                    </label>
-                                    <Input
-                                        id="email"
-                                        type="email"
-                                        required
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        className={`mt-1 ${errors.email ? "border-red-500" : ""}`}
-                                        placeholder="Enter super admin email"
-                                    />
-                                    {errors.email && (
-                                        <p className="mt-1 text-sm text-red-500">{errors.email}</p>
-                                    )}
-                                </div>
+                                {!showPasswordFields ? (
+                                    <div>
+                                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                            Super Admin Email
+                                        </label>
+                                        <Input
+                                            id="email"
+                                            type="email"
+                                            required
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            className={`mt-1 ${errors.email ? "border-red-500" : ""}`}
+                                            placeholder="Enter super admin email"
+                                        />
+                                        {errors.email && (
+                                            <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div className="relative">
+                                            <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
+                                                New Password
+                                            </label>
+                                            <div className="relative">
+                                                <Input
+                                                    id="newPassword"
+                                                    type={showNewPassword ? "text" : "password"}
+                                                    required
+                                                    value={newPassword}
+                                                    onChange={(e) => setNewPassword(e.target.value)}
+                                                    className={`mt-1 ${errors.newPassword ? "border-red-500" : ""}`}
+                                                    placeholder="Enter new password"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowNewPassword(!showNewPassword)}
+                                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                                >
+                                                    {showNewPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                                                </button>
+                                            </div>
+                                            {errors.newPassword && (
+                                                <p className="mt-1 text-sm text-red-500">{errors.newPassword}</p>
+                                            )}
+                                        </div>
+                                        <div className="relative">
+                                            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                                                Confirm Password
+                                            </label>
+                                            <div className="relative">
+                                                <Input
+                                                    id="confirmPassword"
+                                                    type={showConfirmPassword ? "text" : "password"}
+                                                    required
+                                                    value={confirmPassword}
+                                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                                    className={`mt-1 ${errors.confirmPassword ? "border-red-500" : ""}`}
+                                                    placeholder="Confirm new password"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                                >
+                                                    {showConfirmPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                                                </button>
+                                            </div>
+                                            {errors.confirmPassword && (
+                                                <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>
+                                            )}
+                                        </div>
+                                    </>
+                                )}
                                 <Button type="submit" className="w-full bg-red-600 hover:bg-red-700">
-                                    <FaEnvelope className="mr-2" /> Send Reset Link
+                                    {showPasswordFields ? (
+                                        <>Reset Password</>
+                                    ) : (
+                                        <>
+                                            <FaEnvelope className="mr-2" /> Send Reset Link
+                                        </>
+                                    )}
                                 </Button>
                                 <div className="text-center text-sm">
                                     Remember your password?{" "}
@@ -102,14 +212,6 @@ export default function SuperAdminForgotPasswordPage() {
                             </form>
                         </CardContent>
                     </Card>
-                )}
-                {isOtpVerification && (
-                    <OTPVerification 
-                        email={email}
-                        onVerify={() => router.push("/super-admin/reset-password")}
-                        role="super-admin"
-                        onResendOTP={handleResendOTP}
-                    />
                 )}
             </div>
         </AuthLayout>

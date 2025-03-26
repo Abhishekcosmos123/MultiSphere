@@ -1,7 +1,7 @@
 export const navigationLinks = [
   { name: "Plans & Pricing", href: "#" },
   { name: "Live Classes", href: "#" },
-  { name: "Tech on Udemy", href: "#" },
+  { name: "Tech on Cosmostaker", href: "#" },
 ]
 
 export const categories: string[] = [

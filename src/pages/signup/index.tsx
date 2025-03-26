@@ -8,7 +8,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaApple, FaMicrosoft, FaEnvelope, FaEye, FaEyeSlash, FaChevronDown, FaPhone } from "react-icons/fa";
 import { validateEmail, validatePassword, validateName, validateConfirmPassword, validationMessages } from "@/lib/validations";
 import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
-import { NavigationBar } from "@/components/dashboard/navigation-bar";    
+import { NavigationBar } from "@/components/dashboard/navigation-bar";
 import { Footer } from "@/components/dashboard/footer";
 import { useRouter } from "next/router";
 import { BUSINESS_TYPES } from "@/lib/content";
@@ -67,7 +67,7 @@ export default function SignupPage() {
     const handleBusinessChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedBusiness = e.target.value as BusinessType;
         const defaultRole = BUSINESS_TYPES[selectedBusiness][0];
-        
+
         setFormData(prev => ({
             ...prev,
             businessType: selectedBusiness,
@@ -177,7 +177,7 @@ export default function SignupPage() {
 
     const handleOtpChange = (index: number, value: string) => {
         if (!/^\d*$/.test(value)) return;
-        
+
         const newOtp = [...otp];
         newOtp[index] = value;
         setOtp(newOtp);
@@ -211,7 +211,7 @@ export default function SignupPage() {
 
             <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                    User Role
+                    Are you?
                 </label>
                 <div className="relative">
                     <select
@@ -317,7 +317,7 @@ export default function SignupPage() {
                                     <form onSubmit={handleSubmit} className="space-y-6">
                                         {renderDropdowns()}
                                         {renderInput("fullName", "Full Name")}
-                                        
+
                                         <div className="flex border-b border-gray-200 mb-4">
                                             <button
                                                 type="button"
@@ -335,11 +335,11 @@ export default function SignupPage() {
                                             </button>
                                         </div>
 
-                                        {signupMethod === 'email' ? 
+                                        {signupMethod === 'email' ?
                                             renderInput("email", "Email", "email") :
                                             renderInput("phone", "Phone Number", "tel")
                                         }
-                                        
+
                                         {signupMethod === 'email' && (
                                             <>
                                                 {renderInput("password", "Password", "password")}
@@ -348,7 +348,7 @@ export default function SignupPage() {
                                         )}
 
                                         <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700">
-                                            {signupMethod === 'email' ? 
+                                            {signupMethod === 'email' ?
                                                 <><FaEnvelope className="mr-2" />Sign up with email</> :
                                                 <><FaPhone className="mr-2" />Sign up with phone</>
                                             }

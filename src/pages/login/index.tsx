@@ -20,7 +20,6 @@ export default function LoginPage() {
 	const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email');
 	const [email, setEmail] = useState("");
 	const [phone, setPhone] = useState("");
-	const [countryCode, setCountryCode] = useState("+1");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
 	const [isOtpVerification, setIsOtpVerification] = useState(false);
@@ -30,19 +29,6 @@ export default function LoginPage() {
 		phone: "",
 		password: "",
 	});
-
-	const countryCodes = [
-		{ code: "+1", country: "US" },
-		{ code: "+44", country: "UK" },
-		{ code: "+91", country: "IN" },
-		{ code: "+61", country: "AU" },
-		{ code: "+86", country: "CN" },
-		{ code: "+49", country: "DE" },
-		{ code: "+33", country: "FR" },
-		{ code: "+81", country: "JP" },
-		{ code: "+82", country: "KR" },
-		{ code: "+55", country: "BR" },
-	];
 
 	const validateForm = () => {
 		const newErrors = {

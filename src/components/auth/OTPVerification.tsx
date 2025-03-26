@@ -76,7 +76,7 @@ export default function OTPVerification({ email, onVerify, role, onResendOTP }: 
                     <CardTitle className="text-2xl font-bold text-center text-gray-900">
                         {role === 'admin' ? 'Admin Verification' : 
                          role === 'super-admin' ? 'Super Admin Verification' : 
-                         'Verification'}
+                         'OTP Verification'}
                     </CardTitle>
                     <p className="text-sm text-gray-500 mt-2">
                         Enter the 6-digit code sent to {email}
