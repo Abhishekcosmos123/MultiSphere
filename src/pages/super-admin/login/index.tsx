@@ -13,6 +13,8 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import '@/styles/phone-input.css';
 import Link from "next/link";
+import { googleLogin, facebookLogin, appleLogin, microsoftLogin } from "@/lib/socialAuth";
+import 'firebase/auth';
 
 export default function SuperAdminLoginPage() {
     const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email');
@@ -87,10 +89,36 @@ export default function SuperAdminLoginPage() {
         }
     };
 
-    const handleSocialLogin = (provider: string) => {
-        // TODO: Implement social login logic
-        console.log(`Logging in with ${provider}`);
-        showSuccessToast(`Logging in with ${provider}`);
+    const handleSocialLogin = async (provider: string) => {
+        try {
+            let user;
+            switch (provider) {
+                case "Google":
+                    await googleLogin();
+                    break;
+                case "Facebook":
+                    await facebookLogin();
+                    break;
+                case "Microsoft":
+                    await microsoftLogin();
+                    break;
+                case "Apple":
+                    await appleLogin();
+                    break;
+                default:
+                    throw new Error("Unsupported provider");
+            }
+            console.log("User signed in:", user);
+            showSuccessToast(`Signed up with ${provider}`);
+            router.push("/restaurant");
+        } catch (error: unknown) {
+            console.error("Error signing up:", error);
+            if (error instanceof Error) {
+                showErrorToast(`Failed to sign up with ${provider}: ${error.message}`);
+            } else {
+                showErrorToast(`Failed to sign up with ${provider}: Unknown error`);
+            }
+        }
     };
 
     return (

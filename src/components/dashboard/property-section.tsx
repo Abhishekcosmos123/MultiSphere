@@ -3,6 +3,8 @@
 import { useState, useRef } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { PropertyCard } from "./property-card"
+import CourseSection from "./course-section"
+import { courses } from "@/lib/content"
 
 interface Property {
   id: string | number
@@ -64,10 +66,10 @@ export function PropertySection({ title, location, properties }: PropertySection
 
           <div
             ref={scrollRef}
-            className="flex gap-4 px-6 overflow-x-auto scrollbar-hide scroll-smooth" 
+            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth" 
             onScroll={(e) => setScrollPosition(e.currentTarget.scrollLeft)}
           >
-            {properties.map((property) => (
+            {/* {properties.map((property) => (
               <div key={property.id} className="w-64 flex-shrink-0">
                 <PropertyCard
                   price={property.price}
@@ -82,6 +84,12 @@ export function PropertySection({ title, location, properties }: PropertySection
                   image={property.image}
                   new={property.new}
                 />
+              </div>
+            ))} */}
+            
+            {courses.map((course, index) => (
+              <div key={index} className="w-64 flex-shrink-0">
+                <CourseSection {...course} />
               </div>
             ))}
           </div>

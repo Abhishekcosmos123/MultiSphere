@@ -368,3 +368,116 @@ export const BUSINESS_TYPES = {
   "Real Estate": ["Agent", "Buyer"],
   "CRM": ["HR", "User"]
 } as const;
+
+export const buttons = [
+  { label: "My Learnings", index: 0 },
+  { label: "Live Classes", index: 1 },
+  { label: "Teach on CU", index: 2 },
+  { label: "Pricing & Subscriptions", index: 3 },
+  { label: "Trainings & Certificates", index: 4 },
+  { label: "Contact Us", index: 5 },
+];
+
+export const searchString = "Courses";
+
+export const heroTitle = "The #1 site for lifelong learners & experienced trainers.";
+
+export const userRoles = ["Student", "Teacher"];
+
+export const ctaContent = {
+  heading: "Come Teach with us?",
+  backgroundImage: "/ebook.png"
+};
+
+export const courses = [
+  {
+    image: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?q=80&w=600&h=400&auto=format&fit=crop",
+    title: "Complete Python With DSA Bootcamp",
+    description: "Master Python and Data Structures with Hands-on Projects",
+    instructors: "Krish Naik, Mayank Aggarwal, KRISHAI",
+    rating: 4.5,
+    ratingsCount: 1984,
+    totalHours: 61,
+    lectures: 258,
+    level: "All Levels",
+    price: 499,
+    originalPrice: 2999,
+    new: true,
+  },
+  {
+    image: "https://images.unsplash.com/photo-1557838923-2985c318be48?q=80&w=600&h=400&auto=format&fit=crop",
+    title: "JavaScript Mastery Course",
+    description: "Learn Modern JavaScript with ES6+, Async/Await, and API Handling",
+    instructors: "John Doe, Jane Smith",
+    rating: 4.7,
+    ratingsCount: 2456,
+    totalHours: 48,
+    lectures: 180,
+    level: "Intermediate",
+    price: 699,
+    originalPrice: 3499,
+    new: false,
+  },
+  {
+    image: "https://images.unsplash.com/photo-1557838923-2985c318be48?q=80&w=600&h=400&auto=format&fit=crop",
+    title: "React & Next.js Full-Stack Development",
+    description: "Master React, Next.js, and Tailwind CSS to build dynamic web apps",
+    instructors: "Emily White, David Green",
+    rating: 4.8,
+    ratingsCount: 3120,
+    totalHours: 72,
+    lectures: 320,
+    level: "Advanced",
+    price: 899,
+    originalPrice: 3999,
+    new: true,
+  },
+  {
+    image: "https://images.unsplash.com/photo-1557838923-2985c318be48?q=80&w=600&h=400&auto=format&fit=crop",
+    title: "React & Next.js Full-Stack Development",
+    description: "Master React, Next.js, and Tailwind CSS to build dynamic web apps",
+    instructors: "Emily White, David Green",
+    rating: 4.8,
+    ratingsCount: 3120,
+    totalHours: 72,
+    lectures: 320,
+    level: "Advanced",
+    price: 899,
+    originalPrice: 3999,
+    new: true,
+  },
+  {
+    image: "https://images.unsplash.com/photo-1557838923-2985c318be48?q=80&w=600&h=400&auto=format&fit=crop",
+    title: "React & Next.js Full-Stack Development",
+    description: "Master React, Next.js, and Tailwind CSS to build dynamic web apps",
+    instructors: "Emily White, David Green",
+    rating: 4.8,
+    ratingsCount: 3120,
+    totalHours: 72,
+    lectures: 320,
+    level: "Advanced",
+    price: 899,
+    originalPrice: 3999,
+    new: true,
+  },
+  {
+    image: "https://images.unsplash.com/photo-1557838923-2985c318be48?q=80&w=600&h=400&auto=format&fit=crop",
+    title: "React & Next.js Full-Stack Development",
+    description: "Master React, Next.js, and Tailwind CSS to build dynamic web apps",
+    instructors: "Emily White, David Green",
+    rating: 4.8,
+    ratingsCount: 3120,
+    totalHours: 72,
+    lectures: 320,
+    level: "Advanced",
+    price: 899,
+    originalPrice: 3999,
+    new: true,
+  },
+];
+
+export const propertyDetails = {
+  name: "Trending Courses",
+  location: "All Locations",
+  properties: luxuryHomes,
+};

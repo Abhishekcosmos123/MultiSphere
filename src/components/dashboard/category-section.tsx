@@ -31,7 +31,7 @@ export function CategorySection() {
   }, [selectedCategory, selectedTopic])
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="bg-white mx-auto max-w-7xl">
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-6 md:py-8">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900">All the skills you need in one place</h1>
@@ -59,7 +59,7 @@ export function CategorySection() {
       {/* Popular Topics */}
       <section className="container mx-auto px-4 py-4">
         <div className="relative">
-          <div className="flex overflow-x-auto gap-2 pb-3 scrollbar-hide">
+          <div className="flex overflow-x-auto gap-3 scrollbar-hide">
             {popularTopics.map((topic, index) => (
               <div
                 key={index}
@@ -72,11 +72,11 @@ export function CategorySection() {
               </div>
             ))}
           </div>
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-2 shadow-md rounded-full">
+          {/* <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-2 shadow-md rounded-full">
             <Button variant="ghost" size="icon" className="h-8 w-8">
               <ChevronRight className="h-5 w-5" />
             </Button>
-          </div>
+          </div> */}
         </div>
       </section>
 

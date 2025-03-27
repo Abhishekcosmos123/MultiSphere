@@ -6,25 +6,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaApple, FaMicrosoft, FaEnvelope, FaEye, FaEyeSlash, FaChevronDown, FaPhone } from "react-icons/fa";
-import { validateEmail, validatePassword, validateName, validateConfirmPassword, validationMessages } from "@/lib/validations";
+import { validateEmail, validatePassword, validateName, validationMessages } from "@/lib/validations";
 import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
 import { NavigationBar } from "@/components/dashboard/navigation-bar";
 import { Footer } from "@/components/dashboard/footer";
 import { useRouter } from "next/router";
-import { BUSINESS_TYPES } from "@/lib/content";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import '@/styles/phone-input.css';
-
-type BusinessType = keyof typeof BUSINESS_TYPES;
+import { googleLogin, facebookLogin, microsoftLogin, appleLogin } from '@/lib/socialAuth';
+import 'firebase/auth';
+import { userRoles } from "@/lib/content";
 
 interface FormData {
     fullName: string;
     email: string;
     phone: string;
     password: string;
-    confirmPassword: string;
-    businessType: BusinessType;
     userRole: string;
 }
 
@@ -33,7 +31,6 @@ interface FormErrors {
     email: string;
     phone: string;
     password: string;
-    confirmPassword: string;
 }
 
 const initialFormData: FormData = {
@@ -41,17 +38,14 @@ const initialFormData: FormData = {
     email: "",
     phone: "",
     password: "",
-    confirmPassword: "",
-    businessType: "Restaurant",
-    userRole: "Manager"
+    userRole: "Student"
 };
 
 const initialErrors: FormErrors = {
     fullName: "",
     email: "",
     phone: "",
-    password: "",
-    confirmPassword: ""
+    password: ""
 };
 
 export default function SignupPage() {
@@ -59,21 +53,9 @@ export default function SignupPage() {
     const [isOtpVerification, setIsOtpVerification] = useState(false);
     const [otp, setOtp] = useState(Array(6).fill(""));
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [errors, setErrors] = useState<FormErrors>(initialErrors);
     const router = useRouter();
-
-    const handleBusinessChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedBusiness = e.target.value as BusinessType;
-        const defaultRole = BUSINESS_TYPES[selectedBusiness][0];
-
-        setFormData(prev => ({
-            ...prev,
-            businessType: selectedBusiness,
-            userRole: defaultRole
-        }));
-    };
 
     const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFormData(prev => ({
@@ -137,18 +119,6 @@ export default function SignupPage() {
                     return false;
                 }
                 return true;
-            },
-            confirmPassword: () => {
-                if (signupMethod === 'phone') return true;
-                if (!formData.confirmPassword) {
-                    newErrors.confirmPassword = validationMessages.required;
-                    return false;
-                }
-                if (!validateConfirmPassword(formData.password, formData.confirmPassword)) {
-                    newErrors.confirmPassword = validationMessages.confirmPassword;
-                    return false;
-                }
-                return true;
             }
         };
 
@@ -171,8 +141,36 @@ export default function SignupPage() {
         }
     };
 
-    const handleSocialSignup = (provider: string) => {
-        showSuccessToast(`Signing up with ${provider}`);
+    const handleSocialSignup = async (provider: string) => {
+        try {
+            let user;
+            switch (provider) {
+                case "Google":
+                    await googleLogin();
+                    break;
+                case "Facebook":
+                    await facebookLogin();
+                    break;
+                case "Microsoft":
+                    await microsoftLogin();
+                    break;
+                case "Apple":
+                    await appleLogin();
+                    break;
+                default:
+                    throw new Error("Unsupported provider");
+            }
+            console.log("User signed in:", user);
+            showSuccessToast(`Signed up with ${provider}`);
+            router.push("/restaurant");
+        } catch (error: unknown) {
+            console.error("Error signing up:", error);
+            if (error instanceof Error) {
+                showErrorToast(`Failed to sign up with ${provider}: ${error.message}`);
+            } else {
+                showErrorToast(`Failed to sign up with ${provider}: Unknown error`);
+            }
+        }
     };
 
     const handleOtpChange = (index: number, value: string) => {
@@ -188,46 +186,6 @@ export default function SignupPage() {
         showSuccessToast("OTP verified successfully!");
         setTimeout(() => router.push("/restaurant"), 1000);
     };
-
-    const renderDropdowns = () => (
-        <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Business Type
-                </label>
-                <div className="relative">
-                    <select
-                        value={formData.businessType}
-                        onChange={handleBusinessChange}
-                        className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-700 focus:border-purple-500 focus:ring-purple-500 appearance-none"
-                    >
-                        {Object.keys(BUSINESS_TYPES).map(type => (
-                            <option key={type} value={type}>{type}</option>
-                        ))}
-                    </select>
-                    <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
-                </div>
-            </div>
-
-            <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Are you?
-                </label>
-                <div className="relative">
-                    <select
-                        value={formData.userRole}
-                        onChange={handleRoleChange}
-                        className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-700 focus:border-purple-500 focus:ring-purple-500 appearance-none"
-                    >
-                        {BUSINESS_TYPES[formData.businessType].map(role => (
-                            <option key={role} value={role}>{role}</option>
-                        ))}
-                    </select>
-                    <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
-                </div>
-            </div>
-        </div>
-    );
 
     const renderInput = (name: keyof FormData, label: string, type: string = "text") => {
         if (name === "phone" && signupMethod === 'phone') {
@@ -315,7 +273,25 @@ export default function SignupPage() {
                             <CardContent>
                                 {!isOtpVerification ? (
                                     <form onSubmit={handleSubmit} className="space-y-6">
-                                        {renderDropdowns()}
+                                        <div className="grid grid-cols-1 gap-4 mb-6">
+                                            <div className="relative">
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                    Are you?
+                                                </label>
+                                                <div className="relative">
+                                                    <select
+                                                        value={formData.userRole}
+                                                        onChange={handleRoleChange}
+                                                        className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-700 focus:border-purple-500 focus:ring-purple-500 appearance-none"
+                                                    >
+                                                        {userRoles.map(role => (
+                                                            <option key={role} value={role}>{role}</option>
+                                                        ))}
+                                                    </select>
+                                                    <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                                </div>
+                                            </div>
+                                        </div>
                                         {renderInput("fullName", "Full Name")}
 
                                         <div className="flex border-b border-gray-200 mb-4">
@@ -341,10 +317,7 @@ export default function SignupPage() {
                                         }
 
                                         {signupMethod === 'email' && (
-                                            <>
-                                                {renderInput("password", "Password", "password")}
-                                                {renderInput("confirmPassword", "Confirm Password", "password")}
-                                            </>
+                                            renderInput("password", "Password", "password")
                                         )}
 
                                         <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700">

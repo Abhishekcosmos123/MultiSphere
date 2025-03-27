@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/ui/button";
 import { Input } from "@/components/ui/input";
-import { FaEnvelope, FaEye, FaEyeSlash, FaShieldAlt, FaUser, FaLock, FaPhone, FaFacebook, FaApple, FaMicrosoft } from "react-icons/fa";
+import { FaEnvelope, FaEye, FaShieldAlt, FaUser, FaPhone, FaFacebook, FaApple, FaMicrosoft, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { validateEmail, validatePassword, validationMessages } from "@/lib/validations";
 import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
@@ -11,7 +11,9 @@ import OTPVerification from "@/components/auth/OTPVerification";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import '@/styles/phone-input.css';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { googleLogin, facebookLogin, microsoftLogin, appleLogin } from '@/lib/socialAuth';
+import 'firebase/auth';
 
 interface AuthFormProps {
     type: 'login' | 'signup';
@@ -24,7 +26,6 @@ interface FormData {
     email?: string;
     mobileNumber?: string;
     password?: string;
-    confirmPassword?: string;
 }
 
 interface FormErrors {
@@ -32,27 +33,23 @@ interface FormErrors {
     email?: string;
     mobileNumber?: string;
     password?: string;
-    confirmPassword?: string;
 }
 
 export default function AuthForm({ type, role, onSubmit }: AuthFormProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         fullName: "",
         email: "",
         mobileNumber: "",
         password: "",
-        confirmPassword: "",
     });
     const [errors, setErrors] = useState<FormErrors>({
         fullName: "",
         email: "",
         mobileNumber: "",
         password: "",
-        confirmPassword: "",
     });
     const [useMobile, setUseMobile] = useState(false);
     const [otpSent, setOtpSent] = useState(false);
@@ -95,17 +92,6 @@ export default function AuthForm({ type, role, onSubmit }: AuthFormProps) {
                 newErrors.password = validationMessages.password;
                 isValid = false;
             }
-
-            // Validate confirm password for signup
-            if (type === 'signup') {
-                if (!formData.confirmPassword) {
-                    newErrors.confirmPassword = validationMessages.required;
-                    isValid = false;
-                } else if (formData.password !== formData.confirmPassword) {
-                    newErrors.confirmPassword = "Passwords do not match";
-                    isValid = false;
-                }
-            }
         }
 
         setErrors(newErrors);
@@ -139,10 +125,36 @@ export default function AuthForm({ type, role, onSubmit }: AuthFormProps) {
         setErrors(prev => ({ ...prev, [name]: "" }));
     };
 
-    const handleSocialAuth = (provider: string) => {
-        // TODO: Implement social auth logic
-        console.log(`${type === 'login' ? 'Logging in' : 'Signing up'} with ${provider}`);
-        showSuccessToast(`${type === 'login' ? 'Logging in' : 'Signing up'} with ${provider}`);
+    const handleSocialAuth = async (provider: string) => {
+        try {
+            let user;
+            switch (provider) {
+                case "Google":
+                    await googleLogin();
+                    break;
+                case "Facebook":
+                    await facebookLogin();
+                    break;
+                case "Microsoft":
+                    await microsoftLogin();
+                    break;
+                case "Apple":
+                    await appleLogin();
+                    break;
+                default:
+                    throw new Error("Unsupported provider");
+            }
+            console.log("User signed in:", user);
+            showSuccessToast(`Signed up with ${provider}`);
+            router.push("/restaurant");
+        } catch (error: unknown) {
+            console.error("Error signing up:", error);
+            if (error instanceof Error) {
+                showErrorToast(`Failed to sign up with ${provider}: ${error.message}`);
+            } else {
+                showErrorToast(`Failed to sign up with ${provider}: Unknown error`);
+            }
+        }
     };
 
     const getThemeColor = () => role === 'super-admin' ? 'red' : 'purple';
@@ -286,36 +298,6 @@ export default function AuthForm({ type, role, onSubmit }: AuthFormProps) {
                                             <p className="mt-1 text-sm text-red-500">{errors.password}</p>
                                         )}
                                     </div>
-
-                                    {type === 'signup' && (
-                                        <div>
-                                            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                                                Confirm Password
-                                            </label>
-                                            <div className="relative">
-                                                <Input
-                                                    id="confirmPassword"
-                                                    name="confirmPassword"
-                                                    type={showConfirmPassword ? "text" : "password"}
-                                                    required={signupMethod === 'email'}
-                                                    value={formData.confirmPassword}
-                                                    onChange={handleInputChange}
-                                                    className={`mt-1 ${errors.confirmPassword ? "border-red-500" : ""}`}
-                                                    placeholder="Confirm password"
-                                                />
-                                                <button
-                                                    type="button"
-                                                    className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                                >
-                                                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                                                </button>
-                                            </div>
-                                            {errors.confirmPassword && (
-                                                <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>
-                                            )}
-                                        </div>
-                                    )}
                                 </>
                             )}
 

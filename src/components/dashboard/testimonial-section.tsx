@@ -7,7 +7,7 @@ interface TestimonialSectionProps {
 
 export function TestimonialSection({ testimonials }: TestimonialSectionProps) {
   return (
-    <div className="py-8 bg-white"> {/* Reduced padding from py-16 to py-8 */}
+    <div className="pb-8 bg-white">
       <div className="px-4 mx-auto max-w-7xl">
         <h2 className="text-3xl font-bold text-center text-gray-900">See what others are achieving through learning</h2>
 
