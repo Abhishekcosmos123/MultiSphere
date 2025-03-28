@@ -1,8 +1,19 @@
-import { heroTitle, searchString } from "@/lib/content";
-import { Search } from "lucide-react"
-import Image from "next/image"
+import { heroTitle, searchOptions } from "@/lib/content";
+import { Search } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function HeroSection() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % searchOptions.length);
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="relative">
@@ -28,9 +39,24 @@ export function HeroSection() {
             <div className="flex items-center bg-white rounded-full shadow-lg">
               <input
                 type="text"
-                placeholder={`Search for ${searchString}`}
+                placeholder=""
                 className="w-full px-6 py-4 text-gray-900 rounded-l-full focus:outline-none"
               />
+              <div className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-500">
+                Search for{" "}
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={searchOptions[index]}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.5 }}
+                    className="inline-block"
+                  >
+                    '{searchOptions[index]}'
+                  </motion.span>
+                </AnimatePresence>
+              </div>
               <button className="flex items-center justify-center w-12 h-12 bg-purple-600 rounded-full mr-1">
                 <Search className="w-5 h-5 text-white" />
               </button>
@@ -39,5 +65,5 @@ export function HeroSection() {
         </div>
       </div>
     </div>
-  )
+  );
 }

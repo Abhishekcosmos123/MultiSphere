@@ -281,6 +281,7 @@ export default function SuperAdminLoginPage() {
                                     <button
                                         type="button"
                                         onClick={() => handleSocialLogin('Microsoft')}
+                                        disabled
                                         className="flex items-center justify-center p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
                                     >
                                         <FaMicrosoft className="w-6 h-6 text-blue-500" />

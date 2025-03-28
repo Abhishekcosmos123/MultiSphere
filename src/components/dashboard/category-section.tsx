@@ -4,10 +4,10 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { ChevronRight } from "lucide-react"
 import Image from "next/image"
-import { fetchCourses, Course } from "@/lib/api"
+import { fetchCourses } from "@/lib/api"
 import { Badge } from "@/ui/badge"
 import { Button } from "@/ui/button"
-import { categories, popularTopics } from "@/lib/content"
+import { categories, popularTopics, Course } from "@/lib/content"
 
 export function CategorySection() {
   const [selectedCategory, setSelectedCategory] = useState<string>("Data Science")
@@ -31,7 +31,7 @@ export function CategorySection() {
   }, [selectedCategory, selectedTopic])
 
   return (
-    <main className="bg-white mx-auto max-w-7xl">
+    <main className="py-6 bg-white mx-auto max-w-7xl">
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-6 md:py-8">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900">All the skills you need in one place</h1>
@@ -63,7 +63,7 @@ export function CategorySection() {
             {popularTopics.map((topic, index) => (
               <div
                 key={index}
-                className={`flex-shrink-0 rounded-full px-3 py-1.5 border cursor-pointer ${topic.name === selectedTopic ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                className={`flex-shrink-0 rounded-full px-4 py-2 border cursor-pointer transition duration-300 ease-in-out transform hover:scale-105 ${topic.name === selectedTopic ? "bg-gray-900 text-white border-gray-900" : "bg-gray-100 text-gray-700 border-transparent hover:bg-gray-200"
                   }`}
                 onClick={() => setSelectedTopic(topic.name)}
               >
@@ -72,16 +72,11 @@ export function CategorySection() {
               </div>
             ))}
           </div>
-          {/* <div className="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-2 shadow-md rounded-full">
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <ChevronRight className="h-5 w-5" />
-            </Button>
-          </div> */}
         </div>
       </section>
 
       {/* Courses Section */}
-      <section className="container mx-auto px-4 py-4">
+      <section className="container mx-auto px-4 py-4 mb-6">
         {loading ? (
           <div className="flex justify-center py-10">
             <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-900"></div>
@@ -96,7 +91,7 @@ export function CategorySection() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {courses.map((course: Course) => (
-                  <Card key={course.id} className="relative overflow-hidden border border-gray-200">
+                  <Card key={course.id} className="relative overflow-hidden border border-gray-200 cursor-pointer">
                     {/* Badge for New Courses */}
                     {course.isNew && (
                       <Badge className="absolute top-2 left-2 px-2 py-1 text-xs font-bold text-white bg-blue-500">
@@ -140,7 +135,7 @@ export function CategorySection() {
                       </div>
                     </CardContent>
                     <CardFooter className="p-3 pt-0 flex gap-2">
-                      {course.badges.map((badge, index) => (
+                      {course.badges.map((badge: string, index: number) => (
                         <Badge
                           key={index}
                           className={`${badge === "Premium"

@@ -277,6 +277,7 @@ export default function LoginPage() {
 												type="button"
 												variant="outline"
 												onClick={() => handleSocialLogin('Microsoft')}
+												disabled
 											>
 												<FaMicrosoft size={24} />
 											</Button>

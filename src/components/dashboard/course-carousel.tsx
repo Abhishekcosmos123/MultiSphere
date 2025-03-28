@@ -42,7 +42,7 @@ export function CourseCarousel({ title, courses }: CourseCarouselProps) {
   }
 
   return (
-    <div className="py-4">
+    <div className="py-6">
       <div className="px-2 mx-auto max-w-7xl">
         <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
 
@@ -63,7 +63,7 @@ export function CourseCarousel({ title, courses }: CourseCarouselProps) {
             onScroll={(e) => setScrollPosition(e.currentTarget.scrollLeft)}
           >
             {courses.map((course) => (
-              <div key={course.id} className="w-64 flex-shrink-0">
+              <div key={course.id} className="w-64 flex-shrink-0 cursor-pointer">
                 <CourseCard
                   title={course.title}
                   instructors={course.instructors.join(", ")}

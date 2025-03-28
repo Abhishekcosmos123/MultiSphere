@@ -18,7 +18,7 @@ export const NavigationBar: React.FC = () => {
 
   const handleButtonClick = (index: number) => {
     setActiveButtonIndex(index)
-    setIsMenuOpen(false) // Close menu when a button is clicked
+    setIsMenuOpen(false)  
   }
 
   const toggleMenu = () => {
@@ -39,15 +39,17 @@ export const NavigationBar: React.FC = () => {
 
   const renderIcons = () => (
     <div className="hidden sm:flex items-center">
-      <Link href="#" className="p-1 text-gray-700 hover:text-gray-900">
+      <Link href="#" className="p-1 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-200 h-10 w-10 flex items-center justify-center">
         <Heart className="w-5 h-5" />
         <span className="sr-only">Wishlist</span>
       </Link>
-      <Link href="#" className="p-1 ml-1 text-gray-700 hover:text-gray-900">
+      <div className="mx-1" />  
+      <Link href="#" className="p-1 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-200 h-10 w-10 flex items-center justify-center">
         <Globe className="w-5 h-5" />
         <span className="sr-only">Language</span>
       </Link>
-      <Link href="#" className="p-1 ml-1 text-gray-700 hover:text-gray-900">
+      <div className="mx-1" />  
+      <Link href="#" className="p-1 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-200 h-10 w-10 flex items-center justify-center">
         <ShoppingCart className="w-5 h-5" />
         <span className="sr-only">Cart</span>
       </Link>
@@ -99,7 +101,7 @@ export const NavigationBar: React.FC = () => {
                 <Button
                   key={button.index}
                   variant="ghost"
-                  className={`text-sm px-2 lg:px-4 py-2 whitespace-nowrap transition-colors duration-200 ${
+                  className={`text-sm px-2 lg:px-3 py-1 whitespace-nowrap transition-colors duration-200 ${
                     activeButtonIndex === button.index ? "bg-blue-500 text-white" : "text-gray-700 hover:bg-gray-100"
                   }`}
                   onClick={() => handleButtonClick(button.index)}
@@ -110,7 +112,6 @@ export const NavigationBar: React.FC = () => {
             </div>
           </nav>
 
-          {/* Right side icons and buttons */}
           <div className="flex items-center space-x-1 sm:space-x-2 shrink-0">
             {renderIcons()}
             {isAuthenticated && user ? (
@@ -130,7 +131,7 @@ export const NavigationBar: React.FC = () => {
                   <Button
                     key={button.index}
                     variant="ghost"
-                    className={`text-sm px-4 py-2 justify-start transition-colors duration-200 ${
+                    className={`text-sm px-4 py-1 justify-start transition-colors duration-200 ${
                       activeButtonIndex === button.index ? "bg-blue-500 text-white" : "text-gray-700 hover:bg-gray-100"
                     }`}
                     onClick={() => handleButtonClick(button.index)}

@@ -343,6 +343,7 @@ export default function SignupPage() {
                                                     type="button"
                                                     variant="outline"
                                                     onClick={() => handleSocialSignup(provider)}
+                                                    disabled={provider === "Microsoft"}
                                                 >
                                                     {provider === "Google" && <FcGoogle size={24} />}
                                                     {provider === "Facebook" && <FaFacebook size={24} className="text-blue-600" />}
