@@ -162,7 +162,7 @@ export default function SignupPage() {
             }
             console.log("User signed in:", user);
             showSuccessToast(`Signed up with ${provider}`);
-            router.push("/restaurant");
+            router.push("/");
         } catch (error: unknown) {
             console.error("Error signing up:", error);
             if (error instanceof Error) {

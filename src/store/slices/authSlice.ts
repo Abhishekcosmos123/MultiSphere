@@ -5,6 +5,7 @@ interface User {
   name: string;
   role: string;
   token: string;
+  profileImage?: string;
 }
 
 export interface AuthState {

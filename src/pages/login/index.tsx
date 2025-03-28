@@ -96,23 +96,24 @@ export default function LoginPage() {
             let user;
             switch (provider) {
                 case "Google":
-                    await googleLogin();
+                    user = await googleLogin();
                     break;
                 case "Facebook":
-                    await facebookLogin();
+                    user = await facebookLogin();
                     break;
                 case "Microsoft":
-                    await microsoftLogin();
+                    user = await microsoftLogin();
                     break;
                 case "Apple":
-                    await appleLogin();
+                    user = await appleLogin();
                     break;
                 default:
                     throw new Error("Unsupported provider");
             }
             console.log("User signed in:", user);
+            console.log("Fetched user data:", { provider, user }); // Log fetched data
             showSuccessToast(`Signed up with ${provider}`);
-            router.push("/restaurant");
+            router.push("/");
         } catch (error: unknown) {
             console.error("Error signing up:", error);
             if (error instanceof Error) {

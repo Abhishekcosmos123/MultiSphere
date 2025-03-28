@@ -6,9 +6,13 @@ import { ShoppingCart, Heart, Globe } from "lucide-react";
 import { Button } from "@/ui/button";
 import React, { useState } from "react";
 import { buttons } from "@/lib/content";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { ProfileDropdown } from "./ProfileDropdown";
 
 export const NavigationBar: React.FC = () => {
   const [activeButtonIndex, setActiveButtonIndex] = useState<number | null>(null);
+  const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
 
   const handleButtonClick = (index: number) => {
     setActiveButtonIndex(index);
@@ -49,22 +53,28 @@ export const NavigationBar: React.FC = () => {
           <Link href="#" className="text-gray-700 hover:text-gray-900">
             <ShoppingCart className="w-6 h-6" />
           </Link>
-          <Link href="/login">
-            <Button
-              variant="outline"
-              className="text-sm px-4 py-2 border-blue-600 text-blue-600 hover:bg-blue-100"
-            >
-              Log in
-            </Button>
-          </Link>
-          <Link href="/signup">
-            <Button
-              variant="primary"
-              className="rounded-md"
-            >
-              Sign up
-            </Button>
-          </Link>
+          {isAuthenticated && user ? (
+            <ProfileDropdown user={user} />
+          ) : (
+            <>
+              <Link href="/login">
+                <Button
+                  variant="outline"
+                  className="text-sm px-4 py-2 border-blue-600 text-blue-600 hover:bg-blue-100"
+                >
+                  Log in
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button
+                  variant="primary"
+                  className="rounded-md"
+                >
+                  Sign up
+                </Button>
+              </Link>
+            </>
+          )}
         </nav>
       </div>
     </header>
