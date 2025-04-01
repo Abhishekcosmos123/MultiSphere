@@ -49,7 +49,7 @@ export function CourseCard({
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`w-3 h-3 ${i < Math.floor(rating) ? "text-red-500 fill-red-500" : "text-gray-300"}`}
+                className={`w-4 h-4 ${i < Math.floor(rating) ? "text-red-500 fill-red-500" : "text-gray-300"}`}
               />
             ))}
           </div>

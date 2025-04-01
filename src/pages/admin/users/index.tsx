@@ -61,6 +61,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, deleteUser }) => (
         <TableHead className="text-left text-gray-600">Status</TableHead>
         <TableHead className="text-left text-gray-600">Last Login</TableHead>
         <TableHead className="text-left text-gray-600">Role</TableHead>
+        <TableHead className="text-left text-gray-600">Manage Access</TableHead>
         <TableHead className="text-left text-gray-600">Actions</TableHead>
       </TableRow>
     </TableHeader>
@@ -75,6 +76,9 @@ const UserTable: React.FC<UserTableProps> = ({ users, deleteUser }) => (
           </TableCell>
           <TableCell>{user.loginTime}</TableCell>
           <TableCell>{user.role}</TableCell>
+          <TableCell>
+            <a href={`/admin/manage-access`} className="text-blue-500 hover:underline">Manage Access</a>
+          </TableCell>
           <TableCell>
             <button className="bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-600 transition-colors mr-2">
               <FaEdit />

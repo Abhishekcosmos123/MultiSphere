@@ -3,8 +3,7 @@ import AuthLayout from "@/components/auth/AuthLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/ui/button";
 import { Input } from "@/components/ui/input";
-import { FaEnvelope, FaPhone, FaEye, FaEyeSlash, FaShieldAlt, FaFacebook, FaApple, FaMicrosoft } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
+import { FaEnvelope, FaPhone, FaEye, FaEyeSlash, FaShieldAlt } from "react-icons/fa";
 import { validateEmail, validatePassword, validationMessages } from "@/lib/validations";
 import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
 import { useRouter } from "next/router";
@@ -13,8 +12,6 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import '@/styles/phone-input.css';
 import Link from "next/link";
-import { googleLogin, facebookLogin, appleLogin, microsoftLogin } from "@/lib/socialAuth";
-import 'firebase/auth';
 
 export default function SuperAdminLoginPage() {
     const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email');
@@ -86,38 +83,6 @@ export default function SuperAdminLoginPage() {
             }
         } else {
             showErrorToast("Please fix the errors before submitting");
-        }
-    };
-
-    const handleSocialLogin = async (provider: string) => {
-        try {
-            let user;
-            switch (provider) {
-                case "Google":
-                    await googleLogin();
-                    break;
-                case "Facebook":
-                    await facebookLogin();
-                    break;
-                case "Microsoft":
-                    await microsoftLogin();
-                    break;
-                case "Apple":
-                    await appleLogin();
-                    break;
-                default:
-                    throw new Error("Unsupported provider");
-            }
-            console.log("User signed in:", user);
-            showSuccessToast(`Signed up with ${provider}`);
-            router.push("/restaurant");
-        } catch (error: unknown) {
-            console.error("Error signing up:", error);
-            if (error instanceof Error) {
-                showErrorToast(`Failed to sign up with ${provider}: ${error.message}`);
-            } else {
-                showErrorToast(`Failed to sign up with ${provider}: Unknown error`);
-            }
         }
     };
 
@@ -248,51 +213,6 @@ export default function SuperAdminLoginPage() {
                                         <><FaPhone className="mr-2" /> Continue with phone</>
                                     )}
                                 </Button>
-                                <div className="relative my-6">
-                                    <div className="absolute inset-0 flex items-center">
-                                        <div className="w-full border-t border-gray-300"></div>
-                                    </div>
-                                    <div className="relative flex justify-center text-sm">
-                                        <span className="px-2 bg-white text-gray-500">Or continue with</span>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-4 gap-4">
-                                    <button
-                                        type="button"
-                                        onClick={() => handleSocialLogin('Google')}
-                                        className="flex items-center justify-center p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                                    >
-                                        <FcGoogle className="w-6 h-6" />
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => handleSocialLogin('Facebook')}
-                                        className="flex items-center justify-center p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                                    >
-                                        <FaFacebook className="w-6 h-6 text-blue-600" />
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => handleSocialLogin('Apple')}
-                                        className="flex items-center justify-center p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                                    >
-                                        <FaApple className="w-6 h-6" />
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => handleSocialLogin('Microsoft')}
-                                        disabled
-                                        className="flex items-center justify-center p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                                    >
-                                        <FaMicrosoft className="w-6 h-6 text-blue-500" />
-                                    </button>
-                                </div>
-                                <div className="text-center text-sm text-gray-600 mt-4">
-                                    Don't have an account?{" "}
-                                    <Link href="/super-admin/signup" className="text-red-600 hover:text-red-700 font-medium">
-                                        Sign up
-                                    </Link>
-                                </div>
                             </form>
                         )}
                     </CardContent>

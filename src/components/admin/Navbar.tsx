@@ -22,11 +22,13 @@ export default function Navbar({ toggleSidebar }: NavbarProps) {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input type="search" placeholder="Search..." className="w-64 rounded-md pl-8 md:w-80" />
           </form>
+        </div>
+        <div className="flex items-center gap-4 ml-auto">
           <Button variant="ghost" size="icon" className="rounded-full">
             <Bell className="h-5 w-5" />
             <span className="sr-only">Notifications</span>
           </Button>
-          <Avatar>
+          <Avatar className="cursor-pointer">
             <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
             <AvatarFallback>
               <User className="h-5 w-5" />
@@ -37,4 +39,3 @@ export default function Navbar({ toggleSidebar }: NavbarProps) {
     </header>
   )
 }
-

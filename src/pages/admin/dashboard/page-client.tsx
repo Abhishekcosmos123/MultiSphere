@@ -15,7 +15,7 @@ interface DashboardClientProps {
 export default function DashboardClient({ salesData, trafficData, recentOrders }: DashboardClientProps) {
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Dashboard</h1>
+      <h1 className="text-3xl font-bold">E-Learning Dashboard</h1>
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -35,7 +35,7 @@ export default function DashboardClient({ salesData, trafficData, recentOrders }
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">New Customers</CardTitle>
+            <CardTitle className="text-sm font-medium">New Enrollments</CardTitle>
             <Users className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -49,7 +49,7 @@ export default function DashboardClient({ salesData, trafficData, recentOrders }
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Sales</CardTitle>
+            <CardTitle className="text-sm font-medium">Courses Sold</CardTitle>
             <ShoppingCart className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -80,7 +80,7 @@ export default function DashboardClient({ salesData, trafficData, recentOrders }
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>E-Learning Overview</CardTitle>
+            <CardTitle>E-Learning Course Performance</CardTitle>
             <CardDescription>Monthly course performance</CardDescription>
           </CardHeader>
           <CardContent className="h-80">
@@ -113,7 +113,7 @@ export default function DashboardClient({ salesData, trafficData, recentOrders }
 
         <Card>
           <CardHeader>
-            <CardTitle>Restaurant Traffic</CardTitle>
+            <CardTitle>E-Learning Traffic Analysis</CardTitle>
             <CardDescription>Desktop vs Mobile reservations</CardDescription>
           </CardHeader>
           <CardContent className="h-80">
@@ -146,15 +146,15 @@ export default function DashboardClient({ salesData, trafficData, recentOrders }
       {/* Recent Orders Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Orders</CardTitle>
-          <CardDescription>Latest customer orders</CardDescription>
+          <CardTitle>Recent Enrollments</CardTitle>
+          <CardDescription>Latest course enrollments</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Order ID</TableHead>
-                <TableHead>Customer</TableHead>
+                <TableHead>Enrollment ID</TableHead>
+                <TableHead>Student</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead className="text-right">Amount</TableHead>
@@ -189,4 +189,3 @@ export default function DashboardClient({ salesData, trafficData, recentOrders }
     </div>
   )
 }
-

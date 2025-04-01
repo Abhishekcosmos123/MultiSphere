@@ -6,8 +6,8 @@ import { loginSuccess } from "@/store/slices/authSlice";
 const handleSocialLoginSuccess = (user: any) => {
   const userData = {
     email: user.email,
-    name: user.displayName || user.email.split('@')[0],
-    role: 'user',
+    name: user?.displayName || user?.email?.split('@')[0],
+    role: 'User',
     token: user.accessToken,
     profileImage: user.photoURL
   };
