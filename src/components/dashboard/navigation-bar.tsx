@@ -9,9 +9,13 @@ import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 import type { RootState } from "@/store"
 import { ProfileDropdown } from "./ProfileDropdown"
-import { buttons } from "@/lib/content"
 
-export const NavigationBar: React.FC = () => {
+interface Button {
+  index: number;
+  label: string;
+}
+
+export const NavigationBar: React.FC<{ buttons?: Button[] }> = ({ buttons = [] }) => {
   const [activeButtonIndex, setActiveButtonIndex] = useState<number | null>(null)
   const { isAuthenticated, user } = useSelector((state: RootState) => state.auth)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -97,7 +101,7 @@ export const NavigationBar: React.FC = () => {
           {/* Navigation links - desktop only */}
           <nav className="hidden md:flex items-center space-between flex-1 mx-4 overflow-x-auto">
             <div className="flex items-center space-x-1">
-              {buttons.map((button) => (
+              {buttons.length > 0 && buttons.map((button) => (
                 <Button
                   key={button.index}
                   variant="ghost"
@@ -127,7 +131,7 @@ export const NavigationBar: React.FC = () => {
           <div className="md:hidden absolute left-0 right-0 top-16 bg-white border-b border-gray-200 shadow-lg z-50">
             <div className="flex flex-col p-4 space-y-4">
               <div className="flex flex-col space-y-2">
-                {buttons.map((button) => (
+                {buttons.length > 0 && buttons.map((button) => (
                   <Button
                     key={button.index}
                     variant="ghost"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,12 @@ import 'react-phone-input-2/lib/style.css';
 import '@/styles/phone-input.css';
 import { googleLogin, facebookLogin, microsoftLogin, appleLogin } from '@/lib/socialAuth';
 import 'firebase/auth';
+import { ELearningButtons, RealEstateButtons } from "@/lib/content";
+
+interface Module {
+	id: number;
+	name: string;
+  }
 
 export default function LoginPage() {
 	const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email');
@@ -31,6 +37,14 @@ export default function LoginPage() {
 		phone: "",
 		password: "",
 	});
+	const [selectedModule, setSelectedModule] = useState<Module | null>(null);
+
+	useEffect(() => {
+		const savedModule = localStorage.getItem('selectedModule');
+		if (savedModule) {
+		  setSelectedModule(JSON.parse(savedModule));
+		}
+	  }, []);
 
 	const validateForm = () => {
 		const newErrors = {
@@ -126,7 +140,12 @@ export default function LoginPage() {
 
 	return (
 		<div className="flex flex-col min-h-screen">
-			<NavigationBar />
+			{selectedModule?.name === "ELearning" && (
+				<NavigationBar buttons={ELearningButtons} />
+			)}
+			{selectedModule?.name === "Real Estate" && (
+				<NavigationBar buttons={RealEstateButtons} />
+			)}
 			<div className="flex-grow flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8 py-6">
 				<div className="max-w-5xl w-full flex bg-white shadow-lg rounded-lg overflow-hidden">
 					<div className="hidden md:flex w-1/2 items-center justify-center p-8 h-fit">

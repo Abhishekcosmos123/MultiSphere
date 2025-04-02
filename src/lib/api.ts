@@ -1,16 +1,24 @@
-import { coursesDatabase, Course } from "./content"
-  
-  const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-  
-  export const fetchCourses = async (category: string, topic: string): Promise<Course[]> => {
-    await delay(800)
-  
-    return coursesDatabase.filter((course) => {
-      const categoryMatch = category ? course.category === category : true
-      const topicMatch = topic ? course.topics.includes(topic) : true
-      return categoryMatch && topicMatch
-    })
-  }
+import { coursesDatabase, realEstateListings, Course, restaurantListings } from "./content"
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+const savedModule = typeof window !== 'undefined' && window.localStorage 
+  ? JSON.parse(localStorage.getItem('selectedModule') || '{}') 
+  : { name: "" };
+
+export const fetchCourses = async (category: string, topic: string): Promise<Course[]> => {
+  await delay(800)
+
+  const listings = savedModule?.name === "Real Estate" ? realEstateListings : 
+                   savedModule?.name === "Restaurants" ? restaurantListings : 
+                   coursesDatabase;
+
+  return listings.filter((course) => {
+    const categoryMatch = category ? course.category === category : true
+    const topicMatch = topic ? course.topics.includes(topic) : true
+    return categoryMatch && topicMatch
+  })
+}
   
   // API response format example:
   /*

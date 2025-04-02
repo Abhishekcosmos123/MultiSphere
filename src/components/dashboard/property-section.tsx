@@ -21,13 +21,19 @@ interface Property {
   new: boolean
 }
 
+interface Module {
+  id: number;
+  name: string;
+}
+
 interface PropertySectionProps {
   title: string
   location: string
   properties: Property[]
+  selectedModule: Module
 }
 
-export function PropertySection({ title, location, properties }: PropertySectionProps) {
+export function PropertySection({ title, location, properties, selectedModule }: PropertySectionProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollPosition, setScrollPosition] = useState(0)
 
@@ -69,29 +75,31 @@ export function PropertySection({ title, location, properties }: PropertySection
             className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth" 
             onScroll={(e) => setScrollPosition(e.currentTarget.scrollLeft)}
           >
-            {/* {properties.map((property) => (
-              <div key={property.id} className="w-64 flex-shrink-0">
-                <PropertyCard
-                  price={property.price}
-                  beds={property.beds}
-                  baths={property.baths}
-                  sqft={property.sqft}
-                  address={property.address}
-                  city={property.city}
-                  state={property.state}
-                  zip={property.zip}
-                  type={property.type}
-                  image={property.image}
-                  new={property.new}
-                />
-              </div>
-            ))} */}
-            
-            {courses.map((course, index) => (
-              <div key={index} className="w-64 flex-shrink-0">
-                <CourseSection {...course} />
-              </div>
-            ))}
+            {selectedModule?.name === "Real Estate" ? (
+              properties.map((property) => (
+                <div key={property.id} className="w-64 flex-shrink-0">
+                  <PropertyCard
+                    price={property.price}
+                    beds={property.beds}
+                    baths={property.baths}
+                    sqft={property.sqft}
+                    address={property.address}
+                    city={property.city}
+                    state={property.state}
+                    zip={property.zip}
+                    type={property.type}
+                    image={property.image}
+                    new={property.new}
+                  />
+                </div>
+              ))
+            ) : (
+              courses.map((course, index) => (
+                <div key={index} className="w-64 flex-shrink-0">
+                  <CourseSection {...course} />
+                </div>
+              ))
+            )}
           </div>
 
           <button

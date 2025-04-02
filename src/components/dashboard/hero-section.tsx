@@ -1,15 +1,14 @@
-import { heroTitle, searchOptions } from "@/lib/content";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export function HeroSection() {
+export function HeroSection({ title, options, imageSrc }: { title: string, options: string[], imageSrc: string }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % searchOptions.length);
+      setIndex((prevIndex) => (prevIndex + 1) % options.length);
     }, 3000);
     
     return () => clearInterval(interval);
@@ -19,8 +18,8 @@ export function HeroSection() {
     <div className="relative">
       <div className="absolute inset-0">
         <Image
-          src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1600&h=600&auto=format&fit=crop"
-          alt="Real estate background"
+          src={imageSrc}
+          alt="Background"
           className="object-cover"
           fill
           priority
@@ -32,7 +31,7 @@ export function HeroSection() {
       <div className="relative px-4 py-24 mx-auto max-w-7xl">
         <div className="max-w-3xl mx-auto text-center text-white">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
-            {heroTitle}<sup>*</sup>
+            {title}<sup>*</sup>
           </h1>
 
           <div className="relative mt-8">
@@ -46,14 +45,14 @@ export function HeroSection() {
                 Search for{" "}
                 <AnimatePresence mode="wait">
                   <motion.span
-                    key={searchOptions[index]}
+                    key={options[index]}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.5 }}
                     className="inline-block"
                   >
-                    '{searchOptions[index]}'
+                    '{options[index]}'
                   </motion.span>
                 </AnimatePresence>
               </div>

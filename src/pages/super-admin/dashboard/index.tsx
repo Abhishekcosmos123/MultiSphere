@@ -1,5 +1,5 @@
 import DashboardLayout from "../layout"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"  
 
 export default function DashboardPage() {
@@ -12,6 +12,13 @@ export default function DashboardPage() {
 
     const [selectedModule, setSelectedModule] = useState(crmModules[0])
 
+    useEffect(() => {
+        const savedModule = localStorage.getItem('selectedModule');
+        if (savedModule) {
+            setSelectedModule(JSON.parse(savedModule));
+        }
+    }, []);
+
     const handleModuleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const moduleId = parseInt(event.target.value)
         const module = crmModules.find(mod => mod.id === moduleId)
@@ -21,6 +28,7 @@ export default function DashboardPage() {
     }
 
     const handleSave = () => {
+        localStorage.setItem('selectedModule', JSON.stringify(selectedModule));
         // Logic to save the selected module
         console.log("Saved module:", selectedModule);
     }

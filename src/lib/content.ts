@@ -28,6 +28,15 @@ export const categories: string[] = [
   "Business Analytics & Intelligence",
 ]
 
+export const realEstateCategories: string[] = [
+  "Residential Properties",
+  "Commercial Properties",
+  "Luxury Homes",
+  "Apartments & Condos",
+  "Vacation Rentals",
+];
+
+
 export const popularTopics = [
   { name: "Data Science", count: "7M+ learners" },
   { name: "Python", count: "47.7M+ learners" },
@@ -37,6 +46,15 @@ export const popularTopics = [
   { name: "Statistics", count: "9M+ learners" },
   { name: "R", count: "8M+ learners" },
 ]
+export const realEstatePopularTopics = [
+  { name: "Residential Properties", count: "5M+ viewers" },
+  { name: "Real Estate Investing", count: "8M+ viewers" },
+  { name: "Property Flipping", count: "4M+ viewers" },
+  { name: "Rental Property Management", count: "6M+ viewers" },
+  { name: "Luxury Real Estate", count: "3M+ viewers" },
+  { name: "Commercial Real Estate", count: "7M+ viewers" },
+  { name: "Mortgage & Financing", count: "5.5M+ viewers" },
+];
 
 export const coursesDatabase: Course[] = [
   {
@@ -197,6 +215,74 @@ export const coursesDatabase: Course[] = [
   },
 ]
 
+export const realEstateListings: Course[] = [
+  {
+    id: 1,
+    title: "Luxury 3BHK Apartment in Downtown LA",
+    instructors: "Elite Realty Group",
+    rating: 4.7,
+    reviews: 125,
+    price: 1200000,
+    originalPrice: 1300000,
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&h=250&fit=crop",
+    badges: ["Luxury", "Hot Deal"],
+    category: "Residential Properties",
+    topics: ["Residential Properties", "Real Estate Investing"],
+  },
+  {
+    id: 2,
+    title: "Spacious 4BHK Villa with Garden",
+    instructors: "Prime Estates",
+    rating: 4.8,
+    reviews: 98,
+    price: 1850000,
+    originalPrice: 1950000,
+    image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=250&fit=crop",
+    badges: ["Premium", "New Listing"],
+    category: "Residential Properties",
+    topics: ["Commercial Real Estate", "Residential Properties, Luxury Real Estate"],
+  },
+  {
+    id: 3,
+    title: "Modern Studio Apartment near Central Park",
+    instructors: "Urban Realty Co.",
+    rating: 4.6,
+    reviews: 210,
+    price: 650000,
+    originalPrice: 700000,
+    image: "https://images.unsplash.com/photo-1592595896551-a7b31c1776d7?w=400&h=250&fit=crop",
+    badges: ["Best Seller"],
+    category: "Real Estate Investing",
+    topics: ["Mortgage & Financing", "Commercial Real Estate"],
+  },
+  {
+    id: 4,
+    title: "Cozy 2BHK House for Rent",
+    instructors: "Home Sweet Homes",
+    rating: 4.5,
+    reviews: 87,
+    price: 2500,
+    originalPrice: 2800,
+    image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=250&fit=crop",
+    badges: ["Pet Friendly"],
+    category: "Residential Properties",
+    topics: ["Commercial Real Estate", "Mortgage & Financing", "Luxury Real Estate"],
+  },
+  {
+    id: 5,
+    title: "Commercial Office Space in Silicon Valley",
+    instructors: "Silicon Valley Properties",
+    rating: 4.9,
+    reviews: 143,
+    price: 5000000,
+    originalPrice: 5500000,
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&h=250&fit=crop",
+    badges: ["High Demand"],
+    category: "Residential Properties",
+    topics: ["Mortgage & Financing", "Commercial Real Estate"],
+  }
+];
+
 export const popularCourses = [
   {
     id: 1,
@@ -277,6 +363,85 @@ export const popularCourses = [
   }
 ]
 
+export const popularProperties = [
+  {
+    id: 1,
+    title: "Luxury 3BHK Apartment in Downtown LA",
+    instructors: ["John Doe", "Real Estate Agent"],
+    rating: 4.8,
+    reviewCount: 154,
+    students: 120, // Representing inquiries or interested buyers
+    price: 3500,
+    originalPrice: 4000,
+    image: "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg",
+  },
+  {
+    id: 2,
+    title: "Modern 2BHK Condo with Ocean View",
+    instructors: ["Jane Smith", "Luxury Properties"],
+    rating: 4.7,
+    reviewCount: 98,
+    students: 85,
+    price: 2800,
+    originalPrice: 3200,
+    image: "https://images.pexels.com/photos/1643389/pexels-photo-1643389.jpeg",
+  },
+  {
+    id: 3,
+    title: "Spacious 4BHK Villa with Private Pool",
+    instructors: ["Robert Johnson", "Villa Specialist"],
+    rating: 4.9,
+    reviewCount: 76,
+    students: 65,
+    price: 5000,
+    originalPrice: 5500,
+    image: "https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg",
+  },
+  {
+    id: 4,
+    title: "Cozy Studio Apartment in New York",
+    instructors: ["Emily Davis", "Rental Expert"],
+    rating: 4.5,
+    reviewCount: 230,
+    students: 190,
+    price: 2200,
+    originalPrice: 2500,
+    image: "https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg",
+  },
+  {
+    id: 5,
+    title: "Modern 3BHK Townhouse with Garage",
+    instructors: ["Michael Brown", "Townhouse"],
+    rating: 4.8,
+    reviewCount: 110,
+    students: 95,
+    price: 4500,
+    originalPrice: 4800,
+    image: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg",
+  },
+  {
+    id: 6,
+    title: "Penthouse Suite with Skyline View",
+    instructors: ["Sophia Wilson", "High-Rise"],
+    rating: 4.9,
+    reviewCount: 89,
+    students: 72,
+    price: 7000,
+    originalPrice: 7500,
+    image: "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg",
+  },
+  {
+    id: 7,
+    title: "Elegant 2BHK Apartment in Seattle",
+    instructors: ["Daniel Lee", "Seattle Real Estate"],
+    rating: 4.6,
+    reviewCount: 125,
+    students: 110,
+    price: 3100,
+    originalPrice: 3400,
+    image: "https://images.pexels.com/photos/8136925/pexels-photo-8136925.jpeg",
+  }
+];
 
 export const luxuryHomes = [
   {
@@ -444,7 +609,7 @@ export const trustedCompanies = [
   { id: 8, name: "Ericsson", logo: "https://cms-images.udemycdn.com/content/swmv0okrlh/svg/ericsson_logo.svg?position=c&quality=80&x.app=portals" },
 ];
 
-export const buttons = [
+export const ELearningButtons = [
   { label: "My Learnings", index: 0 },
   { label: "Live Classes", index: 1 },
   { label: "Teach on CU", index: 2 },
@@ -453,15 +618,42 @@ export const buttons = [
   { label: "Contact Us", index: 5 },
 ];
 
-export const searchOptions = ["Courses", "Trainers", "Certificates"];
+export const ElearningHeroSection = {
+  title: "The #1 site for lifelong learners & experienced trainers.",
+  buttons: ELearningButtons.map(button => button.label),
+  imageSrc: "https://s.udemycdn.com/browse_components/billboard/fallback_banner_image_udlite.jpg",
+};
 
-export const heroTitle = "The #1 site for lifelong learners & experienced trainers.";
+export const RealEstateButtons = [
+  { label: "Home", index: 0 },
+  { label: "Buy", index: 1 },
+  { label: "Rent", index: 2 },
+  { label: "Sell", index: 3 },
+  { label: "Commercial", index: 4 },
+  { label: "Mortgage", index: 5 },
+  { label: "Agents", index: 6 },
+  { label: "Market Trends", index: 7 },
+  { label: "Contact Us", index: 8 },
+];
+
+export const RealEstateHeroSection = {
+  title: "Your #1 Destination for Buying, Selling & Renting Homes.",
+  buttons: RealEstateButtons.map(button => button.label),
+  imageSrc: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1600&h=600&auto=format&fit=crop",
+};
+
+export const searchOptionsElearning = ["Courses", "Trainers", "Certificates"];
+export const searchOptionsRealEstate = ["Buy", "Rent", "Sell", "Commercial", "Mortgage", "Agents", "Market Trends"];
 
 export const userRoles = ["Student", "Trainer"];
 
 export const ctaContent = {
   heading: "Come Teach with us?",
   backgroundImage: "/ebook.png"
+};
+export const realEstatectaContent = {
+  heading: "Find Your Dream Home Today?",
+  backgroundImage: "/realEstate.png"
 };
 
 export const courses = [
@@ -571,3 +763,108 @@ export const initialModules = [
   { name: "SETTINGS", read: true, create: false, update: true, delete: false },
   { name: "FEEDBACK", read: true, create: true, update: false, delete: false },
 ]
+
+
+// Restaurants
+
+export const RestaurantButtons = [
+  { label: "Home", index: 0 },
+  { label: "Menu", index: 1 },
+  { label: "Order Online", index: 2 },
+  { label: "Reservations", index: 3 },
+  { label: "Specials", index: 4 },
+  { label: "Catering", index: 5 },
+  { label: "Events", index: 6 },
+  { label: "Reviews", index: 7 },
+  { label: "Contact Us", index: 8 },
+];
+
+export const RestaurantHeroSection = {
+  title: "Delicious Meals, Anytime, Anywhere!",
+  buttons: RestaurantButtons.map(button => button.label),
+  imageSrc: "https://assets.architecturaldigest.in/photos/65e9631d9719efc62841b9d5/16:9/w_2560%2Cc_limit/DSC07703_11zon.jpg",
+};
+
+export const restaurantCategories: string[] = [
+  "Local Restaurants",
+  "Japanese",
+  "Street Food Adventures",
+  "American",
+];
+
+export const restaurantPopularTopics = [
+  { name: "Local Restaurants", count: "10M+ viewers" },
+  { name: "Trending Dishes", count: "7M+ viewers" },
+  { name: "Healthy Eating", count: "5M+ viewers" },
+  { name: "Street Food Adventures", count: "6.5M+ viewers" },
+  { name: "Fine Dining Experiences", count: "4M+ viewers" },
+];
+
+export const restaurantListings: Course[] = [
+  {
+    id: 1,
+    title: "Authentic Italian Pasta & Pizza",
+    instructors: "La Bella Italia",
+    rating: 4.8,
+    reviews: 320,
+    price: 20,
+    originalPrice: 25,
+    image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=250&fit=crop",
+    badges: ["Best Seller", "Customer Favorite"],
+    category: "Local Restaurants",
+    topics: ["Trending Dishes", "Fine Dining Experiences", "Local Restaurants"],
+  },
+  {
+    id: 2,
+    title: "Sushi & Sashimi Special Platter",
+    instructors: "Tokyo Bites",
+    rating: 4.9,
+    reviews: 275,
+    price: 35,
+    originalPrice: 40,
+    image: "https://images.unsplash.com/photo-1562158074-1602c2db2c76?w=400&h=250&fit=crop",
+    badges: ["Premium", "Fresh Ingredients"],
+    category: "Japanese Cuisine",
+    topics: ["Street Food Adventures", "Sashimi", "Healthy Eating"],
+  },
+  {
+    id: 3,
+    title: "BBQ Ribs & Smoked Brisket",
+    instructors: "Texas Smokehouse",
+    rating: 4.7,
+    reviews: 198,
+    price: 28,
+    originalPrice: 32,
+    image: "https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=400&h=250&fit=crop",
+    badges: ["Grill Master", "Crowd Favorite"],
+    category: "Local Restaurants",
+    topics: ["Street Food Adventures", "Slow Cooked", "Meat Lovers"],
+  },
+  {
+    id: 4,
+    title: "Vegan Buddha Bowl & Smoothies",
+    instructors: "Green Earth Cafe",
+    rating: 4.6,
+    reviews: 250,
+    price: 18,
+    originalPrice: 22,
+    image: "https://images.unsplash.com/photo-1523181300153-daa1de7bb0a4?w=400&h=250&fit=crop",
+    badges: ["Vegan", "Gluten-Free"],
+    category: "Local Restaurants",
+    topics: ["Plant-Based", "Organic", "Local Restaurants"],
+  },
+  {
+    id: 5,
+    title: "Classic French Pastries & Desserts",
+    instructors: "Parisian Delights",
+    rating: 4.9,
+    reviews: 312,
+    price: 15,
+    originalPrice: 18,
+    image: "https://images.unsplash.com/photo-1541592106381-e175b94c74b5?w=400&h=250&fit=crop",
+    badges: ["Sweet Tooth", "Authentic"],
+    category: "Desserts & Pastries",
+    topics: ["French Bakery", "Street Food Adventures", "Cakes"],
+  }
+];
+
