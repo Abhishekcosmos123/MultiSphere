@@ -32,7 +32,7 @@ export default function ResetPasswordPage() {
         confirmPassword: ""
     });
     const router = useRouter();
-    const [selectedModule, setSelectedModule] = useState<Module | null>(null);
+    const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' });
 
 	useEffect(() => {
 		const savedModule = localStorage.getItem('selectedModule');

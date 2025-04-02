@@ -22,7 +22,7 @@ import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons } fr
 interface Module {
 	id: number;
 	name: string;
-  }
+}
 
 export default function LoginPage() {
 	const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email');
@@ -37,7 +37,7 @@ export default function LoginPage() {
 		phone: "",
 		password: "",
 	});
-	const [selectedModule, setSelectedModule] = useState<Module | null>(null);
+	const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' }); 
 
 	useEffect(() => {
 		const savedModule = localStorage.getItem('selectedModule');

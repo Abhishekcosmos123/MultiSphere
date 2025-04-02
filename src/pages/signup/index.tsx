@@ -61,7 +61,7 @@ export default function SignupPage() {
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [errors, setErrors] = useState<FormErrors>(initialErrors);
     const router = useRouter();
-    const [selectedModule, setSelectedModule] = useState<Module | null>(null);
+    const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' });
 
 	useEffect(() => {
 		const savedModule = localStorage.getItem('selectedModule');
