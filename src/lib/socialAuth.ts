@@ -17,15 +17,28 @@ const handleSocialLoginSuccess = (user: any) => {
 };
 
 export const googleLogin = async () => {
-    const result = await signInWithPopup(auth, googleProvider);
-    handleSocialLoginSuccess(result.user);
-    return result.user;
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const user = result.user;
+        handleSocialLoginSuccess(user);
+        user.getIdToken().then((idToken) => {
+          console.log("ID Token:", idToken);
+        });
+      });
 };
 
 export const facebookLogin = async () => {
-    const result = await signInWithPopup(auth, facebookProvider);
-    handleSocialLoginSuccess(result.user);
-    return result.user;
+    signInWithPopup(auth, facebookProvider)
+      .then((result) => {
+        const user = result.user;
+        handleSocialLoginSuccess(user);
+        user.getIdToken().then((idToken) => {
+          console.log("ID Token:", idToken);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 };
 
 export const microsoftLogin = async () => {
@@ -35,7 +48,15 @@ export const microsoftLogin = async () => {
 };
 
 export const appleLogin = async () => {
-    const result = await signInWithPopup(auth, appleProvider);
-    handleSocialLoginSuccess(result.user);
-    return result.user;
+    signInWithPopup(auth, appleProvider)
+      .then((result) => {
+        const user = result.user;
+        handleSocialLoginSuccess(user);
+        user.getIdToken().then((idToken) => {
+          console.log("ID Token:", idToken);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 };

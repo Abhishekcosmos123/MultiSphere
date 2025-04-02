@@ -1,4 +1,3 @@
-import { testimonial } from "@/lib/content";
 import { QuoteIcon } from "lucide-react"
 import Link from "next/link"
 
@@ -10,10 +9,11 @@ interface Testimonial {
 }
 
 interface TestimonialSectionProps {
+  testimonial: string;
   testimonials: Testimonial[]
 }
 
-export function TestimonialSection({ testimonials }: TestimonialSectionProps) {
+export function TestimonialSection({ testimonial, testimonials }: TestimonialSectionProps) {
   return (
     <div className="py-6 bg-white">
       <div className="px-4 mx-auto max-w-7xl">

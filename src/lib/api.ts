@@ -1,24 +1,34 @@
-import { coursesDatabase, realEstateListings, Course, restaurantListings } from "./content"
+import { coursesDatabase, realEstateListings, Course, restaurantListings, crmListings } from "./content";
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const savedModule = typeof window !== 'undefined' && window.localStorage 
-  ? JSON.parse(localStorage.getItem('selectedModule') || '{}') 
-  : { name: "" };
+const getSavedModule = (): { name: string } => {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    return JSON.parse(localStorage.getItem('selectedModule') || '{}') as { name: string };
+  }
+  return { name: "" };
+};
 
 export const fetchCourses = async (category: string, topic: string): Promise<Course[]> => {
-  await delay(800)
+  await delay(800);
 
-  const listings = savedModule?.name === "Real Estate" ? realEstateListings : 
-                   savedModule?.name === "Restaurants" ? restaurantListings : 
-                   coursesDatabase;
+  const savedModule = getSavedModule();
 
-  return listings.filter((course) => {
-    const categoryMatch = category ? course.category === category : true
-    const topicMatch = topic ? course.topics.includes(topic) : true
-    return categoryMatch && topicMatch
-  })
-}
+  const listingsMap: Record<string, Course[]> = {
+    "Real Estate": realEstateListings as Course[], 
+    "Restaurants": restaurantListings as Course[], 
+    "CRM Management": crmListings as Course[], 
+  };
+
+  const listings: Course[] = listingsMap[savedModule?.name] || coursesDatabase;
+
+  return listings.filter(course => {
+    const categoryMatch = !category || course.category === category;
+    const topicMatch = !topic || course.topics.includes(topic);
+    return categoryMatch && topicMatch;
+  });
+};
+
   
   // API response format example:
   /*

@@ -11,6 +11,7 @@ interface CourseCardProps {
   originalPrice: number
   image: string
   bestseller?: boolean
+  module: string
 }
 
 export function CourseCard({
@@ -23,6 +24,7 @@ export function CourseCard({
   originalPrice,
   image,
   bestseller = false,
+  module,
 }: CourseCardProps) {
   return (
     <div className="flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg">
@@ -56,7 +58,12 @@ export function CourseCard({
           <span className="ml-1 text-xs text-gray-600">({reviewCount})</span>
         </div>
 
-        <p className="mt-1 text-xs text-gray-600">{students} students</p>
+        <p className="mt-1 text-xs text-gray-600">
+          {module === "E-learning" ? `${students} students` : 
+           module === "Restaurants" ? `${students} employees` : 
+           module === "Real Estate" ? `${students} properties` : 
+           `${students} employees`}
+        </p>
 
         <div className="flex items-center mt-auto">
           <span className="font-bold text-gray-900">${price}</span>

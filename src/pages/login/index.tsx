@@ -17,7 +17,7 @@ import 'react-phone-input-2/lib/style.css';
 import '@/styles/phone-input.css';
 import { googleLogin, facebookLogin, microsoftLogin, appleLogin } from '@/lib/socialAuth';
 import 'firebase/auth';
-import { ELearningButtons, RealEstateButtons } from "@/lib/content";
+import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons } from "@/lib/content";
 
 interface Module {
 	id: number;
@@ -140,11 +140,15 @@ export default function LoginPage() {
 
 	return (
 		<div className="flex flex-col min-h-screen">
-			{selectedModule?.name === "ELearning" && (
-				<NavigationBar buttons={ELearningButtons} />
-			)}
-			{selectedModule?.name === "Real Estate" && (
-				<NavigationBar buttons={RealEstateButtons} />
+			{selectedModule && (
+				<NavigationBar buttons={
+					{
+						"E-learning": ELearningButtons,
+						"Real Estate": RealEstateButtons,
+						"CRM Management": CRMButtons,
+						"Restaurants": RestaurantButtons,
+					}[selectedModule.name]
+				} />
 			)}
 			<div className="flex-grow flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8 py-6">
 				<div className="max-w-5xl w-full flex bg-white shadow-lg rounded-lg overflow-hidden">

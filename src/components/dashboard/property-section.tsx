@@ -2,24 +2,7 @@
 
 import { useState, useRef } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { PropertyCard } from "./property-card"
 import CourseSection from "./course-section"
-import { courses } from "@/lib/content"
-
-interface Property {
-  id: string | number
-  price: number
-  beds: number
-  baths: number
-  sqft: number
-  address: string
-  city: string
-  state: string
-  zip: string
-  type: string
-  image: string
-  new: boolean
-}
 
 interface Module {
   id: number;
@@ -29,7 +12,7 @@ interface Module {
 interface PropertySectionProps {
   title: string
   location: string
-  properties: Property[]
+  properties: any[]
   selectedModule: Module
 }
 
@@ -42,11 +25,7 @@ export function PropertySection({ title, location, properties, selectedModule }:
       const { scrollLeft, clientWidth } = scrollRef.current
       const scrollTo = direction === "left" ? scrollLeft - clientWidth / 2 : scrollLeft + clientWidth / 2
 
-      scrollRef.current.scrollTo({
-        left: scrollTo,
-        behavior: "smooth",
-      })
-
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: "smooth" })
       setScrollPosition(scrollTo)
     }
   }
@@ -54,12 +33,12 @@ export function PropertySection({ title, location, properties, selectedModule }:
   return (
     <div className="py-6 bg-white">
       <div className="px-4 mx-auto max-w-7xl">
-        <div className="flex items-center justify-between">
+        <header className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
             <p className="mt-1 text-sm text-gray-600">View all in {location}</p>
           </div>
-        </div>
+        </header>
 
         <div className="relative flex items-center mt-4">
           <button
@@ -72,34 +51,14 @@ export function PropertySection({ title, location, properties, selectedModule }:
 
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth" 
+            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
             onScroll={(e) => setScrollPosition(e.currentTarget.scrollLeft)}
           >
-            {selectedModule?.name === "Real Estate" ? (
-              properties.map((property) => (
-                <div key={property.id} className="w-64 flex-shrink-0">
-                  <PropertyCard
-                    price={property.price}
-                    beds={property.beds}
-                    baths={property.baths}
-                    sqft={property.sqft}
-                    address={property.address}
-                    city={property.city}
-                    state={property.state}
-                    zip={property.zip}
-                    type={property.type}
-                    image={property.image}
-                    new={property.new}
-                  />
-                </div>
-              ))
-            ) : (
-              courses.map((course, index) => (
-                <div key={index} className="w-64 flex-shrink-0">
-                  <CourseSection {...course} />
-                </div>
-              ))
-            )}
+            {properties.map((item, index) => (
+              <div key={index} className="w-64 flex-shrink-0">
+                <CourseSection {...item} selectedModuleName={selectedModule?.name} />
+              </div>
+            ))}
           </div>
 
           <button

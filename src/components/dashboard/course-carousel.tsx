@@ -21,9 +21,10 @@ interface Course {
 interface CourseCarouselProps {
   title: string
   courses: Course[]
+  module: string
 }
 
-export function CourseCarousel({ title, courses }: CourseCarouselProps) {
+export function CourseCarousel({ title, courses, module }: CourseCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollPosition, setScrollPosition] = useState(0)
 
@@ -74,6 +75,7 @@ export function CourseCarousel({ title, courses }: CourseCarouselProps) {
                   originalPrice={course.originalPrice}
                   image={course.image}
                   bestseller={course.bestseller}
+                  module={module}
                 />
               </div>
             ))}

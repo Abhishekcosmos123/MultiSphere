@@ -21,8 +21,8 @@ interface CategorySectionProps {
 }
 
 export function CategorySection({ categories, popularTopics, module }: CategorySectionProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string>("Data Science")
-  const [selectedTopic, setSelectedTopic] = useState<string>("Data Science")
+  const [selectedCategory, setSelectedCategory] = useState<string>(categories[0])
+  const [selectedTopic, setSelectedTopic] = useState<string>(popularTopics[0]?.name)
   const [courses, setCourses] = useState<Course[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -96,7 +96,7 @@ export function CategorySection({ categories, popularTopics, module }: CategoryS
           <div className="relative">
             {courses.length === 0 ? (
               <div className="text-center py-10">
-                <h3 className="text-lg font-medium text-gray-900">{module === "Restaurant" ? "No restaurants found" : module === "Real Estate" ? "No properties found" : "No courses found"}</h3>
+                <h3 className="text-lg font-medium text-gray-900">{module === "Restaurants" ? "No restaurants found" : module === "Real Estate" ? "No properties found" : module === "CRM Management" ? "No CRM tools found" : "No courses found"}</h3>
                 <p className="text-gray-600 mt-2">Try selecting a different category or topic</p>
               </div>
             ) : (

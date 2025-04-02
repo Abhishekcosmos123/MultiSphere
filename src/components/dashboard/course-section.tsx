@@ -13,6 +13,7 @@ interface Course {
   level: string;
   price: number;
   originalPrice: number;
+  selectedModuleName: string;
 }
 
 const CourseSection = ({
@@ -27,6 +28,7 @@ const CourseSection = ({
   level,
   price,
   originalPrice,
+  selectedModuleName,
 }: Course) => {
   return (
     <div className="overflow-hidden bg-white border border-gray-200 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow duration-200">
@@ -50,16 +52,16 @@ const CourseSection = ({
         <p className="text-gray-500 text-xs mt-1">{instructors}</p>
         
         <div className="flex items-center space-x-2 mt-2 text-gray-700 text-sm">
-          <span className="border border-gray-300 px-1 py-1 rounded-md">Course</span>
+          <span className="border border-gray-300 px-1 py-1 rounded-md">{selectedModuleName === "Restaurants" ? "Restaurant" : (selectedModuleName === "CRM Management" || selectedModuleName === "Real Estate") ? " Experts" : "Course"}</span>
           <span className="flex items-center border border-gray-300 px-1 py-1 rounded-md">
             <Star className="w-4 h-4 text-yellow-500 fill-current" /> <span className="ml-1">{rating}</span>
           </span>
-          <span className="border border-gray-300 px-1 py-1 rounded-md">{ratingsCount.toLocaleString()} ratings</span>
+          <span className="border border-gray-300 px-1 py-1 rounded-md">{ratingsCount.toLocaleString()} rate</span>
         </div>
 
         <div className="flex flex-wrap gap-2 mt-3 text-gray-700 text-sm">
           <span className="border border-gray-300 px-1 py-1 rounded-md">{totalHours.toLocaleString()} total hours</span>
-          <span className="border border-gray-300 px-1 py-1 rounded-md">{lectures.toLocaleString()} lectures</span>
+          <span className="border border-gray-300 px-1 py-1 rounded-md">{lectures.toLocaleString()} {selectedModuleName === "Restaurants" ? "dishes" : selectedModuleName === "CRM Management" ? "tools" : selectedModuleName === "Real Estate" ? "sales" : "lectures"}</span>
           <span className="border border-gray-300 px-1 py-1 rounded-md">{level}</span>
         </div>
 
