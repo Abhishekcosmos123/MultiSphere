@@ -15,9 +15,11 @@ import OTPValidation from "@/components/auth/OTPVerification";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import '@/styles/phone-input.css';
-import { googleLogin, facebookLogin, microsoftLogin, appleLogin } from '@/lib/socialAuth';
+import { googleLogin, facebookLogin, microsoftLogin, appleLogin, handleRedirectResult } from '@/lib/socialAuth';
 import 'firebase/auth';
 import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons } from "@/lib/content";
+import { loginRequest } from "@/store/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 interface Module {
 	id: number;
@@ -25,6 +27,7 @@ interface Module {
 }
 
 export default function LoginPage() {
+	const dispatch = useDispatch();
 	const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email');
 	const [email, setEmail] = useState("");
 	const [phone, setPhone] = useState("");
@@ -44,7 +47,7 @@ export default function LoginPage() {
 		if (savedModule) {
 		  setSelectedModule(JSON.parse(savedModule));
 		}
-	  }, []);
+	}, []);
 
 	const validateForm = () => {
 		const newErrors = {
@@ -88,17 +91,19 @@ export default function LoginPage() {
 		e.preventDefault();
 
 		if (validateForm()) {
-			// TODO: Implement login logic
-			const credentials = loginMethod === 'email' 
-				? { email, password }
-				: { phone };
-			console.log("Login attempt with:", credentials);
-			showSuccessToast("Login successful!");
+			const phoneNumber = phone.replace(/^\+/, ''); 
+			const countryCode = phoneNumber.slice(0, phoneNumber.length - 10); 
+			const mobileNumber = phoneNumber.slice(-10); 
+			const payload = {
+				...(loginMethod === 'email' ? { email, password } : { country_code: `+${countryCode}`, phone: mobileNumber })
+			};
+
+			dispatch(loginRequest(payload));
 			if (loginMethod === 'email') {
 				router.push("/restaurant");
 			} else {
-				// Simulate successful API call for OTP
 				setIsOtpVerification(true);
+				showSuccessToast("OTP sent successfully");
 			}
 		} else {
 			showErrorToast("Please fix the errors before submitting");

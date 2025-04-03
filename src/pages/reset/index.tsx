@@ -12,13 +12,16 @@ import { NavigationBar } from "@/components/dashboard/navigation-bar";
 import { Footer } from "@/components/dashboard/footer";
 import OTPVerification from "@/components/auth/OTPVerification";
 import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons } from "@/lib/content";
+import { forgetPasswordRequest, resetPasswordRequest } from "@/store/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 interface Module {
 	id: number;
 	name: string;
-  }
+}
 
 export default function ResetPasswordPage() {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [showOTPVerification, setShowOTPVerification] = useState(false);
     const [showNewPasswordForm, setShowNewPasswordForm] = useState(false);
@@ -39,7 +42,7 @@ export default function ResetPasswordPage() {
 		if (savedModule) {
 		  setSelectedModule(JSON.parse(savedModule));
 		}
-	  }, []);
+	}, []);
 
     useEffect(() => {
         const { email: queryEmail } = router.query;
@@ -91,6 +94,7 @@ export default function ResetPasswordPage() {
 
         if (validateForm()) {
             if (!showOTPVerification) {
+                dispatch(forgetPasswordRequest({ email: email }));
                 showSuccessToast(`Verification code sent to your email!`);
                 setShowOTPVerification(true);
             }
@@ -107,6 +111,10 @@ export default function ResetPasswordPage() {
     const handlePasswordReset = (e: React.FormEvent) => {
         e.preventDefault();
         if (validateForm()) {
+            dispatch(resetPasswordRequest({
+                email: email,
+                password: newPassword
+            }));
             showSuccessToast("Password reset successful!");
             router.push("/login");
         }

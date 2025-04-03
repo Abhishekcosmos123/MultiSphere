@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { logout } from '@/store/slices/authSlice';
+import { logoutRequest } from '@/store/slices/authSlice';
 import { useRouter } from 'next/router';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/ui/button";
@@ -33,7 +33,7 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
   };
 
   const confirmLogout = () => {
-    dispatch(logout());
+    dispatch(logoutRequest());
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     router.push('/login');

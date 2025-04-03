@@ -2,8 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FaShieldAlt, FaEnvelope, FaPhone } from "react-icons/fa";
+import { FaShieldAlt, FaEnvelope } from "react-icons/fa";
 import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
+import { verifyForgetPasswordOtpRequest, verifyOtpRequestMobile } from "@/store/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 interface OTPVerificationProps {
     email: string;
@@ -13,6 +15,7 @@ interface OTPVerificationProps {
 }
 
 export default function OTPVerification({ email, onVerify, role, onResendOTP }: OTPVerificationProps) {
+    const dispatch = useDispatch();
     const [otp, setOtp] = useState(Array(6).fill(""));
     const [timeLeft, setTimeLeft] = useState(60);
     const [isResendDisabled, setIsResendDisabled] = useState(true);
@@ -49,8 +52,18 @@ export default function OTPVerification({ email, onVerify, role, onResendOTP }: 
 
         setIsVerifying(true);
         try {
-            // TODO: Implement actual OTP verification logic
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+            if (email.includes('@')) {
+                dispatch(verifyForgetPasswordOtpRequest({ email: email, otp: otpString }));
+            } else {
+                const phoneNumber = email.replace(/^\+/, '');
+                const countryCode = phoneNumber.slice(0, phoneNumber.length - 10);
+                const mobileNumber = phoneNumber.slice(-10);
+                dispatch(verifyOtpRequestMobile({
+                    phone: mobileNumber,
+                    country_code: `+${countryCode}`,
+                    otp: otpString
+                }));
+            }
             showSuccessToast("OTP verified successfully!");
             onVerify();
         } catch (error) {
@@ -74,9 +87,9 @@ export default function OTPVerification({ email, onVerify, role, onResendOTP }: 
                         )}
                     </div>
                     <CardTitle className="text-2xl font-bold text-center text-gray-900">
-                        {role === 'admin' ? 'Admin Verification' : 
-                         role === 'super-admin' ? 'Super Admin Verification' : 
-                         'OTP Verification'}
+                        {role === 'admin' ? 'Admin Verification' :
+                            role === 'super-admin' ? 'Super Admin Verification' :
+                                'OTP Verification'}
                     </CardTitle>
                     <p className="text-sm text-gray-500 mt-2">
                         Enter the 6-digit code sent to {email}

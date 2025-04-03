@@ -14,14 +14,16 @@ import { useRouter } from "next/router";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import '@/styles/phone-input.css';
-import { googleLogin, facebookLogin, microsoftLogin, appleLogin } from '@/lib/socialAuth';
+import { googleLogin, facebookLogin, microsoftLogin, appleLogin, handleRedirectResult } from '@/lib/socialAuth';
 import 'firebase/auth';
 import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons, userRoles } from "@/lib/content";
+import { useDispatch } from "react-redux";
+import { registerRequest, verifyOtpRequest } from "@/store/slices/authSlice";
 
 interface Module {
-	id: number;
-	name: string;
-  }
+    id: number;
+    name: string;
+}
 
 interface FormData {
     fullName: string;
@@ -29,6 +31,7 @@ interface FormData {
     phone: string;
     password: string;
     userRole: string;
+    country_code: string;
 }
 
 interface FormErrors {
@@ -43,7 +46,8 @@ const initialFormData: FormData = {
     email: "",
     phone: "",
     password: "",
-    userRole: "Student"
+    userRole: "",
+    country_code: ""
 };
 
 const initialErrors: FormErrors = {
@@ -63,12 +67,14 @@ export default function SignupPage() {
     const router = useRouter();
     const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' });
 
-	useEffect(() => {
-		const savedModule = localStorage.getItem('selectedModule');
-		if (savedModule) {
-		  setSelectedModule(JSON.parse(savedModule));
-		}
-	  }, []);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const savedModule = localStorage.getItem('selectedModule');
+        if (savedModule) {
+            setSelectedModule(JSON.parse(savedModule));
+        }
+    }, []);
 
     const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFormData(prev => ({
@@ -146,9 +152,27 @@ export default function SignupPage() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (validateForm()) {
-            console.log("Signup data:", formData);
+            const provider = signupMethod === 'email' ? 'email' : 'phone';
+            const payload: any = {
+                name: formData.fullName,
+                role: formData.userRole === "Student" ? "consumer" : "producer",
+                provider: provider
+            };
+
+            if (signupMethod === 'email') {
+                payload.email = formData.email;
+                payload.password = formData.password;
+            } else {
+                const phoneNumber = formData.phone.replace(/^\+/, ''); 
+                const countryCode = phoneNumber.slice(0, phoneNumber.length - 10); 
+                const mobileNumber = phoneNumber.slice(-10); 
+                payload.phone = mobileNumber;
+                payload.country_code = `+${countryCode}`; 
+            }
+
+            dispatch(registerRequest(payload));
             setIsOtpVerification(true);
-            showSuccessToast("Account created successfully!");
+            showSuccessToast("OTP sent successfully");
         } else {
             showErrorToast("Please fix the errors before submitting");
         }
@@ -196,6 +220,20 @@ export default function SignupPage() {
 
     const handleOtpSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        const otpCode = otp.join('');
+        const payload: any = {
+            otp: otpCode
+        };
+        if (signupMethod === 'email') {
+            payload.email = formData.email;
+        } else {
+            const phoneNumber = formData.phone.replace(/^\+/, ''); 
+            const countryCode = phoneNumber.slice(0, phoneNumber.length - 10); 
+            const mobileNumber = phoneNumber.slice(-10); 
+            payload.phone = mobileNumber;
+            payload.country_code = `+${countryCode}`; 
+        }
+        dispatch(verifyOtpRequest(payload));
         showSuccessToast("OTP verified successfully!");
         setTimeout(() => router.push("/restaurant"), 1000);
     };
@@ -266,15 +304,15 @@ export default function SignupPage() {
     return (
         <div className="flex flex-col min-h-screen">
             {selectedModule && (
-				<NavigationBar buttons={
-					{
-						"E-learning": ELearningButtons,
-						"Real Estate": RealEstateButtons,
-						"CRM Management": CRMButtons,
-						"Restaurants": RestaurantButtons,
-					}[selectedModule.name]
-				} />
-			)}
+                <NavigationBar buttons={
+                    {
+                        "E-learning": ELearningButtons,
+                        "Real Estate": RealEstateButtons,
+                        "CRM Management": CRMButtons,
+                        "Restaurants": RestaurantButtons,
+                    }[selectedModule.name]
+                } />
+            )}
             <div className="flex-grow flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8 py-6">
                 <div className="max-w-6xl w-full flex bg-white shadow-lg rounded-lg overflow-hidden">
                     <div className="hidden md:flex w-1/2 items-center justify-center p-8 h-fit">

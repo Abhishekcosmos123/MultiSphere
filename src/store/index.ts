@@ -3,7 +3,7 @@ import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
 import authReducer from './slices/authSlice';
 import exampleReducer from './slices/exampleSlice';
-import { watchAuth } from './sagas/authSaga';
+import { authSaga } from './sagas/authSaga';
 import { watchExample } from './sagas/exampleSaga';
 
 /**
@@ -13,7 +13,7 @@ import { watchExample } from './sagas/exampleSaga';
  * - Example sagas
  */
 function* rootSaga() {
-  yield all([watchAuth(), watchExample()]);
+  yield all([authSaga(), watchExample()]);
 }
 
 // Create saga middleware for handling side effects
