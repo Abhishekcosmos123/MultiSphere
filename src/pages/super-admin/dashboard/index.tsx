@@ -1,6 +1,7 @@
 import DashboardLayout from "../layout"
 import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"  
+import { storage, StorageKeys } from '@/lib/utils/storage'
 
 export default function DashboardPage() {
     const [crmModules] = useState([
@@ -13,9 +14,9 @@ export default function DashboardPage() {
     const [selectedModule, setSelectedModule] = useState(crmModules[0])
 
     useEffect(() => {
-        const savedModule = localStorage.getItem('selectedModule');
+        const savedModule = storage.getJson(StorageKeys.SELECTED_MODULE);
         if (savedModule) {
-            setSelectedModule(JSON.parse(savedModule));
+            setSelectedModule(savedModule);
         }
     }, []);
 
@@ -28,13 +29,11 @@ export default function DashboardPage() {
     }
 
     const handleSave = () => {
-        localStorage.setItem('selectedModule', JSON.stringify(selectedModule));
-        // Logic to save the selected module
+        storage.setJson(StorageKeys.SELECTED_MODULE, selectedModule);
         console.log("Saved module:", selectedModule);
     }
 
     const handleCancel = () => {
-        // Logic to cancel the selection
         setSelectedModule(crmModules[0]);
     }
 

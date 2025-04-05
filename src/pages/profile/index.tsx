@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input";
 import { logoutRequest } from "@/store/slices/authSlice";
 import { useRouter } from "next/router";
 import { showSuccessToast } from "@/lib/utils/toast";
+import { storage, StorageKeys } from '@/lib/utils/storage';
 
 interface Module {
 	id: number;
@@ -49,9 +50,9 @@ export default function ProfilePage() {
 	const [countryCode, setCountryCode] = useState(user?.country_code || "");
 
 	useEffect(() => {
-		const savedModule = localStorage.getItem("selectedModule");
+		const savedModule = storage.getJson(StorageKeys.SELECTED_MODULE);
 		if (savedModule) {
-			setSelectedModule(JSON.parse(savedModule));
+			setSelectedModule(savedModule);
 		}
 	}, []);
 
@@ -61,9 +62,10 @@ export default function ProfilePage() {
 	};
 
 	const handleLogout = () => {
-		dispatch(logoutRequest({refreshToken: localStorage.getItem('token') || undefined}))
-		localStorage.removeItem('token');
-		localStorage.removeItem('user');
+		const token = storage.get(StorageKeys.TOKEN);
+		dispatch(logoutRequest({refreshToken: token ? String(token) : undefined}))
+		storage.remove(StorageKeys.TOKEN);
+		storage.remove(StorageKeys.USER);
 		router.push('/');
         showSuccessToast("Logged out Successfully")
 	};

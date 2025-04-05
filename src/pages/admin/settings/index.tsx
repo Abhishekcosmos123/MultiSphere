@@ -11,7 +11,7 @@ const SettingsPage = () => {
         if (storedMode) {
             setIsProducerMode(JSON.parse(storedMode));
         }
-    }, []);
+    }, []);                                             
 
     const toggleProducerMode = () => {
         setIsProducerMode(prevMode => {

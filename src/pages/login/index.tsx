@@ -21,6 +21,7 @@ import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons } fr
 import { loginRequest } from "@/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { storage, StorageKeys } from '@/lib/utils/storage';
 
 interface Module {
 	id: number;
@@ -45,9 +46,9 @@ export default function LoginPage() {
 	const user = useSelector((state: RootState) => state.auth);
 
 	useEffect(() => {
-		const savedModule = localStorage.getItem('selectedModule');
+		const savedModule = storage.getJson(StorageKeys.SELECTED_MODULE);
 		if (savedModule) {
-			setSelectedModule(JSON.parse(savedModule));
+			setSelectedModule(savedModule);
 		}
 	}, []);
 

@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/ui/button";
@@ -21,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { registerRequest, verifyOtpRequest } from "@/store/slices/authSlice";
 import { RootState } from "@/store";
 import { getCookie } from "cookies-next";
+import { storage, StorageKeys } from '@/lib/utils/storage';
 
 interface Module {
     id: number;
@@ -74,9 +76,9 @@ export default function SignupPage() {
     const otpResponse = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
-        const savedModule = localStorage.getItem('selectedModule');
+        const savedModule = storage.getJson(StorageKeys.SELECTED_MODULE);
         if (savedModule) {
-            setSelectedModule(JSON.parse(savedModule));
+            setSelectedModule(savedModule);
         }
     }, []);
 

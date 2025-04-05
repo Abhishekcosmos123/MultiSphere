@@ -17,6 +17,8 @@ import { RootState } from "@/store"
 import { useRouter } from "next/router"
 import { logoutRequest } from "@/store/slices/authSlice"
 import { showSuccessToast } from "@/lib/utils/toast"
+import { useEffect, useState } from "react"
+import { storage, StorageKeys } from '@/lib/utils/storage'
 
 interface NavbarProps {
   toggleSidebar: () => void
@@ -26,12 +28,17 @@ export default function Navbar({ toggleSidebar }: NavbarProps) {
   const { user } = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch()
   const router = useRouter()
-  const token = localStorage.getItem('token');
+  const [token, setToken] = useState<string | null>(null)
+
+  useEffect(() => {
+    const storedToken = storage.get(StorageKeys.TOKEN);
+    setToken(storedToken ? String(storedToken) : null);
+  }, [])
 
   const handleLogout = () => {
     dispatch(logoutRequest({ refreshToken: token || undefined }))
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
+    storage.remove(StorageKeys.TOKEN)
+    storage.remove(StorageKeys.USER)
     router.push('/')
     showSuccessToast("Logged out Successfully")
   }

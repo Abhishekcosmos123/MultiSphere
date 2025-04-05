@@ -15,6 +15,7 @@ import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons } fr
 import { forgetPasswordRequest, resetPasswordRequest } from "@/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { storage, StorageKeys } from '@/lib/utils/storage';
 
 interface Module {
 	id: number;
@@ -40,9 +41,9 @@ export default function ResetPasswordPage() {
     const forgetPasswordResponse = useSelector((state: RootState) => state.auth.forgetPasswordResponse);
 
 	useEffect(() => {
-		const savedModule = localStorage.getItem('selectedModule');
+		const savedModule = storage.getJson(StorageKeys.SELECTED_MODULE);
 		if (savedModule) {
-		  setSelectedModule(JSON.parse(savedModule));
+		  setSelectedModule(savedModule);
 		}
 	}, []);
 

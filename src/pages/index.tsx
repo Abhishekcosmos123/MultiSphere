@@ -21,6 +21,7 @@ import { CategorySection } from "@/components/dashboard/category-section";
 import { HeroSection } from "@/components/dashboard/hero-section";
 import { NavigationBar } from "@/components/dashboard/navigation-bar";
 import { CourseCarousel } from "@/components/dashboard/course-carousel";
+import { storage, StorageKeys } from '@/lib/utils/storage';
 
 interface Module {
   id: number;
@@ -112,9 +113,9 @@ export default function Home() {
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
 
   useEffect(() => {
-    const savedModule = localStorage.getItem('selectedModule');
+    const savedModule = storage.getJson(StorageKeys.SELECTED_MODULE);
     if (savedModule) {
-      setSelectedModule(JSON.parse(savedModule));
+      setSelectedModule(savedModule);
     }
   }, []);
 

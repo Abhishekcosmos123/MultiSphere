@@ -30,6 +30,7 @@ import {
   socialLoginFailure
 } from '../slices/authSlice';
 import { authService, LoginCredentials, LogoutToken, RegisterData, SocialLoginData } from '@/lib/api/services/authService';
+import { storage, StorageKeys } from '@/lib/utils/storage';
 
 /**
  * Saga worker for handling login process
@@ -42,9 +43,9 @@ export function* loginSaga(action: PayloadAction<LoginCredentials>): Generator {
   try {
     const response = yield call(authService.login, action.payload);
     yield put(loginSuccess(response));
-    // Store in localStorage
-    localStorage.setItem('token', response.data.token.refresh.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
+    // Store in storage
+    storage.set(StorageKeys.TOKEN, response.data.token.refresh.token);
+    storage.setJson(StorageKeys.USER, response.user);
     
     // Redirect to home
     // window.location.href = '/';
@@ -76,6 +77,7 @@ export function* verifyOtpSaga(action: PayloadAction<{ otp: string }>): Generato
     // Assuming the OTP verification API is implemented in authService
     const response = yield call(authService.verifyOtp, action.payload);
     yield put(verifyOtpSuccess(response));
+    storage.set(StorageKeys.TOKEN, response.data.token.refresh.token);
     // Handle success (e.g., redirect or show success message)
   } catch (error: any) {
     yield put(verifyOtpFailure(error.message));
@@ -90,8 +92,8 @@ export function* verifyOtpMobileSaga(action: PayloadAction<{ otp: string }>): Ge
     // Assuming the OTP verification API is implemented in authService
     const response = yield call(authService.verifyOtpMobile, action.payload);
     yield put(verifyOtpSuccessMobile(response));
-    localStorage.setItem('token', response.data.token.refresh.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
+    storage.set(StorageKeys.TOKEN, response.data.token.refresh.token);
+    storage.setJson(StorageKeys.USER, response.user);
     // Handle success (e.g., redirect or show success message)
   } catch (error: any) {
     yield put(verifyOtpFailureMobile(error.message));
@@ -103,11 +105,11 @@ export function* verifyOtpMobileSaga(action: PayloadAction<{ otp: string }>): Ge
  */
 export function* logoutSaga(action: PayloadAction<LogoutToken>): Generator {
   try {
-    yield call(authService.logout,action.payload);
+    const response = yield call(authService.logout, action.payload);
     yield put(logoutSuccess());
-    // Clear localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    // Clear storage
+    storage.remove(StorageKeys.TOKEN);
+    storage.remove(StorageKeys.USER);
     // Redirect to login
     window.location.href = '/';
   } catch (error: any) {
@@ -161,9 +163,9 @@ export function* socialLoginSaga(action: PayloadAction<SocialLoginData>): Genera
   try {
     const response = yield call(authService.socialLogin, action.payload);
     yield put(socialLoginSuccess(response));
-    // Store in localStorage
-    localStorage.setItem('token', JSON.stringify(response.data.token));
-    localStorage.setItem('user', JSON.stringify(response.data.user));
+    // Store in storage
+    storage.setJson(StorageKeys.TOKEN, response.data.token);
+    storage.setJson(StorageKeys.USER, response.data.user);
   } catch (error: any) {
     yield put(socialLoginFailure(error.message));
   }

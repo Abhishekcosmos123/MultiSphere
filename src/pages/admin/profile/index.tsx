@@ -19,6 +19,7 @@ import { logoutRequest } from "@/store/slices/authSlice";
 import { useRouter } from "next/router";
 import { showSuccessToast } from "@/lib/utils/toast";
 import DashboardLayout from "@/pages/super-admin/layout";
+import { storage, StorageKeys } from '@/lib/utils/storage';
 
 export default function ProfilePage() {
     const router = useRouter();
@@ -37,9 +38,10 @@ export default function ProfilePage() {
 	};
 
 	const handleLogout = () => {
-		dispatch(logoutRequest({refreshToken: localStorage.getItem('token') || undefined}))
-		localStorage.removeItem('token');
-		localStorage.removeItem('user');
+		const token = storage.get(StorageKeys.TOKEN);
+		dispatch(logoutRequest({refreshToken: token ? String(token) : undefined}))
+		storage.remove(StorageKeys.TOKEN);
+		storage.remove(StorageKeys.USER);
 		router.push('/');
         showSuccessToast("Logged out Successfully")
 	};
@@ -165,7 +167,6 @@ export default function ProfilePage() {
 						</CardContent>
 					</Card>
 				</div>
-				{/* <Footer /> */}
 			</div>
 		</DashboardLayout>
 	);

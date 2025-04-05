@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { storage, StorageKeys } from '@/lib/utils/storage';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -16,7 +17,7 @@ class ApiClient {
     // Add request interceptor for auth token
     this.client.interceptors.request.use(
       (config) => {
-        const token = localStorage.getItem('token');
+        const token = storage.get(StorageKeys.TOKEN);
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -33,8 +34,8 @@ class ApiClient {
       (error: AxiosError) => {
         if (error.response?.status === 401) {
           // Handle unauthorized access
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
+          storage.remove(StorageKeys.TOKEN);
+          storage.remove(StorageKeys.USER);
           // window.location.href = '/login';
         }
         return Promise.reject(error);

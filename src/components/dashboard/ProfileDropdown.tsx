@@ -15,12 +15,14 @@ import {
 import { useState } from 'react';
 import ConfirmationModal from '@/components/ui/ConfirmationModal';
 import { showSuccessToast } from '@/lib/utils/toast';
+import { storage, StorageKeys } from '@/lib/utils/storage';
 
 interface ProfileDropdownProps {
   user: {
     name: string;
-    // email: string;
+    email?: string;
     profileImage?: string;
+    phone?: string;
   };
 }
 
@@ -34,11 +36,10 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
   };
 
   const confirmLogout = () => {
-    console.log(localStorage.getItem('token'))
-    dispatch(logoutRequest({refreshToken: localStorage.getItem('token') || undefined}))
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    // setDialogOpen(false);
+    const token = storage.get(StorageKeys.TOKEN);
+    dispatch(logoutRequest({refreshToken: token ? String(token) : undefined}))
+    storage.remove(StorageKeys.TOKEN);
+    storage.remove(StorageKeys.USER);
     router.push('/');
     showSuccessToast('Log out successfully');
   };
@@ -60,9 +61,9 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">{user.name}</p>
-              {/* <p className="text-xs leading-none text-muted-foreground">
-                {user?.email}
-              </p> */}
+              <p className="text-xs leading-none text-muted-foreground">
+                {user.email ? user.email : user.phone}
+              </p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />

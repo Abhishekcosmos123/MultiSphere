@@ -10,11 +10,12 @@ import {
   appleProvider,
 } from "./firebaseConfig";
 import { store } from "@/store";
-import { loginSuccess, socialLoginRequest } from "@/store/slices/authSlice"; // Ensure this import is correct
+import { loginSuccess, socialLoginRequest } from "@/store/slices/authSlice";
+import { storage, StorageKeys } from '@/lib/utils/storage';
 
 const handleSocialLoginSuccess = async (user: any, provider: string) => {
   try {
-    const idToken = await user.getIdToken(); // ✅ Get valid Firebase ID token
+    const idToken = await user.getIdToken(); 
 
     const userData = {
       id: user.uid,
@@ -53,27 +54,24 @@ const handleSocialLoginSuccess = async (user: any, provider: string) => {
       success: true
     }));
 
-    // ✅ Store in localStorage
-    localStorage.setItem("token", idToken);
-    localStorage.setItem("user", JSON.stringify(userData));
+    storage.set(StorageKeys.TOKEN, idToken);
+    storage.setJson(StorageKeys.USER, userData);
 
-    // ✅ Dispatch for backend verification
-    // store.dispatch(
-    //   socialLoginRequest({
-    //     idToken,
-    //     provider,
-    //     role: userData.role,
-    //     email: userData.email,
-    //     phone: userData.phone,
-    //     name: userData.name,
-    //   })
-    // );
+    store.dispatch(
+      socialLoginRequest({
+        idToken,
+        provider,
+        role: userData.role,
+        email: userData.email,
+        phone: userData.phone,
+        name: userData.name,
+      })
+    );
   } catch (error) {
     console.error("Error in handleSocialLoginSuccess:", error);
   }
 };
 
-// 🔄 Handle redirect-based login results (optional)
 export const handleRedirectResult = async () => {
   try {
     const result = await getRedirectResult(auth);
@@ -88,7 +86,6 @@ export const handleRedirectResult = async () => {
   }
 };
 
-// 🌐 Google login
 export const googleLogin = async () => {
   try {
     const result = await signInWithPopup(auth, googleProvider);
@@ -100,7 +97,6 @@ export const googleLogin = async () => {
   }
 };
 
-// 📘 Facebook login
 export const facebookLogin = async () => {
   try {
     const result = await signInWithPopup(auth, facebookProvider);
@@ -112,7 +108,6 @@ export const facebookLogin = async () => {
   }
 };
 
-// 🧑‍💼 Microsoft login
 export const microsoftLogin = async () => {
   try {
     const result = await signInWithPopup(auth, microsoftProvider);
@@ -124,7 +119,6 @@ export const microsoftLogin = async () => {
   }
 };
 
-// 🍎 Apple login
 export const appleLogin = async () => {
   try {
     const result = await signInWithPopup(auth, appleProvider);
