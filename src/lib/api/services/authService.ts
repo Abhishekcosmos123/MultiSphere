@@ -18,15 +18,30 @@ export interface RegisterData {
 }
 
 export interface AuthResponse {
-  user: {
-    id: string;
-    email: string;
-    name: string;
-    phone: string;
-    country_code: string;
-    role: string;
+  data: {
+    user: {
+      id: string;
+      name: string;
+      phone: string;
+      country_code: string;
+      role: string;
+      email: string;
+      profileImage: string;
+    };
+    token: {
+      access: {
+        token: string;
+        expires: string;
+      };
+      refresh: {
+        token: string;
+        expires: string;
+      };
+    };
+    status: boolean
   };
-  token: string;
+  message: string;
+  success: boolean;
 }
 
 export interface OTPData {
@@ -34,6 +49,10 @@ export interface OTPData {
   otp: string;
   phone?: string;
   country_code?: string;
+}
+
+export interface LogoutToken {
+  refreshToken?: string;
 }
 
 export interface OTPDataMobile {
@@ -56,6 +75,15 @@ export interface ResetPasswordData {
   password: string;
 }
 
+export interface SocialLoginData {
+  idToken: string;
+  provider: string;
+  role: string;
+  email: string;
+  phone: string;
+  name: string;
+}
+
 export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     return apiClient.post<AuthResponse>('/auth/login', credentials);
@@ -65,17 +93,17 @@ export const authService = {
     return apiClient.post<AuthResponse>('/auth/register', data);
   },
 
-  async logout(): Promise<void> {
-    return apiClient.post('/auth/logout');
+  async logout(data: LogoutToken): Promise<void> {
+    return apiClient.post('/auth/logout',data);
   },
 
-  async getCurrentUser(): Promise<AuthResponse['user']> {
-    return apiClient.get<AuthResponse['user']>('/auth/me');
-  },
+  // async getCurrentUser(): Promise<AuthResponse['user']> {
+  //   return apiClient.get<AuthResponse['user']>('/auth/me');
+  // },
 
-  async updateProfile(data: Partial<AuthResponse['user']>): Promise<AuthResponse['user']> {
-    return apiClient.put<AuthResponse['user']>('/auth/profile', data);
-  },
+  // async updateProfile(data: Partial<AuthResponse['user']>): Promise<AuthResponse['user']> {
+  //   return apiClient.put<AuthResponse['user']>('/auth/profile', data);
+  // },
 
   async verifyOtp(data: OTPData): Promise<void> {
     return apiClient.post('/auth/verify-otp', data);
@@ -95,5 +123,9 @@ export const authService = {
 
   async resetPassword(data: ResetPasswordData): Promise<{ message: string }> {
     return apiClient.post('/auth/reset-password', data);
+  },
+
+  async socialLogin(data: SocialLoginData): Promise<AuthResponse> {
+    return apiClient.post<AuthResponse>('/auth/social-login', data);
   },
 }; 

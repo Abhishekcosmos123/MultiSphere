@@ -14,11 +14,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from 'react';
 import ConfirmationModal from '@/components/ui/ConfirmationModal';
+import { showSuccessToast } from '@/lib/utils/toast';
 
 interface ProfileDropdownProps {
   user: {
     name: string;
-    email: string;
+    // email: string;
     profileImage?: string;
   };
 }
@@ -33,10 +34,13 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
   };
 
   const confirmLogout = () => {
-    dispatch(logoutRequest());
+    console.log(localStorage.getItem('token'))
+    dispatch(logoutRequest({refreshToken: localStorage.getItem('token') || undefined}))
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    router.push('/login');
+    // setDialogOpen(false);
+    router.push('/');
+    showSuccessToast('Log out successfully');
   };
 
   return (
@@ -56,9 +60,9 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">{user.name}</p>
-              <p className="text-xs leading-none text-muted-foreground">
-                {user.email}
-              </p>
+              {/* <p className="text-xs leading-none text-muted-foreground">
+                {user?.email}
+              </p> */}
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />

@@ -13,7 +13,8 @@ import { Footer } from "@/components/dashboard/footer";
 import OTPVerification from "@/components/auth/OTPVerification";
 import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons } from "@/lib/content";
 import { forgetPasswordRequest, resetPasswordRequest } from "@/store/slices/authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 interface Module {
 	id: number;
@@ -36,6 +37,7 @@ export default function ResetPasswordPage() {
     });
     const router = useRouter();
     const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' });
+    const forgetPasswordResponse = useSelector((state: RootState) => state.auth.forgetPasswordResponse);
 
 	useEffect(() => {
 		const savedModule = localStorage.getItem('selectedModule');
@@ -50,6 +52,13 @@ export default function ResetPasswordPage() {
             setEmail(queryEmail);
         }
     }, [router.query]);
+
+    useEffect(() => {
+        if (forgetPasswordResponse?.success) {
+            showSuccessToast(`Verification code sent to your email!`);
+            setShowOTPVerification(true);
+        }
+    }, [forgetPasswordResponse]);
 
     const validateForm = () => {
         const newErrors = {
@@ -95,8 +104,6 @@ export default function ResetPasswordPage() {
         if (validateForm()) {
             if (!showOTPVerification) {
                 dispatch(forgetPasswordRequest({ email: email }));
-                showSuccessToast(`Verification code sent to your email!`);
-                setShowOTPVerification(true);
             }
         } else {
             showErrorToast("Please fix the errors before submitting");

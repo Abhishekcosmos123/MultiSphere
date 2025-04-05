@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FaShieldAlt, FaEnvelope } from "react-icons/fa";
 import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
 import { verifyForgetPasswordOtpRequest, verifyOtpRequestMobile } from "@/store/slices/authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 interface OTPVerificationProps {
     email: string;
@@ -21,6 +22,7 @@ export default function OTPVerification({ email, onVerify, role, onResendOTP }: 
     const [isResendDisabled, setIsResendDisabled] = useState(true);
     const [isVerifying, setIsVerifying] = useState(false);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+    const { otpResponse } = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
@@ -33,6 +35,13 @@ export default function OTPVerification({ email, onVerify, role, onResendOTP }: 
         }
         return () => clearInterval(timer);
     }, [timeLeft, isResendDisabled]);
+
+    useEffect(() => {
+        if (otpResponse?.success) {
+            showSuccessToast(otpResponse.message);
+            onVerify();
+        }
+    }, [otpResponse, onVerify]);
 
     const handleResendOTP = () => {
         if (onResendOTP) {
@@ -54,6 +63,7 @@ export default function OTPVerification({ email, onVerify, role, onResendOTP }: 
         try {
             if (email.includes('@')) {
                 dispatch(verifyForgetPasswordOtpRequest({ email: email, otp: otpString }));
+                onVerify();
             } else {
                 const phoneNumber = email.replace(/^\+/, '');
                 const countryCode = phoneNumber.slice(0, phoneNumber.length - 10);
@@ -64,8 +74,6 @@ export default function OTPVerification({ email, onVerify, role, onResendOTP }: 
                     otp: otpString
                 }));
             }
-            showSuccessToast("OTP verified successfully!");
-            onVerify();
         } catch (error) {
             showErrorToast("Invalid OTP. Please try again.");
         } finally {

@@ -17,8 +17,10 @@ import '@/styles/phone-input.css';
 import { googleLogin, facebookLogin, microsoftLogin, appleLogin, handleRedirectResult } from '@/lib/socialAuth';
 import 'firebase/auth';
 import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons, userRoles } from "@/lib/content";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { registerRequest, verifyOtpRequest } from "@/store/slices/authSlice";
+import { RootState } from "@/store";
+import { getCookie } from "cookies-next";
 
 interface Module {
     id: number;
@@ -46,7 +48,7 @@ const initialFormData: FormData = {
     email: "",
     phone: "",
     password: "",
-    userRole: "",
+    userRole: "Student",
     country_code: ""
 };
 
@@ -66,8 +68,10 @@ export default function SignupPage() {
     const [errors, setErrors] = useState<FormErrors>(initialErrors);
     const router = useRouter();
     const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' });
-
+    const registerAPIResponse = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch();
+    const disableTeacher = getCookie("producerMode");
+    const otpResponse = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
         const savedModule = localStorage.getItem('selectedModule');
@@ -77,9 +81,10 @@ export default function SignupPage() {
     }, []);
 
     const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedRole = e.target.value;
         setFormData(prev => ({
             ...prev,
-            userRole: e.target.value
+            userRole: selectedRole
         }));
     };
 
@@ -155,7 +160,7 @@ export default function SignupPage() {
             const provider = signupMethod === 'email' ? 'email' : 'phone';
             const payload: any = {
                 name: formData.fullName,
-                role: formData.userRole === "Student" ? "consumer" : "producer",
+                role: disableTeacher ? "consumer" : (formData.userRole === "Student" ? "consumer" : "producer"),
                 provider: provider
             };
 
@@ -171,12 +176,29 @@ export default function SignupPage() {
             }
 
             dispatch(registerRequest(payload));
-            setIsOtpVerification(true);
-            showSuccessToast("OTP sent successfully");
         } else {
             showErrorToast("Please fix the errors before submitting");
         }
     };
+
+    useEffect(() => {
+        if (registerAPIResponse?.registerResponse?.success) {
+            setIsOtpVerification(true);
+            showSuccessToast(registerAPIResponse?.registerResponse?.message);
+        } else if (registerAPIResponse?.registerResponse?.message) {
+            showErrorToast(registerAPIResponse.registerResponse?.message || "Failed to sign up");
+        }
+        if(registerAPIResponse.error){
+            showErrorToast(registerAPIResponse.error);
+        }
+    }, [registerAPIResponse.registerResponse, registerAPIResponse.error]);
+
+    useEffect(() => {
+        if (otpResponse.otpResponse) {
+            showSuccessToast("OTP verified successfully!");
+            router.push("/");
+        }
+    }, [otpResponse.otpResponse, router]);
 
     const handleSocialSignup = async (provider: string) => {
         try {
@@ -234,8 +256,6 @@ export default function SignupPage() {
             payload.country_code = `+${countryCode}`; 
         }
         dispatch(verifyOtpRequest(payload));
-        showSuccessToast("OTP verified successfully!");
-        setTimeout(() => router.push("/restaurant"), 1000);
     };
 
     const renderInput = (name: keyof FormData, label: string, type: string = "text") => {
@@ -333,25 +353,26 @@ export default function SignupPage() {
                             <CardContent>
                                 {!isOtpVerification ? (
                                     <form onSubmit={handleSubmit} className="space-y-6">
-                                        <div className="grid grid-cols-1 gap-4 mb-6">
-                                            <div className="relative">
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                    Are you?
-                                                </label>
+                                        {/* {!disableTeacher && ( */}
+                                            <div className="grid grid-cols-1 gap-4 mb-6">
                                                 <div className="relative">
-                                                    <select
-                                                        value={formData.userRole}
-                                                        onChange={handleRoleChange}
-                                                        className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-700 focus:border-purple-500 focus:ring-purple-500 appearance-none"
-                                                    >
-                                                        {userRoles.map(role => (
-                                                            <option key={role} value={role}>{role}</option>
-                                                        ))}
-                                                    </select>
-                                                    <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                        Are you?
+                                                    </label>
+                                                    <div className="relative">
+                                                        <select
+                                                            value={formData.userRole}
+                                                            onChange={handleRoleChange}
+                                                            className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-700 focus:border-purple-500 focus:ring-purple-500 appearance-none"
+                                                        >
+                                                            {userRoles.map(role => (
+                                                                <option key={role} value={role}>{role}</option>
+                                                            ))}
+                                                        </select>
+                                                        <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         {renderInput("fullName", "Full Name")}
 
                                         <div className="flex border-b border-gray-200 mb-4">

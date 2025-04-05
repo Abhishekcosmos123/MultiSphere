@@ -9,7 +9,6 @@ import {
   TableCell,
   TableHeader,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import DashboardLayout from "../layout";
 import AddUserModal from "@/components/admin/AddUserModal";
@@ -23,7 +22,7 @@ interface User {
   status: "Active" | "Inactive";
   loginTime: string;
   type: string;
-  role: string; // Added role property
+  role: string; 
 }
 
 const initialUsers: User[] = Array.from({ length: 20 }, (_, i) => ({
@@ -33,7 +32,7 @@ const initialUsers: User[] = Array.from({ length: 20 }, (_, i) => ({
   status: i % 2 === 0 ? "Active" : "Inactive",
   loginTime: "10:30 AM",
   type: "Consumer",
-  role: "User", // Added role for consumers
+  role: "User", 
 }));
 
 const initialProducers: User[] = Array.from({ length: 20 }, (_, i) => ({
@@ -43,15 +42,16 @@ const initialProducers: User[] = Array.from({ length: 20 }, (_, i) => ({
   status: i % 2 === 0 ? "Active" : "Inactive",
   loginTime: "12:15 PM",
   type: "Producer",
-  role: "Admin", // Added role for producers
+  role: "Admin",
 }));
 
 interface UserTableProps {
   users: User[];
   deleteUser: (id: number) => void;
+  toggleUserStatus: (id: number) => void; 
 }
 
-const UserTable: React.FC<UserTableProps> = ({ users, deleteUser }) => (
+const UserTable: React.FC<UserTableProps> = ({ users, deleteUser, toggleUserStatus }) => (
   <Table className="min-w-full bg-white shadow-lg rounded-lg overflow-hidden">
     <TableHeader>
       <TableRow className="bg-gray-200">
@@ -72,7 +72,12 @@ const UserTable: React.FC<UserTableProps> = ({ users, deleteUser }) => (
           <TableCell>{user.name}</TableCell>
           <TableCell>{user.email}</TableCell>
           <TableCell>
-            <Badge className={user.status === "Active" ? "bg-green-500 text-white" : "bg-red-500 text-white"}>{user.status}</Badge>
+            <input 
+              type="checkbox" 
+              checked={user.status === "Active"} 
+              onChange={() => toggleUserStatus(user.id)} 
+              className="form-checkbox h-5 w-5 text-green-600"
+            />
           </TableCell>
           <TableCell>{user.loginTime}</TableCell>
           <TableCell>{user.role}</TableCell>
@@ -99,8 +104,8 @@ const UsersTable: React.FC = () => {
   const [producers, setProducers] = useState<User[]>(initialProducers);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // State for confirmation modal
-  const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null); // State to hold user ID for deletion
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null); 
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -122,6 +127,15 @@ const UsersTable: React.FC = () => {
   const handleDeleteUser = (id: number) => {
     setUserIdToDelete(id); // Set user ID to delete
     setIsConfirmModalOpen(true); // Open confirmation modal
+  };
+
+  const toggleUserStatus = (id: number) => {
+    if (activeTab === "Consumers") {
+      setUsers(users.map(user => user.id === id ? { ...user, status: user.status === "Active" ? "Inactive" : "Active" } : user));
+    } else {
+      setProducers(producers.map(producer => producer.id === id ? { ...producer, status: producer.status === "Active" ? "Inactive" : "Active" } : producer));
+    }
+    showSuccessToast("User status updated successfully!"); // Show success toast
   };
 
   const handleAddUser = (userData: { name: string; email?: string; phone?: string; role: string }): void => {
@@ -172,7 +186,7 @@ const UsersTable: React.FC = () => {
             >
               <FaPlus className="mr-2" /> Add Consumer
             </Button>
-            <UserTable users={filteredUsers} deleteUser={handleDeleteUser} />
+            <UserTable users={filteredUsers} deleteUser={handleDeleteUser} toggleUserStatus={toggleUserStatus} />
           </TabsContent>
           <TabsContent value="Producers">
             <input 
@@ -188,7 +202,7 @@ const UsersTable: React.FC = () => {
             >
               <FaPlus className="mr-2" /> Add Producer
             </Button>
-            <UserTable users={filteredUsers} deleteUser={handleDeleteUser} />
+            <UserTable users={filteredUsers} deleteUser={handleDeleteUser} toggleUserStatus={toggleUserStatus} />
           </TabsContent>
         </Tabs>
         <AddUserModal

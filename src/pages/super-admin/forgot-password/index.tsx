@@ -69,7 +69,6 @@ export default function SuperAdminForgotPasswordPage() {
         if (validateForm()) {
             if (!showPasswordFields) {
                 const data = { email };
-                console.log("Super Admin forgot password request:", data);
                 setIsOtpVerification(true);
                 showSuccessToast("Reset instructions sent successfully!");
             } else {

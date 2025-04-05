@@ -14,6 +14,8 @@ import '@/styles/phone-input.css';
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { googleLogin, facebookLogin, microsoftLogin, appleLogin } from '@/lib/socialAuth';
 import 'firebase/auth';
+import { useDispatch } from "react-redux";
+import { registerRequest } from "@/store/slices/authSlice";
 
 interface AuthFormProps {
     type: 'login' | 'signup';
@@ -22,7 +24,7 @@ interface AuthFormProps {
 }
 
 interface FormData {
-    fullName?: string;
+    fullName: string;
     email?: string;
     mobileNumber?: string;
     password?: string;
@@ -36,6 +38,7 @@ interface FormErrors {
 }
 
 export default function AuthForm({ type, role, onSubmit }: AuthFormProps) {
+    const dispatch = useDispatch();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -103,12 +106,28 @@ export default function AuthForm({ type, role, onSubmit }: AuthFormProps) {
         if (validateForm()) {
             setIsLoading(true);
             try {
-                if (useMobile) {
-                    setOtpSent(true);
-                } else {
-                    await onSubmit(formData);
-                    setOtpSent(true);
-                }
+                    if (formData.email) {
+                       dispatch(registerRequest({
+                            name: formData.fullName,
+                            email: formData.email,
+                            password: formData.password,
+                            provider: 'email',
+                            role: 'admin'
+                        }));
+                        setOtpSent(true);
+                    } else {
+                        const phoneNumber = formData.mobileNumber?.replace(/^\+/, ''); 
+                        const countryCode = phoneNumber?.slice(0, phoneNumber.length - 10); 
+                        const mobileNumber = phoneNumber?.slice(-10); 
+                        dispatch(registerRequest({
+                            name: formData.fullName,
+                            phone: mobileNumber,
+                            country_code: `+${countryCode}`,
+                            provider: 'phone',
+                            role: 'admin'
+                        }));
+                        setOtpSent(true);
+                    }
             } catch (error) {
                 showErrorToast(`${type === 'login' ? 'Login' : 'Signup'} failed. Please try again.`);
             } finally {

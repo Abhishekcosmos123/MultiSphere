@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AuthLayout from "@/components/auth/AuthLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/ui/button";
@@ -9,8 +9,12 @@ import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
 import { useRouter } from "next/router";
 import OTPVerification from "@/components/auth/OTPVerification";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { forgetPasswordRequest, resetPasswordRequest } from "@/store/slices/authSlice";
+import { RootState } from "@/store";
 
 export default function AdminForgotPasswordPage() {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [isOtpVerification, setIsOtpVerification] = useState(false);
     const [showPasswordFields, setShowPasswordFields] = useState(false);
@@ -24,6 +28,13 @@ export default function AdminForgotPasswordPage() {
         newPassword: "",
         confirmPassword: "",
     });
+    const forgetPasswordResponse = useSelector((state: RootState) => state.auth.forgetPasswordResponse);
+
+    useEffect(() => {
+        if (forgetPasswordResponse?.success) {
+            setIsOtpVerification(true);
+        }
+    }, [forgetPasswordResponse]);
 
     const validateForm = () => {
         const newErrors = {
@@ -69,12 +80,9 @@ export default function AdminForgotPasswordPage() {
         if (validateForm()) {
             if (!showPasswordFields) {
                 const data = { email };
-                console.log("Admin forgot password request:", data);
-                setIsOtpVerification(true);
-                showSuccessToast("Reset instructions sent successfully!");
+                dispatch(forgetPasswordRequest(data));
             } else {
-                const data = { email, newPassword };
-                console.log("Admin password reset:", data);
+                dispatch(resetPasswordRequest({email: email, password: newPassword}));
                 showSuccessToast("Password reset successfully!");
                 router.push("/admin/login");
             }

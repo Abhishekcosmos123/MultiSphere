@@ -19,7 +19,8 @@ import { googleLogin, facebookLogin, microsoftLogin, appleLogin, handleRedirectR
 import 'firebase/auth';
 import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons } from "@/lib/content";
 import { loginRequest } from "@/store/slices/authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 interface Module {
 	id: number;
@@ -40,14 +41,25 @@ export default function LoginPage() {
 		phone: "",
 		password: "",
 	});
-	const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' }); 
+	const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' });
+	const user = useSelector((state: RootState) => state.auth);
 
 	useEffect(() => {
 		const savedModule = localStorage.getItem('selectedModule');
 		if (savedModule) {
-		  setSelectedModule(JSON.parse(savedModule));
+			setSelectedModule(JSON.parse(savedModule));
 		}
 	}, []);
+
+	useEffect(() => {
+		if (user.isAuthenticated && loginMethod === 'email') {
+			router.push("/");
+			showSuccessToast("Logged In Successfully");
+		}
+		if(user.error){
+			showErrorToast(user.error)
+		}
+	}, [user.isAuthenticated, router, user.error]);
 
 	const validateForm = () => {
 		const newErrors = {
@@ -87,21 +99,19 @@ export default function LoginPage() {
 		return isValid;
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
 		if (validateForm()) {
-			const phoneNumber = phone.replace(/^\+/, ''); 
-			const countryCode = phoneNumber.slice(0, phoneNumber.length - 10); 
-			const mobileNumber = phoneNumber.slice(-10); 
+			const phoneNumber = phone.replace(/^\+/, '');
+			const countryCode = phoneNumber.slice(0, phoneNumber.length - 10);
+			const mobileNumber = phoneNumber.slice(-10);
 			const payload = {
 				...(loginMethod === 'email' ? { email, password } : { country_code: `+${countryCode}`, phone: mobileNumber })
 			};
 
 			dispatch(loginRequest(payload));
-			if (loginMethod === 'email') {
-				router.push("/restaurant");
-			} else {
+			if (loginMethod === 'phone') {
 				setIsOtpVerification(true);
 				showSuccessToast("OTP sent successfully");
 			}
@@ -111,37 +121,37 @@ export default function LoginPage() {
 	};
 
 	const handleSocialLogin = async (provider: string) => {
-        try {
-            let user;
-            switch (provider) {
-                case "Google":
-                    user = await googleLogin();
-                    break;
-                case "Facebook":
-                    user = await facebookLogin();
-                    break;
-                case "Microsoft":
-                    user = await microsoftLogin();
-                    break;
-                case "Apple":
-                    user = await appleLogin();
-                    break;
-                default:
-                    throw new Error("Unsupported provider");
-            }
-            console.log("User signed in:", user);
-            console.log("Fetched user data:", { provider, user }); // Log fetched data
-            showSuccessToast(`Signed up with ${provider}`);
-            router.push("/");
-        } catch (error: unknown) {
-            console.error("Error signing up:", error);
-            if (error instanceof Error) {
-                showErrorToast(`Failed to sign up with ${provider}: ${error.message}`);
-            } else {
-                showErrorToast(`Failed to sign up with ${provider}: Unknown error`);
-            }
-        }
-    };
+		try {
+			let user;
+			switch (provider) {
+				case "Google":
+					user = await googleLogin();
+					break;
+				case "Facebook":
+					user = await facebookLogin();
+					break;
+				case "Microsoft":
+					user = await microsoftLogin();
+					break;
+				case "Apple":
+					user = await appleLogin();
+					break;
+				default:
+					throw new Error("Unsupported provider");
+			}
+			console.log("User signed in:", user);
+			console.log("Fetched user data:", { provider, user }); // Log fetched data
+			showSuccessToast(`Signed up with ${provider}`);
+			router.push("/");
+		} catch (error: unknown) {
+			console.error("Error signing up:", error);
+			if (error instanceof Error) {
+				showErrorToast(`Failed to sign up with ${provider}: ${error.message}`);
+			} else {
+				showErrorToast(`Failed to sign up with ${provider}: Unknown error`);
+			}
+		}
+	};
 
 	return (
 		<div className="flex flex-col min-h-screen">
@@ -188,9 +198,9 @@ export default function LoginPage() {
 									</button>
 								</div>
 								{isOtpVerification ? (
-									<OTPValidation 
-										email={phone} 
-										onVerify={() => router.push("/restaurant")}
+									<OTPValidation
+										email={phone}
+										onVerify={() => router.push("/")}
 										role="user"
 									/>
 								) : (

@@ -118,8 +118,8 @@ export const NavigationBar: React.FC<{ buttons?: Button[] }> = ({ buttons = [] }
 
           <div className="flex items-center space-x-1 sm:space-x-2 shrink-0">
             {renderIcons()}
-            {isAuthenticated && user && user.email ? (
-              <ProfileDropdown user={{ name: user.name, email: user.email, profileImage: user.profileImage }} />
+            {isAuthenticated && user ? (
+              <ProfileDropdown user={{ name: user.name , profileImage: user.profileImage }} />
             ) : (
               renderAuthButtons()
             )}
@@ -152,7 +152,7 @@ export const NavigationBar: React.FC<{ buttons?: Button[] }> = ({ buttons = [] }
 
                 {isAuthenticated && user && user.email ? (
                   <div className="py-2">
-                    <ProfileDropdown user={{ name: user.name, email: user.email, profileImage: user.profileImage }} />
+                    <ProfileDropdown user={{ name: user.name, profileImage: user.profileImage }} />
                   </div>
                 ) : (
                   <div className="flex flex-col gap-2">
