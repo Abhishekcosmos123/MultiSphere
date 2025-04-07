@@ -103,7 +103,7 @@ export const authService = {
   },
 
   async logout(data: LogoutToken): Promise<void> {
-    return apiClient.post('/auth/logout',data);
+    return apiClient.post('/auth/logout', data);
   },
 
   // async getCurrentUser(): Promise<AuthResponse['user']> {
@@ -139,7 +139,7 @@ export const authService = {
   },
 
   async getUsers(role: string): Promise<{ success: boolean; message: string; data: { users: AuthResponse['data']['user'][] } }> {
-    return apiClient.get<{ success: boolean; message: string; data: { users: AuthResponse['data']['user'][] } }>(`/admin/users`, { params: { role: role } });
+    return apiClient.post<{ success: boolean; message: string; data: { users: AuthResponse['data']['user'][] } }>(`/admin/users?role=${role}`);
   },
 
   async updateUserProfile({ id, ...body }: UpdateProfilePayload): Promise<{ message: string }> {
@@ -147,8 +147,10 @@ export const authService = {
   },
 
   async searchUsers(searchBy: string, searchValue: string) {
-    return apiClient.get(`/admin/users/search`, {
-      params: { searchBy, searchValue }
-    });
+    return apiClient.post(`/admin/users/search?searchBy=${searchBy}&searchValue=${searchValue}`);
+  },
+
+  async deleteUser(userId: string): Promise<{ message: string }> {
+    return apiClient.delete(`/admin/users/${userId}`);
   },
 }; 

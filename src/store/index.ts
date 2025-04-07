@@ -7,7 +7,7 @@ import { authSaga } from './sagas/authSaga';
 import { watchExample } from './sagas/exampleSaga';
 import profileSaga from './sagas/profileSaga';
 import profileReducer from './slices/profileSlice';
-import userReducer from './slices/admin/userSlice';
+import usersReducer from './slices/admin/userSlice';
 import userSaga from './sagas/admin/userSaga';
 
 /**
@@ -35,7 +35,7 @@ export const store = configureStore({
     auth: authReducer,
     profile: profileReducer,
     example: exampleReducer,
-    userSearch: userReducer,
+    users: usersReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),

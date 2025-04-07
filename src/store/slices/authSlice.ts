@@ -11,7 +11,7 @@ interface User {
   country_code?: string; 
 }
 
-interface GetUsers {
+export interface GetUsers {
     id: string;
     email?: string;
     name: string;
@@ -19,12 +19,12 @@ interface GetUsers {
     profileImage?: string;
     phone?: string; 
     country_code?: string; 
-    is_verified: boolean; // Added field
-    provider: string; // Added field
-    is_active: boolean; // Added field
-    is_deleted: boolean; // Added field
-    created_at: string; // Added field
-    updated_at: string; // Added field
+    is_verified: boolean;
+    provider: string;
+    is_active: boolean; 
+    is_deleted: boolean;
+    created_at: string;
+    updated_at: string;
 }
 
 interface Token {

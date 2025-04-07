@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { searchUsersRequest, searchUsersSuccess, searchUsersFailure } from '@/store/slices/admin/userSlice';
+import { searchUsersRequest, searchUsersSuccess, searchUsersFailure, deleteUserSuccess, deleteUserFailure, deleteUserRequest } from '@/store/slices/admin/userSlice';
 import { authService } from '@/lib/api/services/authService';
 
 function* searchUsersSaga(action: PayloadAction<{ searchBy: string; searchValue: string }>): Generator<any, void, any> {
@@ -13,6 +13,16 @@ function* searchUsersSaga(action: PayloadAction<{ searchBy: string; searchValue:
   }
 }
 
+function* deleteUserSaga(action: PayloadAction<string>) {
+    try {
+      const deletedUserId: string = yield call(authService.deleteUser, action.payload);
+      yield put(deleteUserSuccess(deletedUserId));
+    } catch (error: any) {
+      yield put(deleteUserFailure(error.message || 'Failed to delete user'));
+    }
+  }
+
 export default function* userSaga() {
   yield takeLatest(searchUsersRequest.type, searchUsersSaga);
+  yield takeLatest(deleteUserRequest.type, deleteUserSaga)
 }
