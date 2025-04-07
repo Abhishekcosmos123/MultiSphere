@@ -17,9 +17,14 @@ const handleSocialLoginSuccess = async (user: any, provider: string) => {
   try {
     const idToken = await user.getIdToken(); 
 
+    const providerEmail =
+      user.email ||
+      user.providerData?.[0]?.email ||
+      "";
+
     const userData = {
       id: user.uid,
-      email: user.email,
+      email: providerEmail,
       name: user?.displayName || user?.email?.split("@")[0],
       role: "consumer",
       phone: user.phoneNumber || "",

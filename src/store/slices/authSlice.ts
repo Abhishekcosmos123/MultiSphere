@@ -11,6 +11,22 @@ interface User {
   country_code?: string; 
 }
 
+interface GetUsers {
+    id: string;
+    email?: string;
+    name: string;
+    role: string;
+    profileImage?: string;
+    phone?: string; 
+    country_code?: string; 
+    is_verified: boolean; // Added field
+    provider: string; // Added field
+    is_active: boolean; // Added field
+    is_deleted: boolean; // Added field
+    created_at: string; // Added field
+    updated_at: string; // Added field
+}
+
 interface Token {
   access: {
     token: string;
@@ -47,6 +63,7 @@ export interface AuthState {
     message: string;
     data: Record<string, unknown>; 
   } | null; 
+  getUsers: GetUsers[] | null;
 }
 
 export interface ResetPasswordData {
@@ -64,6 +81,7 @@ const initialState: AuthState = {
   otpResponse: null,
   registerResponse: null,
   forgetPasswordResponse: null,
+  getUsers: null,
 };
 
 const authSlice = createSlice({
@@ -232,6 +250,20 @@ const authSlice = createSlice({
       state.token = null;
       state.error = action.payload;
     },
+    getUsersRequest: (state, action: PayloadAction<{ role: string }>) => {
+      state.loading = true;
+      state.error = null;
+      // You can access the role with action.payload.role if needed
+    },
+    getUsersSuccess: (state, action: PayloadAction<{ success: boolean; message: string; data: { users: GetUsers[] } }>) => {
+      state.loading = false;
+      state.error = null;
+      state.getUsers = action.payload.data.users;
+    },
+    getUsersFailure: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -265,7 +297,10 @@ export const {
   resetPasswordFailure,
   socialLoginRequest,
   socialLoginSuccess,
-  socialLoginFailure
+  socialLoginFailure,
+  getUsersRequest,
+  getUsersSuccess,
+  getUsersFailure
 } = authSlice.actions;
 
 export default authSlice.reducer; 

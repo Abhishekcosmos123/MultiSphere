@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Edit, Save, LogOut, Phone, Globe, Mail } from "lucide-react";
-import Link from "next/link";
 import { NavigationBar } from "@/components/dashboard/navigation-bar";
 import { Footer } from "@/components/dashboard/footer";
 import {
@@ -28,6 +27,7 @@ import { logoutRequest } from "@/store/slices/authSlice";
 import { useRouter } from "next/router";
 import { showSuccessToast } from "@/lib/utils/toast";
 import { storage, StorageKeys } from '@/lib/utils/storage';
+import { updateProfileRequest } from "@/store/slices/profileSlice";
 
 interface Module {
 	id: number;
@@ -43,7 +43,8 @@ export default function ProfilePage() {
 		name: "E-learning",
 	});
 	const [isEditing, setIsEditing] = useState(false);
-
+	const successMessage = useSelector((state: RootState) => state.profile);
+	
 	const [name, setName] = useState(user?.name || "");
 	const [phone, setPhone] = useState(user?.phone || "");
 	const [email, setEmail] = useState(user?.email || "");
@@ -56,18 +57,33 @@ export default function ProfilePage() {
 		}
 	}, []);
 
+	useEffect(() => {
+		if (successMessage?.successMessage) {
+			showSuccessToast(successMessage?.successMessage);
+		}
+	}, [successMessage?.successMessage]);
+
 	const handleSave = () => {
-		setIsEditing(false);
-		console.log("Saved values:", { name, phone, email, countryCode });
+		if (user) {
+			dispatch(updateProfileRequest({
+				id: user.id,
+				name: name,
+				email: email,
+				phone: phone,
+				country_code: countryCode,
+				profile: user.profileImage || ""
+			}));
+			setIsEditing(false);
+		}
 	};
 
 	const handleLogout = () => {
 		const token = storage.get(StorageKeys.TOKEN);
-		dispatch(logoutRequest({refreshToken: token ? String(token) : undefined}))
+		dispatch(logoutRequest({ refreshToken: token ? String(token) : undefined }));
 		storage.remove(StorageKeys.TOKEN);
 		storage.remove(StorageKeys.USER);
 		router.push('/');
-        showSuccessToast("Logged out Successfully")
+		showSuccessToast("Logged out Successfully");
 	};
 
 	return (
@@ -95,7 +111,7 @@ export default function ProfilePage() {
 					<CardContent className="p-8">
 						<div className="flex flex-col items-center text-center">
 							<Avatar className="h-32 w-32 mb-6 ring-4 ring-indigo-500 shadow-lg">
-								<AvatarImage src={user?.profileImage} alt={name} />
+								<AvatarImage src={user?.profileImage || ""} alt={name} />
 								<AvatarFallback className="text-2xl bg-indigo-500 text-white">
 									{user?.name?.charAt(0) || "U"}
 								</AvatarFallback>

@@ -5,6 +5,7 @@ export interface LoginCredentials {
   password?: string;
   country_code?: string;
   phone?: string;
+  role?: string;
 }
 
 export interface RegisterData {
@@ -69,7 +70,6 @@ export interface ForgetPasswordOTPData {
   email: string;
   otp: string;
 }
-
 export interface ResetPasswordData {
   email: string;
   password: string;
@@ -82,6 +82,15 @@ export interface SocialLoginData {
   email: string;
   phone: string;
   name: string;
+}
+
+export interface UpdateProfilePayload {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  country_code: string;
+  profile: string;
 }
 
 export const authService = {
@@ -127,5 +136,19 @@ export const authService = {
 
   async socialLogin(data: SocialLoginData): Promise<AuthResponse> {
     return apiClient.post<AuthResponse>('/auth/social-login', data);
+  },
+
+  async getUsers(role: string): Promise<{ success: boolean; message: string; data: { users: AuthResponse['data']['user'][] } }> {
+    return apiClient.get<{ success: boolean; message: string; data: { users: AuthResponse['data']['user'][] } }>(`/admin/users`, { params: { role: role } });
+  },
+
+  async updateUserProfile({ id, ...body }: UpdateProfilePayload): Promise<{ message: string }> {
+    return apiClient.put(`/users/profile/${id}`, body);
+  },
+
+  async searchUsers(searchBy: string, searchValue: string) {
+    return apiClient.get(`/admin/users/search`, {
+      params: { searchBy, searchValue }
+    });
   },
 }; 

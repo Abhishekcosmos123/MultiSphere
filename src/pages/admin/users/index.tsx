@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +14,9 @@ import DashboardLayout from "../layout";
 import AddUserModal from "@/components/admin/AddUserModal";
 import ConfirmationModal from "@/components/ui/ConfirmationModal"; 
 import { showSuccessToast } from "@/lib/utils/toast";  
+import { useDispatch } from 'react-redux';
+import { getUsersRequest } from '@/store/slices/authSlice'; // Import the action
+import { searchUsersRequest } from "@/store/slices/admin/userSlice";
 
 interface User {
   id: number;
@@ -99,6 +102,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, deleteUser, toggleUserStat
 );
 
 const UsersTable: React.FC = () => {
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState<string>("Consumers");
   const [users, setUsers] = useState<User[]>(initialUsers);
   const [producers, setProducers] = useState<User[]>(initialProducers);
@@ -106,6 +110,16 @@ const UsersTable: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null); 
+
+  useEffect(() => {
+    dispatch(getUsersRequest({ role: activeTab }));
+  }, [activeTab, dispatch]);
+
+  useEffect(() => {
+    if (searchTerm) {
+      dispatch(searchUsersRequest({ searchBy: "name", searchValue: searchTerm }));
+    }
+  }, [searchTerm, dispatch]);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);

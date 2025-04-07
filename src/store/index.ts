@@ -5,6 +5,10 @@ import authReducer from './slices/authSlice';
 import exampleReducer from './slices/exampleSlice';
 import { authSaga } from './sagas/authSaga';
 import { watchExample } from './sagas/exampleSaga';
+import profileSaga from './sagas/profileSaga';
+import profileReducer from './slices/profileSlice';
+import userReducer from './slices/admin/userSlice';
+import userSaga from './sagas/admin/userSaga';
 
 /**
  * Root saga that combines all individual sagas
@@ -13,7 +17,7 @@ import { watchExample } from './sagas/exampleSaga';
  * - Example sagas
  */
 function* rootSaga() {
-  yield all([authSaga(), watchExample()]);
+  yield all([authSaga(), profileSaga(), userSaga(), watchExample()]);
 }
 
 // Create saga middleware for handling side effects
@@ -29,7 +33,9 @@ const sagaMiddleware = createSagaMiddleware();
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    profile: profileReducer,
     example: exampleReducer,
+    userSearch: userReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),

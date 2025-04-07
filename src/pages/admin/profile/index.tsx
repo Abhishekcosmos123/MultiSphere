@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import {
@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import { showSuccessToast } from "@/lib/utils/toast";
 import DashboardLayout from "@/pages/super-admin/layout";
 import { storage, StorageKeys } from '@/lib/utils/storage';
+import { updateProfileRequest } from "@/store/slices/profileSlice";
 
 export default function ProfilePage() {
     const router = useRouter();
@@ -31,11 +32,27 @@ export default function ProfilePage() {
 	const [phone, setPhone] = useState(user?.phone || "");
 	const [email, setEmail] = useState(user?.email || "");
 	const [countryCode, setCountryCode] = useState(user?.country_code || "");
+	const successMessage = useSelector((state: RootState) => state.profile);
 
 	const handleSave = () => {
-		setIsEditing(false);
-		console.log("Saved values:", { name, phone, email, countryCode });
+		if (user) {
+			dispatch(updateProfileRequest({
+				id: user.id,
+				name: name,
+				email: email,
+				phone: phone,
+				country_code: countryCode,
+				profile: user.profileImage || ""
+			}));
+			setIsEditing(false);
+		}
 	};
+
+	useEffect(() => {
+		if (successMessage?.successMessage) {
+			showSuccessToast(successMessage?.successMessage);
+		}
+	}, [successMessage?.successMessage]);
 
 	const handleLogout = () => {
 		const token = storage.get(StorageKeys.TOKEN);

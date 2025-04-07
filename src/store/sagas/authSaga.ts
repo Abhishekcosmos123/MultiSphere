@@ -27,7 +27,10 @@ import {
   resetPasswordFailure,
   socialLoginRequest,
   socialLoginSuccess,
-  socialLoginFailure
+  socialLoginFailure,
+  getUsersRequest,
+  getUsersSuccess,
+  getUsersFailure
 } from '../slices/authSlice';
 import { authService, LoginCredentials, LogoutToken, RegisterData, SocialLoginData } from '@/lib/api/services/authService';
 import { storage, StorageKeys } from '@/lib/utils/storage';
@@ -171,6 +174,15 @@ export function* socialLoginSaga(action: PayloadAction<SocialLoginData>): Genera
   }
 }
 
+export function* getUsersSaga(action: PayloadAction<{ role: string }>): Generator {
+  try {
+    const response = yield call([authService, authService.getUsers], action.payload.role);
+    yield put(getUsersSuccess(response));
+  } catch (error: any) {
+    yield put(getUsersFailure(error.message));
+  }
+}
+
 /**
  * Root auth saga that watches for auth actions
  * - Handles login requests
@@ -189,4 +201,5 @@ export function* authSaga() {
   yield takeLatest(verifyForgetPasswordOtpRequest.type, verifyForgetPasswordOtpSaga);
   yield takeLatest(resetPasswordRequest.type, resetPasswordSaga);
   yield takeLatest(socialLoginRequest.type, socialLoginSaga);
+  yield takeLatest(getUsersRequest.type, getUsersSaga)
 }
