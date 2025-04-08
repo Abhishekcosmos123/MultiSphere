@@ -1,5 +1,4 @@
 import { Card } from "@/components/ui/card"
-import { PencilIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
@@ -20,9 +19,6 @@ export default function CertificationsSection({ certifications }: Certifications
     <Card className="p-4 mb-4">
       <div className="flex justify-between items-start">
         <h2 className="text-xl font-bold mb-2">Licenses & certifications</h2>
-        <button className="text-gray-500 hover:text-gray-700">
-          <PencilIcon className="h-5 w-5" />
-        </button>
       </div>
 
       <div className="space-y-6">

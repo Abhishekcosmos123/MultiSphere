@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button"
 import { VerifiedIcon } from "./icons"
 
 interface ProfileHeaderProps {
-    name: string
-    title: string
-    location: string
+    name: string;
+    title: string;
+    location: string;
     connections: number;
     profileImageUrl: string
     backgroundImageUrl: string

@@ -7,7 +7,15 @@ import CertificationsSection from "@/components/profile//certifications-section"
 import CoursesSection from "@/components/profile/courses-section"
 import { NavigationBar } from "@/components/dashboard/navigation-bar"
 import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons } from "@/lib/content"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/router"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "@/store"
+import { storage, StorageKeys } from "@/lib/utils/storage"
+import { showSuccessToast } from "@/lib/utils/toast"
+import { updateProfileRequest } from "@/store/slices/profileSlice"
+import { adminLogoutRequest } from "@/store/slices/admin/authAdminSlice"
+import { logoutRequest } from "@/store/slices/authSlice"
 
 interface Module {
     id: number;
@@ -15,10 +23,63 @@ interface Module {
 }
 
 export default function ProfilePage() {
-	const [selectedModule, setSelectedModule] = useState<Module>({
-        id: 0,
-        name: "E-learning",
-    });
+  const router = useRouter();
+  const isAdminRoute = router.pathname.includes('/admin');
+  const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch();
+  const [selectedModule, setSelectedModule] = useState<Module>({
+      id: 0,
+      name: "E-learning",
+  });
+  const [isEditing, setIsEditing] = useState(false);
+  const successMessage = useSelector((state: RootState) => state.profile);
+  
+  const [name, setName] = useState(user?.name || "");
+  const [phone, setPhone] = useState(user?.phone || "");
+  const [email, setEmail] = useState(user?.email || "");
+  const [countryCode, setCountryCode] = useState(user?.country_code || "");
+
+  useEffect(() => {
+      const savedModule = storage.getJson(StorageKeys.SELECTED_MODULE);
+      if (savedModule) {
+          setSelectedModule(savedModule);
+      }
+  }, []);
+
+  useEffect(() => {
+      if (successMessage?.successMessage) {
+          showSuccessToast(successMessage?.successMessage);
+      }
+  }, [successMessage?.successMessage]);
+
+  const handleSave = () => {
+      if (user) {
+          dispatch(updateProfileRequest({
+              id: user.id,
+              name: name,
+              email: email,
+              phone: phone,
+              country_code: countryCode,
+              profile: user.profileImage || ""
+          }));
+          setIsEditing(false);
+      }
+  };
+
+  const handleLogout = () => {
+      const token = storage.get(StorageKeys.TOKEN);
+      if (isAdminRoute) {
+        dispatch(adminLogoutRequest({ refreshToken: token ? String(token) : undefined }));
+        router.push('/admin/login');
+      } else {
+        dispatch(logoutRequest({ refreshToken: token ? String(token) : undefined }));
+        router.push('/');
+      }
+      storage.remove(StorageKeys.TOKEN);
+      storage.remove(StorageKeys.USER);
+      showSuccessToast("Logged out Successfully");
+    };
+
   return (
 	<div className="flex flex-col min-h-screen">
 	{selectedModule && (
