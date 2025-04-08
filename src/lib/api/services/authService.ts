@@ -115,6 +115,32 @@ export interface UpdateUserPayload {
   userData: Partial<UpdateUser>;
 }
 
+export interface CreateUserPayload {
+  provider: string;
+  name: string;
+  email?: string;
+  password?: string;
+  phone?: string;
+  country_code?: string;
+  role: string;
+  created_by: string;
+}
+
+export interface CreatedUserResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: string;
+    name: string;
+    email: string | null;
+    phone: string | null;
+    country_code: string | null;
+    provider: string;
+    role: string;
+    profile_pic: string | null;
+  };
+}
+
 export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     return apiClient.post<AuthResponse>('/auth/login', credentials);
@@ -180,4 +206,8 @@ export const authService = {
     const { userId, userData } = payload;
     return apiClient.put(`/admin/users/${userId}`, userData);
   },  
+
+  async createUser(payload: CreateUserPayload): Promise<CreatedUserResponse> {
+    return apiClient.post("/admin/create-users", payload);
+  },
 }; 

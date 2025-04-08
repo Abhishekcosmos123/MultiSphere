@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { searchUsersRequest, searchUsersSuccess, searchUsersFailure, deleteUserSuccess, deleteUserFailure, deleteUserRequest, updateUserSuccess, updateUserFailure, updateUserRequest } from '@/store/slices/admin/userSlice';
-import { authService, UpdateUser, UpdateUserPayload } from '@/lib/api/services/authService';
+import { searchUsersRequest, searchUsersSuccess, searchUsersFailure, deleteUserSuccess, deleteUserFailure, deleteUserRequest, updateUserSuccess, updateUserFailure, updateUserRequest, createUserFailure, createUserRequest, createUserSuccess } from '@/store/slices/admin/userSlice';
+import { authService, CreatedUserResponse, CreateUserPayload, UpdateUserPayload } from '@/lib/api/services/authService';
 
 function* searchUsersSaga(action: PayloadAction<{ searchBy: string; searchValue: string }>): Generator<any, void, any> {
   try {
@@ -34,8 +34,18 @@ function* deleteUserSaga(action: PayloadAction<string>) {
     }
   }
 
+  function* handleCreateUser(action: PayloadAction<CreateUserPayload>) {
+    try {
+      const createdUser: CreatedUserResponse = yield call(authService.createUser, action.payload);
+      yield put(createUserSuccess(createdUser));
+    } catch (error: any) {
+      yield put(createUserFailure(error?.response?.data?.message || "Failed to create user"));
+    }
+  }
+
 export default function* userSaga() {
   yield takeLatest(searchUsersRequest.type, searchUsersSaga);
   yield takeLatest(deleteUserRequest.type, deleteUserSaga);
   yield takeLatest(updateUserRequest.type, handleUpdateUser);
+  yield takeLatest(createUserRequest.type, handleCreateUser);
 }

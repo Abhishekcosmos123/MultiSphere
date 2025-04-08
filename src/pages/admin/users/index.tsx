@@ -1,5 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import DashboardLayout from "../layout";
+import AddUserModal, { AddUserModalHandle } from "@/components/admin/AddUserModal";
+import EditUserModal from "@/components/admin/EditUserModal";
+import ConfirmationModal from "@/components/ui/ConfirmationModal";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -9,36 +14,46 @@ import {
   TableCell,
   TableHeader,
 } from "@/components/ui/table";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import DashboardLayout from "../layout";
-import AddUserModal from "@/components/admin/AddUserModal";
-import ConfirmationModal from "@/components/ui/ConfirmationModal";
-import EditUserModal from "@/components/admin/EditUserModal";
-import { showSuccessToast } from "@/lib/utils/toast";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
-import { getUsersRequest, GetUsers } from "@/store/slices/authSlice";
-import { searchUsersRequest, deleteUserRequest, updateUserRequest } from "@/store/slices/admin/userSlice";
-import { UpdateUserPayload } from "@/lib/api/services/authService";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/ui/tabs";
 
+import {
+  getUsersRequest,
+  GetUsers,
+} from "@/store/slices/authSlice";
+import {
+  createUserRequest,
+  deleteUserRequest,
+  searchUsersRequest,
+  updateUserRequest,
+} from "@/store/slices/admin/userSlice";
+
+import { RootState } from "@/store";
+import {
+  CreateUserPayload,
+  UpdateUserPayload,
+} from "@/lib/api/services/authService";
+import { showErrorToast, showSuccessToast } from "@/lib/utils/toast";
+
+// -------------------- UserTable --------------------
 const UserTable: React.FC<{
   users: GetUsers[];
   deleteUser: (id: string) => void;
-  toggleUserStatus: (id: string) => void;
   onEditUser: (user: GetUsers) => void;
-}> = ({ users, deleteUser, toggleUserStatus, onEditUser }) => (
+}> = ({ users, deleteUser, onEditUser }) => (
   <Table className="min-w-full bg-white shadow-md rounded-lg">
     <TableHeader>
       <TableRow className="bg-gray-200">
-        <TableHead>ID</TableHead>
-        <TableHead>Name</TableHead>
-        <TableHead>Email</TableHead>
-        <TableHead>Mobile</TableHead>
-        <TableHead>Status</TableHead>
-        <TableHead>Deleted</TableHead>
-        <TableHead>Updated At</TableHead>
-        <TableHead>Access</TableHead>
-        <TableHead>Actions</TableHead>
+        {[
+          "ID", "Name", "Email", "Mobile", "Status",
+          "Deleted", "Updated At", "Access", "Actions"
+        ].map((head) => (
+          <TableHead key={head}>{head}</TableHead>
+        ))}
       </TableRow>
     </TableHeader>
     <TableBody>
@@ -49,41 +64,22 @@ const UserTable: React.FC<{
           <TableCell>{user.email}</TableCell>
           <TableCell>{user.phone}</TableCell>
           <TableCell>
-            <input
-              type="checkbox"
-              checked={user.is_active === true}
-              onChange={() => toggleUserStatus(user.id)}
-              className="h-5 w-5 text-green-600"
-            />
+            <input type="checkbox" checked={user.is_active} readOnly className="h-5 w-5 text-green-600" />
           </TableCell>
           <TableCell>
-            <input
-              type="checkbox"
-              checked={user.is_deleted === true}
-              onChange={() => {}}
-              className="h-5 w-5 text-green-600"
-            />
+            <input type="checkbox" checked={user.is_deleted} readOnly className="h-5 w-5 text-green-600" />
           </TableCell>
           <TableCell>{user.updated_at}</TableCell>
           <TableCell>
-            <a
-              href={`/admin/manage-access`}
-              className="text-blue-500 hover:underline"
-            >
+            <a href="/admin/manage-access" className="text-blue-500 hover:underline">
               Manage Access
             </a>
           </TableCell>
           <TableCell className="flex gap-2">
-            <button
-              className="bg-yellow-500 p-2 text-white rounded hover:bg-yellow-600"
-              onClick={() => onEditUser(user)}
-            >
+            <button onClick={() => onEditUser(user)} className="bg-yellow-500 p-2 text-white rounded hover:bg-yellow-600">
               <FaEdit />
             </button>
-            <button
-              onClick={() => deleteUser(user.id)}
-              className="bg-red-500 p-2 text-white rounded hover:bg-red-600"
-            >
+            <button onClick={() => deleteUser(user.id)} className="bg-red-500 p-2 text-white rounded hover:bg-red-600">
               <FaTrash />
             </button>
           </TableCell>
@@ -93,11 +89,14 @@ const UserTable: React.FC<{
   </Table>
 );
 
+// -------------------- UsersTable --------------------
 const UsersTable: React.FC = () => {
   type SearchField = "name" | "email" | "phone";
 
   const dispatch = useDispatch();
   const users = useSelector((state: RootState) => state.auth.getUsers || []);
+  const createUserStatus = useSelector((state: RootState) => state.users);
+
   const [activeTab, setActiveTab] = useState("consumer");
   const [searchBy, setSearchBy] = useState<SearchField>("name");
   const [searchTerm, setSearchTerm] = useState("");
@@ -107,17 +106,25 @@ const UsersTable: React.FC = () => {
   const [editUser, setEditUser] = useState<GetUsers | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  useEffect(() => {
-    dispatch(getUsersRequest({ role: activeTab }));
-  }, [activeTab, dispatch]);
+  const modalRef = useRef<AddUserModalHandle>(null);
 
   useEffect(() => {
-    if (searchTerm) {
+    if (searchTerm.trim()) {
       dispatch(searchUsersRequest({ searchBy, searchValue: searchTerm }));
     } else {
       dispatch(getUsersRequest({ role: activeTab }));
     }
-  }, [searchTerm, searchBy, dispatch, activeTab]);
+  }, [searchTerm, searchBy, activeTab, dispatch]);
+
+  useEffect(() => {
+    if (createUserStatus?.createdUser?.data) {
+      showSuccessToast(createUserStatus.createdUser.message);
+      modalRef.current?.resetForm();
+      setIsModalOpen(false);
+    } else if (createUserStatus?.error) {
+      showErrorToast(createUserStatus.error);
+    }
+  }, [createUserStatus?.createdUser, createUserStatus?.error]);
 
   const handleDeleteUser = (id: string) => {
     setUserIdToDelete(id);
@@ -131,10 +138,6 @@ const UsersTable: React.FC = () => {
       setUserIdToDelete(null);
     }
     setIsConfirmModalOpen(false);
-  };
-
-  const toggleUserStatus = (id: string) => {
-    showSuccessToast("User status updated!");
   };
 
   const handleEditClick = (user: GetUsers) => {
@@ -151,7 +154,7 @@ const UsersTable: React.FC = () => {
         phone: updatedUser.phone,
         country_code: updatedUser.country_code,
         is_active: updatedUser.is_active,
-        is_deleted: updatedUser.is_deleted
+        is_deleted: updatedUser.is_deleted,
       },
     };
     dispatch(updateUserRequest(payload));
@@ -159,10 +162,34 @@ const UsersTable: React.FC = () => {
     setIsEditModalOpen(false);
   };
 
-  const filteredUsers = users.filter((user) =>
-    user.role === activeTab &&
-    typeof user[searchBy] === "string" &&
-    user[searchBy]!.toLowerCase().includes(searchTerm.toLowerCase())
+  const handleUserSubmit = (userData: {
+    name: string;
+    email?: string;
+    phone?: string;
+    password?: string;
+  }) => {
+    const phoneNumber = userData.phone?.replace(/^\+/, "");
+    const countryCode = phoneNumber?.slice(0, -10);
+    const mobileNumber = phoneNumber?.slice(-10);
+
+    const payload: CreateUserPayload = {
+      provider: userData.email ? "email" : "phone",
+      name: userData.name,
+      role: activeTab.toLowerCase(),
+      created_by: "Abhishek",
+      ...(userData.email
+        ? { email: userData.email, password: userData.password }
+        : { phone: mobileNumber, country_code: `+${countryCode}` }),
+    };
+
+    dispatch(createUserRequest(payload));
+  };
+
+  const filteredUsers = users.filter(
+    (user) =>
+      user.role === activeTab &&
+      typeof user[searchBy] === "string" &&
+      user[searchBy]!.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -204,7 +231,6 @@ const UsersTable: React.FC = () => {
               <UserTable
                 users={filteredUsers}
                 deleteUser={handleDeleteUser}
-                toggleUserStatus={toggleUserStatus}
                 onEditUser={handleEditClick}
               />
             </TabsContent>
@@ -212,9 +238,10 @@ const UsersTable: React.FC = () => {
         </Tabs>
 
         <AddUserModal
+          ref={modalRef}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          onSubmit={() => {}}
+          onSubmit={handleUserSubmit}
           userType={activeTab === "consumer" ? "Consumer" : "Producer"}
         />
 

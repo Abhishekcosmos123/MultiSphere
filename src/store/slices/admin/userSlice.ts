@@ -1,4 +1,4 @@
-import { UpdateUser, UpdateUserPayload } from '@/lib/api/services/authService';
+import { CreatedUserResponse, CreateUserPayload, UpdateUser, UpdateUserPayload } from '@/lib/api/services/authService';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface User {
@@ -23,6 +23,7 @@ interface UserState {
     loading: boolean;
     error: string | null;
     updatedUser: UpdateUser | null;
+    createdUser: CreatedUserResponse | null;
 }
 
 const initialState: UserState = {
@@ -30,6 +31,7 @@ const initialState: UserState = {
     loading: false,
     error: null,
     updatedUser: null,
+    createdUser: null,
 };
 
 interface SearchPayload {
@@ -83,11 +85,23 @@ const userSlice = createSlice({
             state.error = null;
             state.updatedUser = null;
         },
+        createUserRequest(state, _action: PayloadAction<CreateUserPayload>) {
+            state.loading = true;
+            state.error = null;
+        },
+        createUserSuccess(state, action: PayloadAction<CreatedUserResponse>) {
+            state.loading = false;
+            state.createdUser = action.payload;
+        },
+        createUserFailure(state, action: PayloadAction<string>) {
+            state.loading = false;
+            state.error = action.payload;
+        },
     },
 });
 
 export const { searchUsersRequest, searchUsersSuccess, searchUsersFailure, deleteUserRequest, deleteUserSuccess, deleteUserFailure, updateUserRequest,
     updateUserSuccess,
     updateUserFailure,
-    resetUpdateStatus, } = userSlice.actions;
+    resetUpdateStatus, createUserRequest, createUserSuccess, createUserFailure } = userSlice.actions;
 export default userSlice.reducer;

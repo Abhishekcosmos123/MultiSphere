@@ -12,7 +12,6 @@ interface Props {
 }
 
 const EditUserModal: React.FC<Props> = ({ isOpen, onClose, user, onSubmit }) => {
-    console.log(user,'user')
   const [form, setForm] = useState<GetUsers | null>(user);
 
   useEffect(() => {
