@@ -28,6 +28,7 @@ import { useRouter } from "next/router";
 import { showSuccessToast } from "@/lib/utils/toast";
 import { storage, StorageKeys } from '@/lib/utils/storage';
 import { updateProfileRequest } from "@/store/slices/profileSlice";
+import { adminLogoutRequest } from "@/store/slices/admin/authAdminSlice";
 
 interface Module {
 	id: number;
@@ -36,6 +37,7 @@ interface Module {
 
 export default function ProfilePage() {
     const router = useRouter();
+	const isAdminRoute = router.pathname.includes('/admin');
 	const user = useSelector((state: RootState) => state.auth.user);
 	const dispatch = useDispatch();
 	const [selectedModule, setSelectedModule] = useState<Module>({
@@ -79,12 +81,17 @@ export default function ProfilePage() {
 
 	const handleLogout = () => {
 		const token = storage.get(StorageKeys.TOKEN);
-		dispatch(logoutRequest({ refreshToken: token ? String(token) : undefined }));
+		if (isAdminRoute) {
+		  dispatch(adminLogoutRequest({ refreshToken: token ? String(token) : undefined }));
+		  router.push('/admin/login');
+		} else {
+		  dispatch(logoutRequest({ refreshToken: token ? String(token) : undefined }));
+		  router.push('/');
+		}
 		storage.remove(StorageKeys.TOKEN);
 		storage.remove(StorageKeys.USER);
-		router.push('/');
 		showSuccessToast("Logged out Successfully");
-	};
+	  };
 
 	return (
 		<div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 dark:from-gray-900 dark:to-gray-800 transition-colors">

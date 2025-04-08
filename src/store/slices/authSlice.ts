@@ -253,12 +253,11 @@ const authSlice = createSlice({
     getUsersRequest: (state, action: PayloadAction<{ role: string }>) => {
       state.loading = true;
       state.error = null;
-      // You can access the role with action.payload.role if needed
     },
-    getUsersSuccess: (state, action: PayloadAction<{ success: boolean; message: string; data: { users: GetUsers[] } }>) => {
+    getUsersSuccess: (state, action: PayloadAction<{ success: boolean; message: string; data: { filteredUsers: GetUsers[] } }>) => {
       state.loading = false;
       state.error = null;
-      state.getUsers = action.payload.data.users;
+      state.getUsers = action.payload.data.filteredUsers;
     },
     getUsersFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;

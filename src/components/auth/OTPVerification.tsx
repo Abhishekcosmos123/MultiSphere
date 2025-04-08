@@ -7,6 +7,7 @@ import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
 import { verifyForgetPasswordOtpRequest, verifyOtpRequestMobile } from "@/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { adminVerifyForgetPasswordOtpRequest, verifyAdminOtpRequestMobile } from "@/store/slices/admin/authAdminSlice";
 
 interface OTPVerificationProps {
     email: string;
@@ -23,6 +24,7 @@ export default function OTPVerification({ email, onVerify, role, onResendOTP }: 
     const [isVerifying, setIsVerifying] = useState(false);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
     const { otpResponse } = useSelector((state: RootState) => state.auth);
+    const adminOtpResponse = useSelector((state: RootState) => state.adminAuth);
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
@@ -37,11 +39,22 @@ export default function OTPVerification({ email, onVerify, role, onResendOTP }: 
     }, [timeLeft, isResendDisabled]);
 
     useEffect(() => {
-        if (otpResponse?.success) {
-            showSuccessToast(otpResponse.message);
-            onVerify();
+        if (role !== 'admin' && otpResponse?.success) {
+          showSuccessToast(otpResponse.message);
+          onVerify();
         }
-    }, [otpResponse, onVerify]);
+      
+        if (role === 'admin') {
+          const res = adminOtpResponse?.otpResponse;
+      
+          if (res?.success) {
+            showSuccessToast(res.message);
+            onVerify();
+          } else if (adminOtpResponse?.error) {
+            showErrorToast(adminOtpResponse.error);
+          }
+        }
+      }, [otpResponse, adminOtpResponse, adminOtpResponse, role, onVerify]);
 
     const handleResendOTP = () => {
         if (onResendOTP) {
@@ -62,17 +75,29 @@ export default function OTPVerification({ email, onVerify, role, onResendOTP }: 
         setIsVerifying(true);
         try {
             if (email.includes('@')) {
-                dispatch(verifyForgetPasswordOtpRequest({ email: email, otp: otpString }));
+                if (role === 'admin') {
+                    dispatch(adminVerifyForgetPasswordOtpRequest({ email: email, otp: otpString }))
+                }
+                else { dispatch(verifyForgetPasswordOtpRequest({ email: email, otp: otpString })); }
                 onVerify();
             } else {
                 const phoneNumber = email.replace(/^\+/, '');
                 const countryCode = phoneNumber.slice(0, phoneNumber.length - 10);
                 const mobileNumber = phoneNumber.slice(-10);
-                dispatch(verifyOtpRequestMobile({
-                    phone: mobileNumber,
-                    country_code: `+${countryCode}`,
-                    otp: otpString
-                }));
+                if (role === 'admin') {
+                    dispatch(verifyAdminOtpRequestMobile({
+                        phone: mobileNumber,
+                        country_code: `+${countryCode}`,
+                        otp: otpString
+                    }))
+                }
+                else {
+                    dispatch(verifyOtpRequestMobile({
+                        phone: mobileNumber,
+                        country_code: `+${countryCode}`,
+                        otp: otpString
+                    }));
+                }
             }
         } catch (error) {
             showErrorToast("Invalid OTP. Please try again.");

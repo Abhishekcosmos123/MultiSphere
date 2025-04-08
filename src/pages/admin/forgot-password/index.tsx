@@ -10,8 +10,8 @@ import { useRouter } from "next/router";
 import OTPVerification from "@/components/auth/OTPVerification";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { forgetPasswordRequest, resetPasswordRequest } from "@/store/slices/authSlice";
 import { RootState } from "@/store";
+import { adminForgetPasswordRequest, adminResetPasswordRequest } from "@/store/slices/admin/authAdminSlice";
 
 export default function AdminForgotPasswordPage() {
     const dispatch = useDispatch();
@@ -28,14 +28,19 @@ export default function AdminForgotPasswordPage() {
         newPassword: "",
         confirmPassword: "",
     });
-    const forgetPasswordResponse = useSelector((state: RootState) => state.auth.forgetPasswordResponse);
+    const forgetPasswordResponse = useSelector((state: RootState) => state.adminAuth);
 
     useEffect(() => {
-        if (forgetPasswordResponse?.success) {
-            setIsOtpVerification(true);
+        const res = forgetPasswordResponse?.forgetPasswordResponse;
+      
+        if (res?.success) {
+          showSuccessToast(res.message);
+          setIsOtpVerification(true);
+        } else if (forgetPasswordResponse?.error) {
+          showErrorToast(forgetPasswordResponse.error);
         }
-    }, [forgetPasswordResponse]);
-
+      }, [forgetPasswordResponse]);
+      
     const validateForm = () => {
         const newErrors = {
             email: "",
@@ -80,9 +85,9 @@ export default function AdminForgotPasswordPage() {
         if (validateForm()) {
             if (!showPasswordFields) {
                 const data = { email };
-                dispatch(forgetPasswordRequest(data));
+                dispatch(adminForgetPasswordRequest(data));
             } else {
-                dispatch(resetPasswordRequest({email: email, password: newPassword}));
+                dispatch(adminResetPasswordRequest({email: email, password: newPassword}));
                 showSuccessToast("Password reset successfully!");
                 router.push("/admin/login");
             }

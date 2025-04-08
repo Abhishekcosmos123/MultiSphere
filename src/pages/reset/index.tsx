@@ -38,7 +38,7 @@ export default function ResetPasswordPage() {
     });
     const router = useRouter();
     const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' });
-    const forgetPasswordResponse = useSelector((state: RootState) => state.auth.forgetPasswordResponse);
+    const forgetPasswordResponse = useSelector((state: RootState) => state.auth);
 
 	useEffect(() => {
 		const savedModule = storage.getJson(StorageKeys.SELECTED_MODULE);
@@ -55,11 +55,14 @@ export default function ResetPasswordPage() {
     }, [router.query]);
 
     useEffect(() => {
-        if (forgetPasswordResponse?.success) {
-            showSuccessToast(`Verification code sent to your email!`);
-            setShowOTPVerification(true);
+        const response = forgetPasswordResponse?.forgetPasswordResponse;
+        if (response?.success) {
+          showSuccessToast(response.message);
+          setShowOTPVerification(true);
+        } else if (forgetPasswordResponse?.error) {
+          showErrorToast(forgetPasswordResponse.error);
         }
-    }, [forgetPasswordResponse]);
+      }, [forgetPasswordResponse?.forgetPasswordResponse?.success, forgetPasswordResponse?.error]);
 
     const validateForm = () => {
         const newErrors = {

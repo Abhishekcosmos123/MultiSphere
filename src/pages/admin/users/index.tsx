@@ -13,33 +13,30 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import DashboardLayout from "../layout";
 import AddUserModal from "@/components/admin/AddUserModal";
 import ConfirmationModal from "@/components/ui/ConfirmationModal";
+import EditUserModal from "@/components/admin/EditUserModal";
 import { showSuccessToast } from "@/lib/utils/toast";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import {
-  getUsersRequest,
-  GetUsers,
-} from "@/store/slices/authSlice";
-import {
-  searchUsersRequest,
-  deleteUserRequest,
-} from "@/store/slices/admin/userSlice";
+import { getUsersRequest, GetUsers } from "@/store/slices/authSlice";
+import { searchUsersRequest, deleteUserRequest, updateUserRequest } from "@/store/slices/admin/userSlice";
+import { UpdateUserPayload } from "@/lib/api/services/authService";
 
 const UserTable: React.FC<{
   users: GetUsers[];
   deleteUser: (id: string) => void;
   toggleUserStatus: (id: string) => void;
-}> = ({ users, deleteUser, toggleUserStatus }) => (
+  onEditUser: (user: GetUsers) => void;
+}> = ({ users, deleteUser, toggleUserStatus, onEditUser }) => (
   <Table className="min-w-full bg-white shadow-md rounded-lg">
     <TableHeader>
       <TableRow className="bg-gray-200">
         <TableHead>ID</TableHead>
         <TableHead>Name</TableHead>
         <TableHead>Email</TableHead>
+        <TableHead>Mobile</TableHead>
         <TableHead>Status</TableHead>
         <TableHead>Deleted</TableHead>
         <TableHead>Updated At</TableHead>
-        <TableHead>Role</TableHead>
         <TableHead>Access</TableHead>
         <TableHead>Actions</TableHead>
       </TableRow>
@@ -50,6 +47,7 @@ const UserTable: React.FC<{
           <TableCell>{user.id}</TableCell>
           <TableCell>{user.name}</TableCell>
           <TableCell>{user.email}</TableCell>
+          <TableCell>{user.phone}</TableCell>
           <TableCell>
             <input
               type="checkbox"
@@ -58,8 +56,8 @@ const UserTable: React.FC<{
               className="h-5 w-5 text-green-600"
             />
           </TableCell>
-          <TableCell>{user.is_deleted}
-          <input
+          <TableCell>
+            <input
               type="checkbox"
               checked={user.is_deleted === true}
               onChange={() => {}}
@@ -67,7 +65,6 @@ const UserTable: React.FC<{
             />
           </TableCell>
           <TableCell>{user.updated_at}</TableCell>
-          <TableCell>{user.role}</TableCell>
           <TableCell>
             <a
               href={`/admin/manage-access`}
@@ -77,7 +74,10 @@ const UserTable: React.FC<{
             </a>
           </TableCell>
           <TableCell className="flex gap-2">
-            <button className="bg-yellow-500 p-2 text-white rounded hover:bg-yellow-600">
+            <button
+              className="bg-yellow-500 p-2 text-white rounded hover:bg-yellow-600"
+              onClick={() => onEditUser(user)}
+            >
               <FaEdit />
             </button>
             <button
@@ -104,6 +104,8 @@ const UsersTable: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState<string | null>(null);
+  const [editUser, setEditUser] = useState<GetUsers | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(getUsersRequest({ role: activeTab }));
@@ -118,7 +120,6 @@ const UsersTable: React.FC = () => {
   }, [searchTerm, searchBy, dispatch, activeTab]);
 
   const handleDeleteUser = (id: string) => {
-    console.log(id,'Ifdd')
     setUserIdToDelete(id);
     setIsConfirmModalOpen(true);
   };
@@ -134,6 +135,28 @@ const UsersTable: React.FC = () => {
 
   const toggleUserStatus = (id: string) => {
     showSuccessToast("User status updated!");
+  };
+
+  const handleEditClick = (user: GetUsers) => {
+    setEditUser(user);
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditSubmit = (updatedUser: GetUsers) => {
+    const payload: UpdateUserPayload = {
+      userId: updatedUser.id,
+      userData: {
+        name: updatedUser.name,
+        email: updatedUser.email,
+        phone: updatedUser.phone,
+        country_code: updatedUser.country_code,
+        is_active: updatedUser.is_active,
+        is_deleted: updatedUser.is_deleted
+      },
+    };
+    dispatch(updateUserRequest(payload));
+    showSuccessToast("User updated successfully");
+    setIsEditModalOpen(false);
   };
 
   const filteredUsers = users.filter((user) =>
@@ -182,6 +205,7 @@ const UsersTable: React.FC = () => {
                 users={filteredUsers}
                 deleteUser={handleDeleteUser}
                 toggleUserStatus={toggleUserStatus}
+                onEditUser={handleEditClick}
               />
             </TabsContent>
           ))}
@@ -192,6 +216,13 @@ const UsersTable: React.FC = () => {
           onClose={() => setIsModalOpen(false)}
           onSubmit={() => {}}
           userType={activeTab === "consumer" ? "Consumer" : "Producer"}
+        />
+
+        <EditUserModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          user={editUser}
+          onSubmit={handleEditSubmit}
         />
 
         <ConfirmationModal

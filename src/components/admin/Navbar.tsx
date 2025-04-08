@@ -19,15 +19,19 @@ import { logoutRequest } from "@/store/slices/authSlice"
 import { showSuccessToast } from "@/lib/utils/toast"
 import { useEffect, useState } from "react"
 import { storage, StorageKeys } from '@/lib/utils/storage'
+import { adminLogoutRequest } from "@/store/slices/admin/authAdminSlice"
 
 interface NavbarProps {
   toggleSidebar: () => void
 }
 
 export default function Navbar({ toggleSidebar }: NavbarProps) {
-  const { user } = useSelector((state: RootState) => state.auth)
-  const dispatch = useDispatch()
   const router = useRouter()
+  const isAdminRoute = router.pathname.includes('/admin');
+  const user = useSelector((state: RootState) =>
+		isAdminRoute ? state.adminAuth.user : state.auth.user
+	);
+  const dispatch = useDispatch()
   const [token, setToken] = useState<string | null>(null)
 
   useEffect(() => {
@@ -36,12 +40,18 @@ export default function Navbar({ toggleSidebar }: NavbarProps) {
   }, [])
 
   const handleLogout = () => {
-    dispatch(logoutRequest({ refreshToken: token || undefined }))
-    storage.remove(StorageKeys.TOKEN)
-    storage.remove(StorageKeys.USER)
-    router.push('/')
-    showSuccessToast("Logged out Successfully")
-  }
+    const token = storage.get(StorageKeys.TOKEN);
+    if (isAdminRoute) {
+      dispatch(adminLogoutRequest({ refreshToken: token ? String(token) : undefined }));
+      router.push('/admin/login');
+    } else {
+      dispatch(logoutRequest({ refreshToken: token ? String(token) : undefined }));
+      router.push('/');
+    }
+    storage.remove(StorageKeys.TOKEN);
+    storage.remove(StorageKeys.USER);
+    showSuccessToast("Logged out Successfully");
+  };
 
   return (
     <header className="border-b bg-card">

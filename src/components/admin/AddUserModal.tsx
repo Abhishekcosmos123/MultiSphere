@@ -37,7 +37,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
     name: "",
     email: "",
     phone: "",
-    role: userType === "Consumer" ? "User" : "Producer",
+    role: userType === "Consumer" ? "Consumer" : "Producer",
   });
 
   const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email');
@@ -46,7 +46,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(formData);
-    showSuccessToast(`${userType} added successfully!`); // Display success toast
+    showSuccessToast(`${userType} added successfully!`);
     resetForm();
     onClose();
   };
@@ -170,9 +170,8 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
                 <SelectValue placeholder="Select role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="User">User</SelectItem>
                 <SelectItem value="Producer">Producer</SelectItem>
-                <SelectItem value="Admin">Admin</SelectItem>
+                <SelectItem value="Consumer">Consumer</SelectItem>
               </SelectContent>
             </Select>
           </div>

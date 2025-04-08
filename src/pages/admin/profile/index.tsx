@@ -15,16 +15,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { Edit, Save, LogOut, Phone, Globe, Mail } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { logoutRequest } from "@/store/slices/authSlice";
 import { useRouter } from "next/router";
 import { showSuccessToast } from "@/lib/utils/toast";
 import DashboardLayout from "@/pages/super-admin/layout";
 import { storage, StorageKeys } from '@/lib/utils/storage';
 import { updateProfileRequest } from "@/store/slices/profileSlice";
+import { adminLogoutRequest } from "@/store/slices/admin/authAdminSlice";
 
 export default function ProfilePage() {
     const router = useRouter();
-	const user = useSelector((state: RootState) => state.auth.user);
+	const isAdminRoute = router.pathname.includes('/admin');
+	const user = useSelector((state: RootState) =>
+		isAdminRoute ? state.adminAuth.user : state.auth.user
+	);
 	const dispatch = useDispatch();
 	const [isEditing, setIsEditing] = useState(false);
 
@@ -56,10 +59,10 @@ export default function ProfilePage() {
 
 	const handleLogout = () => {
 		const token = storage.get(StorageKeys.TOKEN);
-		dispatch(logoutRequest({refreshToken: token ? String(token) : undefined}))
+		dispatch(adminLogoutRequest({refreshToken: token ? String(token) : undefined}))
 		storage.remove(StorageKeys.TOKEN);
 		storage.remove(StorageKeys.USER);
-		router.push('/');
+		router.push('/admin/login');
         showSuccessToast("Logged out Successfully")
 	};
 

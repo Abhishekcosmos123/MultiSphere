@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { searchUsersRequest, searchUsersSuccess, searchUsersFailure, deleteUserSuccess, deleteUserFailure, deleteUserRequest } from '@/store/slices/admin/userSlice';
-import { authService } from '@/lib/api/services/authService';
+import { searchUsersRequest, searchUsersSuccess, searchUsersFailure, deleteUserSuccess, deleteUserFailure, deleteUserRequest, updateUserSuccess, updateUserFailure, updateUserRequest } from '@/store/slices/admin/userSlice';
+import { authService, UpdateUser, UpdateUserPayload } from '@/lib/api/services/authService';
 
 function* searchUsersSaga(action: PayloadAction<{ searchBy: string; searchValue: string }>): Generator<any, void, any> {
   try {
@@ -22,7 +22,20 @@ function* deleteUserSaga(action: PayloadAction<string>) {
     }
   }
 
+  function* handleUpdateUser(action: PayloadAction<UpdateUserPayload>): any {
+    try {
+      const response = yield call(
+        authService.updateUser,
+        action.payload
+      );
+      yield put(updateUserSuccess(response));
+    } catch (error: any) {
+      yield put(updateUserFailure(error.message || 'Something went wrong'));
+    }
+  }
+
 export default function* userSaga() {
   yield takeLatest(searchUsersRequest.type, searchUsersSaga);
-  yield takeLatest(deleteUserRequest.type, deleteUserSaga)
+  yield takeLatest(deleteUserRequest.type, deleteUserSaga);
+  yield takeLatest(updateUserRequest.type, handleUpdateUser);
 }

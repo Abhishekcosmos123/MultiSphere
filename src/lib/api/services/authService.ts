@@ -93,6 +93,28 @@ export interface UpdateProfilePayload {
   profile: string;
 }
 
+export interface UpdateUser {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  country_code: string;
+  is_active: boolean;
+  provider: string;
+  created_by: string;
+  updated_by: string;
+  is_deleted: boolean;
+  profile_pic: string;
+  role: string;
+  created_at?: string; 
+  updated_at?: string;
+}
+
+export interface UpdateUserPayload {
+  userId: string;
+  userData: Partial<UpdateUser>;
+}
+
 export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     return apiClient.post<AuthResponse>('/auth/login', credentials);
@@ -153,4 +175,9 @@ export const authService = {
   async deleteUser(userId: string): Promise<{ message: string }> {
     return apiClient.delete(`/admin/users/${userId}`);
   },
+
+  async updateUser(payload: UpdateUserPayload): Promise<UpdateUser> {
+    const { userId, userData } = payload;
+    return apiClient.put(`/admin/users/${userId}`, userData);
+  },  
 }; 

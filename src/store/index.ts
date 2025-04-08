@@ -9,6 +9,8 @@ import profileSaga from './sagas/profileSaga';
 import profileReducer from './slices/profileSlice';
 import usersReducer from './slices/admin/userSlice';
 import userSaga from './sagas/admin/userSaga';
+import adminAuthSaga from './sagas/admin/authAdminSaga'
+import adminAuthReducer from './slices/admin/authAdminSlice';
 
 /**
  * Root saga that combines all individual sagas
@@ -17,7 +19,7 @@ import userSaga from './sagas/admin/userSaga';
  * - Example sagas
  */
 function* rootSaga() {
-  yield all([authSaga(), profileSaga(), userSaga(), watchExample()]);
+  yield all([authSaga(), profileSaga(), userSaga(), watchExample(), adminAuthSaga()]);
 }
 
 // Create saga middleware for handling side effects
@@ -36,6 +38,7 @@ export const store = configureStore({
     profile: profileReducer,
     example: exampleReducer,
     users: usersReducer,
+    adminAuth: adminAuthReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),

@@ -13,9 +13,9 @@ import 'react-phone-input-2/lib/style.css';
 import '@/styles/phone-input.css';
 import Link from "next/link";
 import 'firebase/auth';
-import { loginRequest } from "@/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { adminLoginRequest } from "@/store/slices/admin/authAdminSlice";
 
 export default function AdminLoginPage() {
     const dispatch = useDispatch();
@@ -31,17 +31,17 @@ export default function AdminLoginPage() {
         phone: "",
         password: "",
     });
-    const user = useSelector((state: RootState) => state.auth);
+    const adminAuth = useSelector((state: RootState) => state.adminAuth);
 
     useEffect(() => {
-        if (user.user) {
+        if (adminAuth.user) {
             showSuccessToast("Admin login successful!");
             router.push("/admin/dashboard");
         }
-        if (user.error) {
-            showErrorToast(user.error);
+        if (adminAuth.error) {
+            showErrorToast(adminAuth.error);
         }
-    }, [user.user, user.error, router]);
+    }, [adminAuth.user, adminAuth.error, router]);
 
     const validateForm = () => {
         const newErrors = {
@@ -86,14 +86,14 @@ export default function AdminLoginPage() {
 
         if (validateForm()) {
             if (loginMethod === 'email') {
-                dispatch(loginRequest({
+                dispatch(adminLoginRequest({
                     email, password
                 }));
             } else {
                 const phoneNumber = phone.replace(/^\+/, '');
                 const countryCode = phoneNumber?.slice(0, phoneNumber.length - 10);
                 const mobileNumber = phoneNumber?.slice(-10);
-                dispatch(loginRequest({
+                dispatch(adminLoginRequest({
                     phone: mobileNumber,
                     country_code: `+${countryCode}`
                 }));
