@@ -11,6 +11,7 @@ interface ProfileHeaderProps {
     profileImageUrl: string
     backgroundImageUrl: string
     university: string
+    setIsEditing: (value: boolean) => void;
 }
 
 export default function ProfileHeader({
@@ -20,6 +21,7 @@ export default function ProfileHeader({
     profileImageUrl,
     backgroundImageUrl,
     university,
+    setIsEditing,
 }: ProfileHeaderProps) {
     return (
         <div className="relative">
@@ -45,7 +47,7 @@ export default function ProfileHeader({
                 </div>
 
                 <div className="absolute top-4 right-4">
-                    <Button variant="ghost" size="icon" className="rounded-full h-10 w-10 bg-white/80 hover:bg-white/90">
+                    <Button variant="ghost" size="icon" className="rounded-full h-10 w-10 bg-white/80 hover:bg-white/90" onClick={() => setIsEditing(true)}>
                         <PencilIcon className="h-5 w-5" />
                     </Button>
                 </div>
