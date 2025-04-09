@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import type { EducationEntry } from "../../../types/profile"
+import { DateRangePicker } from "@/components/ui/date-range-picker"
 
 export default function EducationTab() {
   const [educationList, setEducationList] = useState<EducationEntry[]>([
@@ -116,15 +117,13 @@ export default function EducationTab() {
           {/* Time Period */}
           <div className="space-y-2">
             <label className="block text-gray-700">Time Period</label>
-            <Input
+            <DateRangePicker
               value={edu.timePeriod}
-              onChange={(e) => {
+              onChange={(value) => {
                 const updated = [...educationList]
-                updated[index].timePeriod = e.target.value
+                updated[index].timePeriod = value
                 setEducationList(updated)
               }}
-              placeholder="e.g. 2019 - 2023"
-              className="w-full border-gray-300"
             />
           </div>
 

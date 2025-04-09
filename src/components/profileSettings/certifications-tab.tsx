@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import type { Certification } from "../../../types/profile"
+import { DatePicker } from "@/components/ui/date-picker"
 
 export default function CertificationsTab() {
   const [certifications, setCertifications] = useState<Certification[]>([
@@ -31,14 +32,14 @@ export default function CertificationsTab() {
                 updated.length
                   ? updated
                   : [
-                      {
-                        logo: null,
-                        name: "",
-                        companyName: "",
-                        issuedDate: "",
-                        credentialId: "",
-                      },
-                    ],
+                    {
+                      logo: null,
+                      name: "",
+                      companyName: "",
+                      issuedDate: "",
+                      credentialId: "",
+                    },
+                  ],
               )
             }}
             className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-200 text-gray-500 hover:text-red-500"
@@ -114,12 +115,11 @@ export default function CertificationsTab() {
           {/* Issued Date */}
           <div className="space-y-2">
             <label className="block text-gray-700">Issued Date</label>
-            <Input
-              type="date"
-              value={cert.issuedDate}
-              onChange={(e) => {
+            <DatePicker
+              date={cert.issuedDate}
+              onChange={(value) => {
                 const updated = [...certifications]
-                updated[index].issuedDate = e.target.value
+                updated[index].issuedDate = value
                 setCertifications(updated)
               }}
             />
