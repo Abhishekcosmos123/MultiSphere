@@ -1,6 +1,8 @@
 "use client"
 
-import { Bell, Search, User, Menu, LogOut, Settings, User as UserIcon } from "lucide-react"
+import {
+  Bell, Search, User, Menu, LogOut, Settings, User as UserIcon,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -16,10 +18,10 @@ import { useSelector, useDispatch } from "react-redux"
 import { RootState } from "@/store"
 import { useRouter } from "next/router"
 import { logoutRequest } from "@/store/slices/authSlice"
+import { adminLogoutRequest } from "@/store/slices/admin/authAdminSlice"
 import { showSuccessToast } from "@/lib/utils/toast"
 import { useEffect, useState } from "react"
-import { storage, StorageKeys } from '@/lib/utils/storage'
-import { adminLogoutRequest } from "@/store/slices/admin/authAdminSlice"
+import { storage, StorageKeys } from "@/lib/utils/storage"
 
 interface NavbarProps {
   toggleSidebar: () => void
@@ -28,16 +30,23 @@ interface NavbarProps {
 export default function Navbar({ toggleSidebar }: NavbarProps) {
   const router = useRouter()
   const isAdminRoute = router.pathname.includes('/admin');
-  const user = useSelector((state: RootState) =>
-		isAdminRoute ? state.adminAuth.user : state.auth.user
-	);
+  const reduxUser = useSelector((state: RootState) =>
+    isAdminRoute ? state.adminAuth.user : state.auth.user
+  )
   const dispatch = useDispatch()
-  const [token, setToken] = useState<string | null>(null)
+
+  const [localUser, setLocalUser] = useState(reduxUser)
 
   useEffect(() => {
-    const storedToken = storage.get(StorageKeys.TOKEN);
-    setToken(storedToken ? String(storedToken) : null);
-  }, [])
+    if (!reduxUser) {
+      const storedUser = storage.getJson(StorageKeys.USER)
+      if (storedUser) {
+        setLocalUser(storedUser)
+      }
+    } else {
+      setLocalUser(reduxUser)
+    }
+  }, [reduxUser])
 
   const handleLogout = () => {
     const token = storage.get(StorageKeys.TOKEN);
@@ -58,7 +67,6 @@ export default function Navbar({ toggleSidebar }: NavbarProps) {
       <div className="flex h-16 items-center px-4 md:px-6">
         <Button variant="ghost" size="icon" className="mr-2 lg:hidden" onClick={toggleSidebar}>
           <Menu className="h-5 w-5" />
-          <span className="sr-only">Toggle sidebar</span>
         </Button>
         <div className="flex items-center gap-2 md:ml-auto md:gap-4 lg:ml-0">
           <form className="relative hidden md:block">
@@ -69,13 +77,15 @@ export default function Navbar({ toggleSidebar }: NavbarProps) {
         <div className="flex items-center gap-4 ml-auto">
           <Button variant="ghost" size="icon" className="rounded-full">
             <Bell className="h-5 w-5" />
-            <span className="sr-only">Notifications</span>
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
+                  <AvatarImage
+                    src={localUser?.profileImage || "/placeholder.svg?height=32&width=32"}
+                    alt={localUser?.name || "User"}
+                  />
                   <AvatarFallback>
                     <User className="h-5 w-5" />
                   </AvatarFallback>
@@ -85,9 +95,11 @@ export default function Navbar({ toggleSidebar }: NavbarProps) {
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{user?.name}</p>
+                  <p className="text-sm font-medium leading-none">
+                    {localUser?.name}
+                  </p>
                   <p className="text-xs leading-none text-muted-foreground">
-                    {user?.email || user?.phone}
+                    {localUser?.email || localUser?.phone}
                   </p>
                 </div>
               </DropdownMenuLabel>
