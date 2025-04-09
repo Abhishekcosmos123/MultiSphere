@@ -9,6 +9,7 @@ import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 import type { RootState } from "@/store"
 import { ProfileDropdown } from "./ProfileDropdown"
+import { storage, StorageKeys } from "@/lib/utils/storage"
 
 interface Button {
   index: number;
@@ -18,6 +19,7 @@ interface Button {
 export const NavigationBar: React.FC<{ buttons?: Button[] }> = ({ buttons = [] }) => {
   const [activeButtonIndex, setActiveButtonIndex] = useState<number | null>(null)
   const { isAuthenticated, user } = useSelector((state: RootState) => state.auth)
+  const [localUser, setLocalUser] = useState<any>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handleButtonClick = (index: number) => {
@@ -41,6 +43,23 @@ export const NavigationBar: React.FC<{ buttons?: Button[] }> = ({ buttons = [] }
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
+  useEffect(() => {
+    if (user) {
+      storage.setJson(StorageKeys.USER, user)
+    }
+  }, [user])
+
+  useEffect(() => {
+    if (!user) {
+      const savedUser = storage.getJson(StorageKeys.USER)
+      if (savedUser) {
+        setLocalUser(savedUser)
+      }
+    }
+  }, [user])
+
+  const displayUser = user || localUser
+
   const renderIcons = () => (
     <div className="hidden sm:flex items-center">
       <Link href="#" className="p-1 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-200 h-10 w-10 flex items-center justify-center">
@@ -58,7 +77,7 @@ export const NavigationBar: React.FC<{ buttons?: Button[] }> = ({ buttons = [] }
         <span className="sr-only">Cart</span>
       </Link>
     </div>
-  );
+  )
 
   const renderAuthButtons = () => (
     <div className="flex items-center space-x-1 sm:space-x-2">
@@ -77,7 +96,7 @@ export const NavigationBar: React.FC<{ buttons?: Button[] }> = ({ buttons = [] }
         </Button>
       </Link>
     </div>
-  );
+  )
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md border-b border-gray-200 w-full">
@@ -101,7 +120,7 @@ export const NavigationBar: React.FC<{ buttons?: Button[] }> = ({ buttons = [] }
           {/* Navigation links - desktop only */}
           <nav className="hidden md:flex items-center space-between flex-1 mx-4 overflow-x-auto">
             <div className="flex items-center space-x-1">
-              {buttons.length > 0 && buttons.map((button) => (
+              {buttons.map((button) => (
                 <Button
                   key={button.index}
                   variant="ghost"
@@ -118,8 +137,8 @@ export const NavigationBar: React.FC<{ buttons?: Button[] }> = ({ buttons = [] }
 
           <div className="flex items-center space-x-1 sm:space-x-2 shrink-0">
             {renderIcons()}
-            {isAuthenticated && user ? (
-              <ProfileDropdown user={{ name: user.name , profileImage: user.profileImage, email: user.email, phone: user.phone }} />
+            {displayUser ? (
+              <ProfileDropdown user={{ name: displayUser.name, profileImage: displayUser.profileImage, email: displayUser.email, phone: displayUser.phone }} />
             ) : (
               renderAuthButtons()
             )}
@@ -131,7 +150,7 @@ export const NavigationBar: React.FC<{ buttons?: Button[] }> = ({ buttons = [] }
           <div className="md:hidden absolute left-0 right-0 top-16 bg-white border-b border-gray-200 shadow-lg z-50">
             <div className="flex flex-col p-4 space-y-4">
               <div className="flex flex-col space-y-2">
-                {buttons.length > 0 && buttons.map((button) => (
+                {buttons.map((button) => (
                   <Button
                     key={button.index}
                     variant="ghost"
@@ -150,9 +169,9 @@ export const NavigationBar: React.FC<{ buttons?: Button[] }> = ({ buttons = [] }
                   {renderIcons()}
                 </div>
 
-                {isAuthenticated && user && user.email ? (
+                {isAuthenticated && displayUser && displayUser.email ? (
                   <div className="py-2">
-                    <ProfileDropdown user={{ name: user.name, profileImage: user.profileImage, email: user.email, phone: user.phone }} />
+                    <ProfileDropdown user={{ name: displayUser.name, profileImage: displayUser.profileImage, email: displayUser.email, phone: displayUser.phone }} />
                   </div>
                 ) : (
                   <div className="flex flex-col gap-2">
