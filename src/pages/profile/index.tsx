@@ -101,7 +101,7 @@ export default function ProfilePage() {
         />
       )}
 
-      <div className="mx-auto bg-white shadow-sm overflow-hidden">
+      <div className="bg-white shadow-sm overflow-hidden">
         {isEditing ? (
           <ProfileSettings
             name={name}
@@ -111,7 +111,6 @@ export default function ProfilePage() {
             setName={setName}
             setPhone={setPhone}
             setEmail={setEmail}
-            setCountryCode={setCountryCode}
             onSave={handleSave}
             onCancel={() => setIsEditing(false)}
           />

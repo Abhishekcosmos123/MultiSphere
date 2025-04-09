@@ -16,7 +16,6 @@ interface ProfileSettingsProps {
   setName: (val: string) => void
   setPhone: (val: string) => void
   setEmail: (val: string) => void
-  setCountryCode: (val: string) => void
   onSave: () => void
   onCancel: () => void
 }
@@ -29,7 +28,6 @@ export default function ProfileSettings({
   setName,
   setPhone,
   setEmail,
-  setCountryCode,
   onSave,
   onCancel,
 }: ProfileSettingsProps) {
@@ -77,7 +75,6 @@ export default function ProfileSettings({
             setName={setName}
             setEmail={setEmail}
             setPhone={setPhone}
-            setCountryCode={setCountryCode}
           />
         )}
 

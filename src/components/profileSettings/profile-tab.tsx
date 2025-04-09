@@ -3,6 +3,9 @@
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Bold, Italic } from "lucide-react"
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import '@/styles/phone-input.css';
 
 interface ProfileTabProps {
   name: string
@@ -12,7 +15,6 @@ interface ProfileTabProps {
   setName: (val: string) => void
   setPhone: (val: string) => void
   setEmail: (val: string) => void
-  setCountryCode: (val: string) => void
 }
 
 export default function ProfileTab({
@@ -23,7 +25,6 @@ export default function ProfileTab({
   setName,
   setPhone,
   setEmail,
-  setCountryCode,
 }: ProfileTabProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 w-full">
@@ -53,23 +54,17 @@ export default function ProfileTab({
           <label htmlFor="phone" className="block text-gray-700">
             Phone
           </label>
-          <div className="flex gap-2">
-            <Select value={countryCode} onValueChange={setCountryCode}>
-              <SelectTrigger className="w-28 border-gray-300">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="+1">+1</SelectItem>
-                <SelectItem value="+91">+91</SelectItem>
-                <SelectItem value="+44">+44</SelectItem>
-                <SelectItem value="+61">+61</SelectItem>
-              </SelectContent>
-            </Select>
-            <Input
-              id="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="flex-1 border-gray-300"
+          <div className="mt-1">
+            <PhoneInput
+              country={'us'}
+              value={countryCode}
+              onChange={(value) => setPhone(value)}
+              inputClass={"w-full"}
+              containerClass="phone-input-container"
+              buttonClass="phone-input-button"
+              dropdownClass="phone-input-dropdown"
+              searchClass="phone-input-search"
+              placeholder="Enter mobile number"
             />
           </div>
         </div>
