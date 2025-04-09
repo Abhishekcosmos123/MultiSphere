@@ -1,172 +1,218 @@
+import { GetServerSideProps } from "next";
 import { ReactNode, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@/store";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Edit, Save, LogOut, Phone, Globe, Mail, User } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { useRouter } from "next/router";
-import { showSuccessToast } from "@/lib/utils/toast";
-import DashboardLayout from "@/pages/super-admin/layout";
-import { storage, StorageKeys } from "@/lib/utils/storage";
-import { updateProfileRequest } from "@/store/slices/profileSlice";
-import { adminLogoutRequest } from "@/store/slices/admin/authAdminSlice";
+import { Edit, Save, LogOut, Phone, Globe, Mail, User } from "lucide-react";
+import PhoneInput from "react-phone-input-2";
+import cookie from "cookie";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import PhoneInput from "react-phone-input-2";
 
-const ProfilePage = () => {
-	const router = useRouter();
-	const isAdminRoute = router.pathname.includes('/admin');
-	const dispatch = useDispatch();
+import DashboardLayout from "@/pages/super-admin/layout";
+import { showSuccessToast } from "@/lib/utils/toast";
+import { storage, StorageKeys } from "@/lib/utils/storage";
 
-	const user = useSelector((state: RootState) =>
-		isAdminRoute ? state.adminAuth.user : state.auth.user
-	);
+import { adminLogoutRequest } from "@/store/slices/admin/authAdminSlice";
+import { updateAdminProfileRequest } from "@/store/slices/admin/adminSlice";
+import { RootState } from "@/store";
 
-	const successMessage = useSelector((state: RootState) => state.profile?.successMessage);
+import "react-phone-input-2/lib/style.css";
+import "react-phone-input-2/lib/bootstrap.css";
 
-	const [isEditing, setIsEditing] = useState(false);
-	const [name, setName] = useState(user?.name || "");
-	const [email, setEmail] = useState(user?.email || "");
-	const [phone, setPhone] = useState(user?.phone || "");
-	const [countryCode, setCountryCode] = useState(user?.country_code || "");
-	const [contactConsent, setContactConsent] = useState(false);
 
-	useEffect(() => {
-		if (successMessage) {
-			showSuccessToast(successMessage);
-		}
-	}, [successMessage]);
+const ProfileField = ({ label, value, icon }: { label: string; value?: string; icon: ReactNode }) => (
+  <div className="flex items-start gap-3 p-4 rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
+    <div className="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-full">{icon}</div>
+    <div>
+      <p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
+      <p className="text-base font-semibold text-gray-800 dark:text-white">{value || "—"}</p>
+    </div>
+  </div>
+);
 
-	const handleSave = () => {
-		if (user) {
-			dispatch(updateProfileRequest({
-				id: user.id,
-				name,
-				email,
-				phone,
-				country_code: countryCode,
-				profile: user.profileImage || ""
-			}));
-			setIsEditing(false);
-		}
-	};
+const ProfilePage = ({ serverUser }: { serverUser: any }) => {
+  const router = useRouter();
+  const isAdminRoute = router.pathname.includes("/admin");
+  const dispatch = useDispatch();
 
-	const handleLogout = () => {
-		const token = storage.get(StorageKeys.TOKEN);
-		dispatch(adminLogoutRequest({ refreshToken: token ? String(token) : undefined }));
-		storage.remove(StorageKeys.TOKEN);
-		storage.remove(StorageKeys.USER);
-		router.push('/admin/login');
-		showSuccessToast("Logged out Successfully");
-	};
+  const storeUser = useSelector((state: RootState) =>
+    isAdminRoute ? state.adminAuth.user : state.auth.user
+  );
+  const profile = useSelector((state: RootState) => state.admin);
 
-	return (
-		<DashboardLayout>
-			<div className="flex flex-col min-h-screen p-4 sm:p-8 md:p-10 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-				<h1 className="text-3xl sm:text-4xl font-bold text-center text-gray-800 dark:text-white mb-10">
-					Profile Overview
-				</h1>
+  const user = storeUser || serverUser;
 
-				<div className="flex flex-col items-center w-full max-w-4xl mx-auto">
-					<Avatar className="h-24 w-24 sm:h-32 sm:w-32 mb-6 ring-4 ring-indigo-500 shadow-md">
-						<AvatarImage src={user?.profileImage} alt={name} />
-						<AvatarFallback className="text-2xl bg-indigo-500 text-white">
-							{user?.name?.charAt(0) || "U"}
-						</AvatarFallback>
-					</Avatar>
+  const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
+  const [phone, setPhone] = useState(
+    user?.country_code && user?.phone ? `${user.country_code}${user.phone}` : ""
+  );
+  const [countryCode, setCountryCode] = useState(user?.country_code || "");
+  const [contactConsent, setContactConsent] = useState(false);
 
-					{isEditing ? (
-						<div className="w-full space-y-6">
-							<div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-								<Label htmlFor="name" className="w-32 shrink-0">Name*</Label>
-								<Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
-							</div>
+  useEffect(() => {
+    if (user) {
+      setName(user.name || "");
+      setEmail(user.email || "");
+      setPhone(
+        user.country_code && user.phone ? `${user.country_code}${user.phone}` : ""
+      );
+      setCountryCode(user.country_code || "");
+    }
+  }, [storeUser, serverUser]);
 
-							<div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-								<Label htmlFor="email" className="w-32 shrink-0">Email*</Label>
-								<Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-							</div>
+  useEffect(() => {
+    if (profile.successMessage) {
+      showSuccessToast(profile.successMessage);
+      setIsEditing(false);
+    }
+  }, [profile.successMessage]);
 
-							<div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-								<Label htmlFor="phone" className="w-32 shrink-0">Mobile Number*</Label>
-								<PhoneInput
-									country={'us'}
-									value={phone}
-									onChange={(value) => setPhone(value)}
-									inputClass="!w-full !pl-14 !py-2 !border-2 !border-indigo-200 focus:!border-indigo-500 rounded-md"
-									buttonClass="!bg-white dark:!bg-gray-900"
-									dropdownClass="dark:!bg-gray-800"
-									placeholder="Enter mobile number"
-								/>
-							</div>
+  const handleSave = () => {
+    if (!user || phone.length < 10) return;
 
-							<div className="flex items-start space-x-2">
-								<Checkbox
-									id="consent"
-									checked={contactConsent}
-									onCheckedChange={(checked) => setContactConsent(checked as boolean)}
-								/>
-								<Label htmlFor="consent" className="text-sm">
-									I agree to be contacted via WhatsApp, phone, email, etc.
-								</Label>
-							</div>
-						</div>
-					) : (
-						<div className="w-full max-w-3xl mt-6 grid gap-4 sm:grid-cols-2">
-							{[
-								{ icon: <User size={22} className="text-indigo-600" />, label: "Full Name", value: name },
-								{ icon: <Mail size={22} className="text-indigo-600" />, label: "Email", value: email },
-								{ icon: <Globe size={22} className="text-indigo-600" />, label: "Country Code", value: countryCode },
-								{ icon: <Phone size={22} className="text-indigo-600" />, label: "Phone", value: phone },
-							].map(({ icon, label, value }, index) => (
-								<div
-									key={index}
-									className="flex items-start gap-3 p-4 rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700"
-								>
-									<div className="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-full">{icon}</div>
-									<div>
-										<p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
-										<p className="text-base font-semibold text-gray-800 dark:text-white">{value || "—"}</p>
-									</div>
-								</div>
-							))}
-						</div>
-					)}
+    const phoneNumber = phone.replace(/^\+/, "");
+    const cc = phoneNumber.slice(0, phoneNumber.length - 10);
+    const mobile = phoneNumber.slice(-10);
 
-					<div className="flex flex-wrap justify-center gap-4 mt-10">
-						{isEditing ? (
-							<>
-								<Button
-									onClick={handleSave}
-									disabled={!contactConsent}
-									className="bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
-								>
-									<Save className="mr-2" size={18} />
-									Save Profile
-								</Button>
-								<Button variant="outline" onClick={() => setIsEditing(false)}>
-									Cancel
-								</Button>
-							</>
-						) : (
-							<>
-								<Button variant="outline" onClick={() => setIsEditing(true)}>
-									<Edit className="mr-2" size={18} />
-									Edit Profile
-								</Button>
-								<Button variant="destructive" onClick={handleLogout}>
-									<LogOut className="mr-2" size={18} />
-									Log Out
-								</Button>
-							</>
-						)}
-					</div>
-				</div>
-			</div>
-		</DashboardLayout>
-	);
+    if (!mobile || mobile.length !== 10) return;
+
+    dispatch(
+      updateAdminProfileRequest({
+        id: user.id,
+        payload: {
+          name,
+          email,
+          phone: mobile,
+          country_code: `+${cc}`,
+        },
+      })
+    );
+
+    setCountryCode(`+${cc}`);
+  };
+
+  const handleLogout = () => {
+    const token = typeof window !== "undefined" ? storage.get(StorageKeys.TOKEN) : null;
+
+    dispatch(adminLogoutRequest({ refreshToken: token ? String(token) : undefined }));
+    storage.remove(StorageKeys.TOKEN);
+    storage.remove(StorageKeys.USER);
+    router.push("/admin/login");
+    showSuccessToast("Logged out Successfully");
+  };
+
+  return (
+    <DashboardLayout>
+      <div className="flex flex-col min-h-screen p-4 sm:p-8 md:p-10 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <h1 className="text-3xl sm:text-4xl font-bold text-center text-gray-800 dark:text-white mb-10">
+          Profile Overview
+        </h1>
+
+        <div className="flex flex-col items-center w-full max-w-4xl mx-auto">
+          {isEditing ? (
+            <div className="w-full space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <Label htmlFor="name" className="w-32 shrink-0">
+                  Name*
+                </Label>
+                <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
+              </div>
+
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <Label htmlFor="email" className="w-32 shrink-0">
+                  Email*
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <Label htmlFor="phone" className="w-32 shrink-0">
+                  Mobile Number*
+                </Label>
+                <PhoneInput
+                  country={"us"}
+                  value={phone}
+                  onChange={(value) => setPhone(value)}
+                  inputClass="!w-full !pl-14 !py-2 !border-2 !border-indigo-200 focus:!border-indigo-500 rounded-md"
+                  buttonClass="!bg-white dark:!bg-gray-900"
+                  dropdownClass="dark:!bg-gray-800"
+                  placeholder="Enter mobile number"
+                />
+              </div>
+
+              <div className="flex items-start space-x-2">
+                <Checkbox
+                  id="consent"
+                  checked={contactConsent}
+                  onCheckedChange={(checked) => setContactConsent(checked as boolean)}
+                />
+                <Label htmlFor="consent" className="text-sm">
+                  I agree to be contacted via WhatsApp, phone, email, etc.
+                </Label>
+              </div>
+            </div>
+          ) : (
+            <div className="w-full max-w-3xl mt-6 grid gap-4 sm:grid-cols-2">
+              <ProfileField label="Full Name" value={name} icon={<User size={22} className="text-indigo-600" />} />
+              <ProfileField label="Email" value={email} icon={<Mail size={22} className="text-indigo-600" />} />
+              <ProfileField label="Country Code" value={countryCode} icon={<Globe size={22} className="text-indigo-600" />} />
+              <ProfileField label="Phone" value={phone} icon={<Phone size={22} className="text-indigo-600" />} />
+            </div>
+          )}
+
+          <div className="flex flex-wrap justify-center gap-4 mt-10">
+            {isEditing ? (
+              <>
+                <Button
+                  onClick={handleSave}
+                  disabled={!contactConsent}
+                  className="bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Save className="mr-2" size={18} />
+                  Save Profile
+                </Button>
+                <Button variant="outline" onClick={() => setIsEditing(false)}>
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" onClick={() => setIsEditing(true)}>
+                  <Edit className="mr-2" size={18} />
+                  Edit Profile
+                </Button>
+                <Button variant="destructive" onClick={handleLogout}>
+                  <LogOut className="mr-2" size={18} />
+                  Log Out
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </DashboardLayout>
+  );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const cookies = cookie.parse(req.headers.cookie || "");
+  const serverUser = JSON.parse(cookies[StorageKeys.USER] ?? "null");
+
+  return {
+    props: {
+      serverUser,
+    },
+  };
 };
 
 export default ProfilePage;

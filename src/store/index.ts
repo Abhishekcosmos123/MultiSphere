@@ -11,6 +11,8 @@ import usersReducer from './slices/admin/userSlice';
 import userSaga from './sagas/admin/userSaga';
 import adminAuthSaga from './sagas/admin/authAdminSaga'
 import adminAuthReducer from './slices/admin/authAdminSlice';
+import adminSaga from './sagas/admin/adminSaga'
+import adminReducer from './slices/admin/adminSlice'
 
 /**
  * Root saga that combines all individual sagas
@@ -19,7 +21,7 @@ import adminAuthReducer from './slices/admin/authAdminSlice';
  * - Example sagas
  */
 function* rootSaga() {
-  yield all([authSaga(), profileSaga(), userSaga(), watchExample(), adminAuthSaga()]);
+  yield all([authSaga(), profileSaga(), userSaga(), watchExample(), adminAuthSaga(), adminSaga()]);
 }
 
 // Create saga middleware for handling side effects
@@ -39,6 +41,7 @@ export const store = configureStore({
     example: exampleReducer,
     users: usersReducer,
     adminAuth: adminAuthReducer,
+    admin: adminReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
