@@ -4,7 +4,6 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import type { Certification } from "../../../types/profile"
-import { DatePicker } from "@/components/ui/date-picker"
 
 export default function CertificationsTab() {
   const [certifications, setCertifications] = useState<Certification[]>([
@@ -115,11 +114,12 @@ export default function CertificationsTab() {
           {/* Issued Date */}
           <div className="space-y-2">
             <label className="block text-gray-700">Issued Date</label>
-            <DatePicker
-              date={cert.issuedDate}
-              onChange={(value) => {
+            <Input
+               type="date"
+               value={cert.issuedDate}
+               onChange={(e) => {
                 const updated = [...certifications]
-                updated[index].issuedDate = value
+                updated[index].issuedDate = e.target.value
                 setCertifications(updated)
               }}
             />

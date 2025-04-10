@@ -4,7 +4,6 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Experience } from "../../../types/profile"
-import { DateRangePicker } from "../ui/date-range-picker"
 
 export default function ExperienceTab() {
   const [experiences, setExperiences] = useState<Experience[]>([
@@ -134,11 +133,11 @@ export default function ExperienceTab() {
           {/* Time Period */}
           <div className="space-y-2">
             <label className="block text-gray-700">Time Period</label>
-            <DateRangePicker
+            <Input
               value={exp.timePeriod}
-              onChange={(value) => {
+              onChange={(e) => {
                 const updated = [...experiences]
-                updated[index].timePeriod = value
+                updated[index].timePeriod = e.target.value
                 setExperiences(updated)
               }}
             />
