@@ -1,27 +1,27 @@
 export interface EducationEntry {
-    universityLogo: File | null
-    universityName: string
-    courseName: string
-    timePeriod: string
-    courseDescription: string
+  logo: File | null
+    name: string
+    course_name: string
+    time_period: string
+    course_description: string
   }
   
   export interface Experience {
     logo: File | null
     position: string
     companyName: string
-    jobType: string
-    timePeriod: string
+    job_type: string
+    time_period: string
     location: string
-    workMode: string
+    work_mode: string
     skills: string
   }
   
   export interface Certification {
     logo: File | null
-    name: string
-    companyName: string
-    issuedDate: string
-    credentialId: string
+    certificate_name: string
+    issuing_organization: string
+    issue_date: string
+    credential_id: string
   }
   

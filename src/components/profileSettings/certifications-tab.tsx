@@ -1,20 +1,48 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import type { Certification } from "../../../types/profile"
 
-export default function CertificationsTab() {
-  const [certifications, setCertifications] = useState<Certification[]>([
-    {
-      logo: null,
-      name: "",
-      companyName: "",
-      issuedDate: "",
-      credentialId: "",
-    },
-  ])
+interface CertificationTabProps {
+  certification?: Certification[];
+}
+
+const defaultCertification: Certification = {
+  logo: null,
+  certificate_name: "",
+  issuing_organization: "",
+  issue_date: "",
+  credential_id: "",
+}
+
+export default function CertificationsTab({ certification = [] }: CertificationTabProps) {
+  const [certifications, setCertifications] = useState<Certification[]>([defaultCertification])
+
+  useEffect(() => {
+    if (certification.length > 0) {
+      const mapped = certification.map((c) => ({
+        logo: null,
+        certificate_name: c.certificate_name || "",
+        issuing_organization: c.issuing_organization || "",
+        issue_date: c.issue_date || "",
+        credential_id: c.credential_id || "",
+      }))
+      setCertifications(mapped)
+    }
+  }, [certification])
+
+  const handleChange = (index: number, field: keyof Certification, value: any) => {
+    setCertifications((prev) =>
+      prev.map((cert, i) => (i === index ? { ...cert, [field]: value } : cert))
+    )
+  }
+
+  const handleDelete = (index: number) => {
+    const updated = certifications.filter((_, i) => i !== index)
+    setCertifications(updated.length > 0 ? updated : [defaultCertification])
+  }
 
   return (
     <div className="space-y-8 w-full">
@@ -25,22 +53,7 @@ export default function CertificationsTab() {
         >
           {/* Delete Button */}
           <button
-            onClick={() => {
-              const updated = certifications.filter((_, i) => i !== index)
-              setCertifications(
-                updated.length
-                  ? updated
-                  : [
-                    {
-                      logo: null,
-                      name: "",
-                      companyName: "",
-                      issuedDate: "",
-                      credentialId: "",
-                    },
-                  ],
-              )
-            }}
+            onClick={() => handleDelete(index)}
             className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-200 text-gray-500 hover:text-red-500"
             aria-label="Delete certification entry"
           >
@@ -63,7 +76,7 @@ export default function CertificationsTab() {
             </svg>
           </button>
 
-          {/* Logo Upload */}
+          {/* Logo */}
           <div className="space-y-2">
             <label className="block text-gray-700">University/Issuer Logo</label>
             <Input
@@ -71,57 +84,44 @@ export default function CertificationsTab() {
               accept="image/*"
               onChange={(e) => {
                 const file = e.target.files?.[0] ?? null
-                const updated = [...certifications]
-                updated[index].logo = file
-                setCertifications(updated)
+                handleChange(index, "logo", file)
               }}
+              disabled
             />
             {cert.logo && (
               <img
-                src={URL.createObjectURL(cert.logo) || "/placeholder.svg"}
+                src={URL.createObjectURL(cert.logo)}
                 alt="Logo Preview"
                 className="w-20 h-20 mt-2 object-contain border rounded"
               />
             )}
           </div>
 
-          {/* Name */}
+          {/* Certificate Name */}
           <div className="space-y-2">
             <label className="block text-gray-700">Certificate Name</label>
             <Input
-              value={cert.name}
-              onChange={(e) => {
-                const updated = [...certifications]
-                updated[index].name = e.target.value
-                setCertifications(updated)
-              }}
+              value={cert.certificate_name}
+              onChange={(e) => handleChange(index, "certificate_name", e.target.value)}
             />
           </div>
 
-          {/* Company Name */}
+          {/* Issuing Organization */}
           <div className="space-y-2">
             <label className="block text-gray-700">Issuing Organization</label>
             <Input
-              value={cert.companyName}
-              onChange={(e) => {
-                const updated = [...certifications]
-                updated[index].companyName = e.target.value
-                setCertifications(updated)
-              }}
+              value={cert.issuing_organization}
+              onChange={(e) => handleChange(index, "issuing_organization", e.target.value)}
             />
           </div>
 
-          {/* Issued Date */}
+          {/* Issue Date */}
           <div className="space-y-2">
             <label className="block text-gray-700">Issued Date</label>
             <Input
-               type="date"
-               value={cert.issuedDate}
-               onChange={(e) => {
-                const updated = [...certifications]
-                updated[index].issuedDate = e.target.value
-                setCertifications(updated)
-              }}
+              type="date"
+              value={cert.issue_date}
+              onChange={(e) => handleChange(index, "issue_date", e.target.value)}
             />
           </div>
 
@@ -129,31 +129,15 @@ export default function CertificationsTab() {
           <div className="space-y-2 md:col-span-2">
             <label className="block text-gray-700">Credential ID</label>
             <Input
-              value={cert.credentialId}
-              onChange={(e) => {
-                const updated = [...certifications]
-                updated[index].credentialId = e.target.value
-                setCertifications(updated)
-              }}
+              value={cert.credential_id}
+              onChange={(e) => handleChange(index, "credential_id", e.target.value)}
             />
           </div>
         </div>
       ))}
 
-      {/* Add More Button */}
       <Button
-        onClick={() =>
-          setCertifications([
-            ...certifications,
-            {
-              logo: null,
-              name: "",
-              companyName: "",
-              issuedDate: "",
-              credentialId: "",
-            },
-          ])
-        }
+        onClick={() => setCertifications([...certifications, defaultCertification])}
         className="bg-purple-500 hover:bg-purple-600 text-white"
       >
         Add More

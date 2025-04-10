@@ -1,7 +1,6 @@
 import { PencilIcon, StarIcon } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { VerifiedIcon } from "./icons"
 
 interface ProfileHeaderProps {
     name: string;
@@ -57,17 +56,10 @@ export default function ProfileHeader({
                         <div className="space-y-1">
                             <div className="flex items-center gap-2">
                                 <h1 className="text-2xl font-bold">{name}</h1>
-                                <Button
-                                    variant="outline"
-                                    className="rounded-full text-blue-500 border-blue-500 text-sm h-8 flex items-center gap-1"
-                                >
-                                    <VerifiedIcon className="h-4 w-4" />
-                                    Add verification badge
-                                </Button>
                             </div>
                             <p className="text-gray-700 text-xl">{title}</p>
                             <p className="text-gray-500">
-                                {location} · <span className="text-blue-500">Contact info</span>
+                                {location}
                             </p>
 
                             <div className="flex space-x-2 mt-2">
@@ -125,41 +117,41 @@ export default function ProfileHeader({
                         </div>
 
                         <div className="mt-4">
-  {/* University section */}
-  <div className="flex items-center gap-2">
-    <Image
-      src="/dav.png"
-      alt="University logo"
-      width={40}
-      height={40}
-      className="rounded-full"
-    />
-    <div className="ml-2">
-      <p className="font-medium">Devi Ahilya Vishwavidyalaya</p>
-    </div>
-  </div>
+                            {/* University section */}
+                            <div className="flex items-center gap-2">
+                                <Image
+                                    src="/dav.png"
+                                    alt="University logo"
+                                    width={40}
+                                    height={40}
+                                    className="rounded-full"
+                                />
+                                <div className="ml-2">
+                                    <p className="font-medium">Devi Ahilya Vishwavidyalaya</p>
+                                </div>
+                            </div>
 
-  {/* Learners + Reviews section */}
-  <div className="flex justify-start gap-8 mt-4 mb-6">
-    <div className="text-center">
-      <p className="text-2xl font-bold">1211</p>
-      <p className="text-gray-500">Total learners</p>
-    </div>
+                            {/* Learners + Reviews section */}
+                            <div className="flex justify-start gap-8 mt-4 mb-6">
+                                <div className="text-center">
+                                    <p className="text-2xl font-bold">1211</p>
+                                    <p className="text-gray-500">Total learners</p>
+                                </div>
 
-    <div className="text-center flex flex-col items-center">
-      <div className="flex items-center">
-        <p className="text-2xl font-bold mr-2">212</p>
-        <div className="flex">
-          <StarIcon className="h-6 w-6 text-yellow-400 fill-yellow-400" />
-          <StarIcon className="h-6 w-6 text-yellow-400 fill-yellow-400" />
-          <StarIcon className="h-6 w-6 text-yellow-400 fill-yellow-400" />
-          <StarIcon className="h-6 w-6 text-gray-200" />
-        </div>
-      </div>
-      <p className="text-gray-500">Reviews</p>
-    </div>
-  </div>
-</div>
+                                <div className="text-center flex flex-col items-center">
+                                    <div className="flex items-center">
+                                        <p className="text-2xl font-bold mr-2">212</p>
+                                        <div className="flex">
+                                            <StarIcon className="h-6 w-6 text-yellow-400 fill-yellow-400" />
+                                            <StarIcon className="h-6 w-6 text-yellow-400 fill-yellow-400" />
+                                            <StarIcon className="h-6 w-6 text-yellow-400 fill-yellow-400" />
+                                            <StarIcon className="h-6 w-6 text-gray-200" />
+                                        </div>
+                                    </div>
+                                    <p className="text-gray-500">Reviews</p>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>

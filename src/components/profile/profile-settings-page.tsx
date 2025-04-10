@@ -3,16 +3,12 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import ProfileTab from "../profileSettings/profile-tab"
-import ProfilePictureTab from "../profileSettings/profile-picture-tab"
 import EducationTab from "../profileSettings/education-tab"
 import ExperienceTab from "../profileSettings/experience-tab"
 import CertificationsTab from "../profileSettings/certifications-tab"
 
 interface ProfileSettingsProps {
-  name: string
-  phone: string
-  email: string
-  countryCode: string
+  user: any
   setName: (val: string) => void
   setPhone: (val: string) => void
   setEmail: (val: string) => void
@@ -21,21 +17,33 @@ interface ProfileSettingsProps {
 }
 
 export default function ProfileSettings({
-  name,
-  phone,
-  email,
-  countryCode,
+  user,
   setName,
   setPhone,
   setEmail,
   onSave,
   onCancel,
 }: ProfileSettingsProps) {
+  const normalizeSocialLinks = (rawLinks: Record<string, string>[]): { id: string; value: string }[] => {
+    return rawLinks.flatMap(obj =>
+      Object.entries(obj).map(([key, value]) => ({
+        id: key,
+        value
+      }))
+    );
+  };
+  
   const [activeSubTab, setActiveSubTab] = useState("profile")
+  const [profileImage, setProfileImage] = useState<File | null>(null)
+  const [skills, setSkills] = useState<string[]>([])
+  const [location, setLocation] = useState("")
+  const [language, setLanguage] = useState("")
+  const [socialLinks, setSocialLinks] = useState(
+    normalizeSocialLinks(user?.social_links || [])
+  );
 
   const tabs = [
     { value: "profile", label: "Profile" },
-    { value: "profile-picture", label: "Profile picture" },
     { value: "education", label: "Education" },
     { value: "experience", label: "Experience" },
     { value: "certifications", label: "Licenses & Certifications" },
@@ -52,11 +60,10 @@ export default function ProfileSettings({
             <button
               key={value}
               onClick={() => setActiveSubTab(value)}
-              className={`pb-2 transition ${
-                activeSubTab === value
-                  ? "text-gray-900 border-b-2 border-gray-900 font-medium"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
+              className={`pb-2 transition ${activeSubTab === value
+                ? "text-gray-900 border-b-2 border-gray-900 font-medium"
+                : "text-gray-500 hover:text-gray-700"
+                }`}
             >
               {label}
             </button>
@@ -68,20 +75,30 @@ export default function ProfileSettings({
       <div className="w-full max-w-6xl mx-auto">
         {activeSubTab === "profile" && (
           <ProfileTab
-            name={name}
-            email={email}
-            phone={phone}
-            countryCode={countryCode}
+            name={user?.name}
+            phone={user?.phone}
+            email={user?.email}
+            countryCode={user?.countryCode}
+            profileImage={user?.profieImage}
             setName={setName}
-            setEmail={setEmail}
             setPhone={setPhone}
+            setEmail={setEmail}
+            setProfileImage={setProfileImage}
+            skills={user?.skills}
+            location={location}
+            setSkills={setSkills}
+            setLocation={setLocation}
+            about={user?.biography}
+            language={user?.language}
+            setLanguage={setLanguage}
+            socialLinks={socialLinks}
+            setSocialLinks={setSocialLinks}
           />
         )}
 
-        {activeSubTab === "profile-picture" && <ProfilePictureTab />}
-        {activeSubTab === "education" && <EducationTab />}
-        {activeSubTab === "experience" && <ExperienceTab />}
-        {activeSubTab === "certifications" && <CertificationsTab />}
+        {activeSubTab === "education" && <EducationTab education={user.education} />}
+        {activeSubTab === "experience" && <ExperienceTab experience={user.experience} />}
+        {activeSubTab === "certifications" && <CertificationsTab certification={user.license_certificate} />}
       </div>
 
       {/* Buttons */}

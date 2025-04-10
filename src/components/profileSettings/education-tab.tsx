@@ -1,20 +1,36 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import type { EducationEntry } from "../../../types/profile"
+import { EducationEntry } from "../../../types/profile"
 
-export default function EducationTab() {
-  const [educationList, setEducationList] = useState<EducationEntry[]>([
-    {
-      universityLogo: null,
-      universityName: "",
-      courseName: "",
-      timePeriod: "",
-      courseDescription: "",
-    },
-  ])
+interface EducationTabProps {
+  education?: EducationEntry[]
+}
+
+export default function EducationTab({ education = [] }: EducationTabProps) {
+  const [educationList, setEducationList] = useState<EducationEntry[]>([])
+
+  useEffect(() => {
+    if (education.length > 0) {
+      const mapped = education.map((edu) => ({
+        ...edu,
+        logo: null,
+      }))
+      setEducationList(mapped)
+    } else {
+      setEducationList([
+        {
+          logo: null,
+          name: "",
+          course_name: "",
+          time_period: "",
+          course_description: "",
+        },
+      ])
+    }
+  }, [education])
 
   return (
     <div className="space-y-8 w-full">
@@ -32,11 +48,11 @@ export default function EducationTab() {
                   ? updated
                   : [
                       {
-                        universityLogo: null,
-                        universityName: "",
-                        courseName: "",
-                        timePeriod: "",
-                        courseDescription: "",
+                        logo: null,
+                        name: "",
+                        course_name: "",
+                        time_period: "",
+                        course_description: "",
                       },
                     ],
               )
@@ -70,15 +86,16 @@ export default function EducationTab() {
               type="file"
               accept="image/*"
               onChange={(e) => {
-                const file = e.target.files?.[0] || null
+                const file = e.target.files?.[0] ?? null
                 const updated = [...educationList]
-                updated[index].universityLogo = file
+                updated[index].logo = file
                 setEducationList(updated)
               }}
+              disabled
             />
-            {edu.universityLogo && (
+            {edu.logo && (
               <img
-                src={URL.createObjectURL(edu.universityLogo) || "/placeholder.svg"}
+                src={URL.createObjectURL(edu.logo)}
                 alt="University Logo"
                 className="w-24 h-24 mt-2 object-contain border rounded"
               />
@@ -89,13 +106,12 @@ export default function EducationTab() {
           <div className="space-y-2">
             <label className="block text-gray-700">University Name</label>
             <Input
-              value={edu.universityName}
+              value={edu.name}
               onChange={(e) => {
                 const updated = [...educationList]
-                updated[index].universityName = e.target.value
+                updated[index].name = e.target.value
                 setEducationList(updated)
               }}
-              className="w-full border-gray-300"
             />
           </div>
 
@@ -103,13 +119,12 @@ export default function EducationTab() {
           <div className="space-y-2">
             <label className="block text-gray-700">Course Name</label>
             <Input
-              value={edu.courseName}
+              value={edu.course_name}
               onChange={(e) => {
                 const updated = [...educationList]
-                updated[index].courseName = e.target.value
+                updated[index].course_name = e.target.value
                 setEducationList(updated)
               }}
-              className="w-full border-gray-300"
             />
           </div>
 
@@ -117,14 +132,13 @@ export default function EducationTab() {
           <div className="space-y-2">
             <label className="block text-gray-700">Time Period</label>
             <Input
-              value={edu.timePeriod}
+              value={edu.time_period}
               onChange={(e) => {
-              const updated = [...educationList]
-              updated[index].timePeriod = e.target.value
-              setEducationList(updated)
-               }}
+                const updated = [...educationList]
+                updated[index].time_period = e.target.value
+                setEducationList(updated)
+              }}
               placeholder="e.g. 2019 - 2023"
-              className="w-full border-gray-300"
             />
           </div>
 
@@ -132,10 +146,10 @@ export default function EducationTab() {
           <div className="space-y-2 md:col-span-2">
             <label className="block text-gray-700">Course Description</label>
             <textarea
-              value={edu.courseDescription}
+              value={edu.course_description}
               onChange={(e) => {
                 const updated = [...educationList]
-                updated[index].courseDescription = e.target.value
+                updated[index].course_description = e.target.value
                 setEducationList(updated)
               }}
               className="w-full min-h-[100px] p-3 border border-gray-300 rounded-md resize-none"
@@ -145,17 +159,16 @@ export default function EducationTab() {
         </div>
       ))}
 
-      {/* Add More Button */}
       <Button
         onClick={() =>
           setEducationList([
             ...educationList,
             {
-              universityLogo: null,
-              universityName: "",
-              courseName: "",
-              timePeriod: "",
-              courseDescription: "",
+              logo: null,
+              name: "",
+              course_name: "",
+              time_period: "",
+              course_description: "",
             },
           ])
         }

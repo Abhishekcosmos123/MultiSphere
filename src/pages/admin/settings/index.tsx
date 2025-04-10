@@ -25,7 +25,7 @@ const SettingsPage = () => {
         <DashboardLayout>
             <h1 className="text-2xl font-bold mb-4">Settings</h1>
             <div className="flex items-center space-x-4">
-                <span className="text-lg">Producer Mode:</span>
+                <span className="text-lg">Disable Producer Mode:</span>
                 <Switch 
                     checked={isProducerMode} 
                     onCheckedChange={toggleProducerMode} 

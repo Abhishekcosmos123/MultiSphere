@@ -1,23 +1,39 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Experience } from "../../../types/profile"
 
-export default function ExperienceTab() {
-  const [experiences, setExperiences] = useState<Experience[]>([
-    {
-      logo: null,
-      position: "",
-      companyName: "",
-      jobType: "",
-      timePeriod: "",
-      location: "",
-      workMode: "",
-      skills: "",
-    },
-  ])
+interface ExperienceTabProps {
+  experience?: Experience[];
+}
+
+export default function ExperienceTab({ experience = [] }: ExperienceTabProps) {
+  const [experiences, setExperiences] = useState<Experience[]>([])
+
+  useEffect(() => {
+    if (experience.length > 0) {
+      const mapped = experience.map((exp) => ({
+        ...exp,
+        logo: null, 
+      }))
+      setExperiences(mapped)
+    } else {
+      setExperiences([
+        {
+          logo: null,
+          position: "",
+          companyName: "",
+          job_type: "",
+          time_period: "",
+          location: "",
+          work_mode: "",
+          skills: "",
+        },
+      ])
+    }
+  }, [experience])
 
   return (
     <div className="space-y-8 w-full">
@@ -38,10 +54,10 @@ export default function ExperienceTab() {
                       logo: null,
                       position: "",
                       companyName: "",
-                      jobType: "",
-                      timePeriod: "",
+                      job_type: "",
+                      time_period: "",
                       location: "",
-                      workMode: "",
+                      work_mode: "",
                       skills: "",
                     },
                   ],
@@ -81,16 +97,18 @@ export default function ExperienceTab() {
                 updated[index].logo = file
                 setExperiences(updated)
               }}
+              disabled // keep disabled as logo is not editable here
             />
             {exp.logo && (
               <img
-                src={URL.createObjectURL(exp.logo) || "/placeholder.svg"}
+                src={URL.createObjectURL(exp.logo)}
                 alt="Logo Preview"
                 className="w-20 h-20 mt-2 object-contain border rounded"
               />
             )}
           </div>
 
+          {/* Other Fields (same as before)... */}
           {/* Position */}
           <div className="space-y-2">
             <label className="block text-gray-700">Position</label>
@@ -121,10 +139,10 @@ export default function ExperienceTab() {
           <div className="space-y-2">
             <label className="block text-gray-700">Job Type</label>
             <Input
-              value={exp.jobType}
+              value={exp.job_type}
               onChange={(e) => {
                 const updated = [...experiences]
-                updated[index].jobType = e.target.value
+                updated[index].job_type = e.target.value
                 setExperiences(updated)
               }}
             />
@@ -134,10 +152,10 @@ export default function ExperienceTab() {
           <div className="space-y-2">
             <label className="block text-gray-700">Time Period</label>
             <Input
-              value={exp.timePeriod}
+              value={exp.time_period}
               onChange={(e) => {
                 const updated = [...experiences]
-                updated[index].timePeriod = e.target.value
+                updated[index].time_period = e.target.value
                 setExperiences(updated)
               }}
             />
@@ -160,10 +178,10 @@ export default function ExperienceTab() {
           <div className="space-y-2">
             <label className="block text-gray-700">Work Mode</label>
             <Input
-              value={exp.workMode}
+              value={exp.work_mode}
               onChange={(e) => {
                 const updated = [...experiences]
-                updated[index].workMode = e.target.value
+                updated[index].work_mode = e.target.value
                 setExperiences(updated)
               }}
             />
@@ -193,10 +211,10 @@ export default function ExperienceTab() {
               logo: null,
               position: "",
               companyName: "",
-              jobType: "",
-              timePeriod: "",
+              job_type: "",
+              time_period: "",
               location: "",
-              workMode: "",
+              work_mode: "",
               skills: "",
             },
           ])

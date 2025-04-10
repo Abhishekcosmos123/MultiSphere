@@ -768,14 +768,13 @@ export const testimonialElearning = {
 }
 
 export const initialModules = [
-  { name: "COURSE_MANAGEMENT", read: true, create: true, update: true, delete: false },
-  { name: "USER_MANAGEMENT", read: true, create: true, update: true, delete: true },
-  { name: "QUIZ_MANAGEMENT", read: true, create: true, update: true, delete: false },
-  { name: "CONTENT_MANAGEMENT", read: true, create: true, update: true, delete: false },
-  { name: "REPORTS", read: true, create: false, update: false, delete: false },
-  { name: "NOTIFICATIONS", read: true, create: false, update: false, delete: false },
-  { name: "SETTINGS", read: true, create: false, update: true, delete: false },
-  { name: "FEEDBACK", read: true, create: true, update: false, delete: false },
+  { name: "HeroSection", read: true },
+  { name: "CategorySection", read: true },
+  { name: "TrustedSection", read: true },
+  { name: "CourseCarousel", read: true },
+  { name: "PropertySection", read: true },
+  { name: "TestimonialSection", read: true },
+  { name: "CTASection", read: true },
 ]
 
 export const testimonialsRealEstate = [

@@ -15,7 +15,7 @@ import { storage, StorageKeys } from '@/lib/utils/storage';
 
 const handleSocialLoginSuccess = async (user: any, provider: string) => {
   try {
-    const idToken = await user.getIdToken(); 
+    const idToken = await user.getIdToken();
 
     const providerEmail =
       user.email ||
@@ -24,25 +24,28 @@ const handleSocialLoginSuccess = async (user: any, provider: string) => {
 
     const userData = {
       id: user.uid,
+      name: user.displayName || user?.email?.split("@")[0],
       email: providerEmail,
-      name: user?.displayName || user?.email?.split("@")[0],
-      role: "consumer",
       phone: user.phoneNumber || "",
       country_code: "",
-      profileImage: user.photoURL,
+      provider: provider,
+      role: "consumer",
+      profileImage: user.photoURL || "",
+      cover_profile: "",
+      education: [],
+      experience: [],
+      headline: "",
+      biography: "",
+      language: "",
+      website: "",
+      social_links: [],
+      skills: [],
+      license_certificate: [],
     };
-    
+
     store.dispatch(loginSuccess({
       data: {
-        user: {
-          id: userData.id,
-          name: userData.name,
-          phone: userData.phone,
-          country_code: userData.country_code,
-          role: userData.role,
-          email: userData.email,
-          profileImage: userData.profileImage,
-        },
+        user: userData,
         token: {
           access: {
             token: idToken,
@@ -53,7 +56,7 @@ const handleSocialLoginSuccess = async (user: any, provider: string) => {
             expires: ""
           }
         },
-        status: true
+        // status: true
       },
       message: "Login successful",
       success: true

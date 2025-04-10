@@ -104,10 +104,7 @@ export default function ProfilePage() {
       <div className="bg-white shadow-sm overflow-hidden">
         {isEditing ? (
           <ProfileSettings
-            name={name}
-            phone={phone}
-            email={email}
-            countryCode={countryCode}
+            user={user}
             setName={setName}
             setPhone={setPhone}
             setEmail={setEmail}
@@ -118,89 +115,55 @@ export default function ProfilePage() {
           <>
             <ProfileHeader
               name={user?.name || "User Name"}
-              title="Software Developer"
-              location="India"
+              title={user?.role === 'consumer' ? "Student" : "Teacher"}
+              location={"India"}
               connections={500}
-              profileImageUrl="/profileImage.jpeg"
-              backgroundImageUrl="/background.jpeg"
-              university="Devi Ahilya Vishwavidyalaya"
+              profileImageUrl={user?.profileImage ||"/profileImage.jpeg"}
+              backgroundImageUrl={user?.cover_profile || "/background.jpeg"}
+              university={user?.education?.[0]?.name || ""}
               setIsEditing={setIsEditing}
             />
 
             <div className="px-4 py-2">
-              <AboutSection description="5 years of strong experience as a Full-Stack web developer..." />
+              <AboutSection description={user?.biography || "No biography added"} />
 
               <SkillsSection
-                skills={[
-                  "Android Development",
-                  "Mobile Application Development",
-                  "Web Development",
-                  "Web Design",
-                  "Logo Design",
-                  "Back Development",
-                ]}
+                skills={Array.isArray(user?.skills) ? user.skills : []}
               />
 
               <EducationSection
-                educations={[
-                  {
-                    institution: "Devi Ahilya Vishwavidyalaya",
-                    degree: "B.E in IT, Computer Programming, Specific Applications",
-                    years: "2012 - 2016",
-                    location: "Indore, IN",
-                  },
-                ]}
+                educations={(user?.education || []).map((edu: any) => ({
+                  institution: edu.name,
+                  degree: edu.course_name,
+                  years: edu.time_period,
+                  location: edu.course_description,
+                  logo: edu.logo ? `/${edu.logo.replace(/\\/g, '/')}` : "",
+                }))}
               />
 
               <ExperienceSection
-                experiences={[
-                  {
-                    role: "Software Engineer",
-                    company: "YenDigital",
-                    type: "Full-time",
-                    duration: "Oct 2023 - Present · 1 yr 7 mos",
-                    location: "Gurugram, Haryana, India · Hybrid",
-                    logo: "/placeholder.svg?height=48&width=48",
-                  },
-                  {
-                    role: "Senior Web Developer",
-                    company: "Superourcing",
-                    type: "Full-time",
-                    duration: "Apr 2022 - Oct 2023 · 1 yr 7 mos",
-                    location: "Indore, Madhya Pradesh, India · On-site",
-                    logo: "/placeholder.svg?height=48&width=48",
-                    skills: ["Web Accessibility", "Cascading Style Sheets (CSS)", "+26 skills"],
-                  },
-                  {
-                    role: "React Developer",
-                    company: "EngineerBabu",
-                    type: "Full-time",
-                    duration: "Apr 2020 - Oct 2023 · 3 yrs 7 mos",
-                    location: "Indore, Madhya Pradesh, India",
-                    logo: "/placeholder.svg?height=48&width=48",
-                    additionalInfo: "I helped me get this job",
-                    skills: ["GIT", "Web Accessibility", "+25 skills"],
-                  },
-                ]}
+                experiences={(user?.experience || []).map((exp: any) => ({
+                  role: exp.position,
+                  company: exp.position,
+                  type: exp.job_type,
+                  duration: exp.time_period,
+                  location: exp.location,
+                  logo: exp.logo ? `/${exp.logo.replace(/\\/g, '/')}` : "",
+                  skills: exp.skills ? exp.skills.split(",") : [],
+                }))}
               />
 
               <CertificationsSection
-                certifications={[
-                  {
-                    title: "The Bits and Bytes of Computer Networking",
-                    issuer: "Google",
-                    date: "Issued Apr 2020",
-                    credentialId: "YXBE3R4DXWGR",
-                    logo: "/placeholder.svg?height=48&width=48",
-                  },
-                  {
-                    title: "Machine Learning",
-                    issuer: "Stanford Online",
-                    date: "Issued Sep 2018",
-                    credentialId: "CBKPNDZS-BY",
-                    logo: "/placeholder.svg?height=48&width=48",
-                  },
-                ]}
+                certifications={(user?.license_certificate || []).map((cert: any) => ({
+                      title: cert.certificate_name,
+                      issuer: cert.issuing_organization,
+                      date: cert.issue_date,
+                      credentialId: cert.credential_id,
+                      logo: cert.logo
+                        ? `/${cert.logo.replace(/\\/g, '/')}`
+                        : "/default-logo.png",
+                    }))                
+                  }
               />
 
               <CoursesSection

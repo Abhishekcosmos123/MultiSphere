@@ -1,3 +1,4 @@
+import { User } from '@/store/slices/authSlice';
 import { apiClient } from '../client';
 
 export interface LoginCredentials {
@@ -18,31 +19,23 @@ export interface RegisterData {
   provider: string;
 }
 
+export interface Token {
+  token: string;
+  expires: string;
+}
+
+export interface UserToken {
+  access: Token;
+  refresh: Token;
+}
+
 export interface AuthResponse {
-  data: {
-    user: {
-      id: string;
-      name: string;
-      phone: string;
-      country_code: string;
-      role: string;
-      email: string;
-      profileImage: string;
-    };
-    token: {
-      access: {
-        token: string;
-        expires: string;
-      };
-      refresh: {
-        token: string;
-        expires: string;
-      };
-    };
-    status: boolean
-  };
-  message: string;
   success: boolean;
+  message: string;
+  data: {
+    user: User;
+    token: UserToken;
+  };
 }
 
 export interface OTPData {

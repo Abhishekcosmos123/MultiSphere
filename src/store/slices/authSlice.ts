@@ -1,14 +1,57 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthResponse, LoginCredentials, RegisterData, OTPData, OTPDataMobile, ForgetPasswordData, ForgetPasswordOTPData, SocialLoginData, LogoutToken } from '@/lib/api/services/authService';
 
-interface User {
-  id: string;
-  email?: string;
+export interface Education {
+  logo: string;
   name: string;
+  course_name: string;
+  time_period: string;
+  course_description: string;
+}
+
+export interface Experience {
+  logo: string;
+  skills: string;
+  job_type: string;
+  location: string;
+  position: string;
+  work_mode: string;
+  time_period: string;
+}
+
+export interface Certification {
+  logo: string;
+  certificate_name: string;
+  issuing_organization: string;
+  issue_date: string;
+  credential_id: string;
+}
+
+export interface SocialLink {
+  facebook?: string;
+  instagram?: string;
+  [key: string]: string | undefined;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  country_code: string;
+  provider: string;
   role: string;
   profileImage?: string;
-  phone?: string; 
-  country_code?: string; 
+  cover_profile: string;
+  education: Education[];
+  experience: Experience[];
+  headline: string;
+  biography: string;
+  language: string;
+  website: string;
+  social_links: SocialLink[];
+  skills: string[];
+  license_certificate: Certification[];
 }
 
 export interface GetUsers {
@@ -98,7 +141,7 @@ const authSlice = createSlice({
       state.user = action.payload.data.user;
       state.token = null;
       state.error = null;
-      state.status = action.payload.data.status;
+      // state.status = action.payload.data.status;
     },
     loginFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;
@@ -241,7 +284,7 @@ const authSlice = createSlice({
       state.user = action.payload.data.user;
       state.token = action.payload.data.token;
       state.error = null;
-      state.status = action.payload.data.status;
+      // state.status = action.payload.data.status;
     },
     socialLoginFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;
