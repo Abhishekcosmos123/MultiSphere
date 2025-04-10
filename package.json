@@ -16,7 +16,8 @@
     "commitlint": "commitlint --edit",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "install": "npm install --legacy-peer-deps"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
