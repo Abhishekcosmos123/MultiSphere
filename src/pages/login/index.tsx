@@ -58,7 +58,6 @@ export default function LoginPage() {
 			router.push("/");
 			showSuccessToast("Logged In Successfully");
 		}
-		console.log(user.isAuthenticated,'user.isAuthenticated')
 	
 		if (user.isAuthenticated && loginMethod === 'phone') {
 			setIsOtpVerification(true);
