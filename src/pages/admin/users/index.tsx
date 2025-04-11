@@ -119,8 +119,10 @@ const UsersTable: React.FC = () => {
   useEffect(() => {
     if (createUserStatus?.createdUser?.data) {
       showSuccessToast(createUserStatus.createdUser.message);
+      setIsEditModalOpen(false);
       modalRef.current?.resetForm();
       setIsModalOpen(false);
+      dispatch(getUsersRequest({ role: activeTab }));
     } else if (createUserStatus?.error) {
       showErrorToast(createUserStatus.error);
     }
@@ -176,7 +178,7 @@ const UsersTable: React.FC = () => {
       provider: userData.email ? "email" : "phone",
       name: userData.name,
       role: activeTab.toLowerCase(),
-      created_by: "Abhishek",
+      created_by: "User",
       ...(userData.email
         ? { email: userData.email, password: userData.password }
         : { phone: mobileNumber, country_code: `+${countryCode}` }),
