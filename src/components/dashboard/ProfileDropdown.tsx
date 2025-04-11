@@ -1,6 +1,8 @@
-import { useDispatch } from 'react-redux';
-import { logoutRequest } from '@/store/slices/authSlice';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { logoutRequest } from '@/store/slices/authSlice';
+import { RootState } from '@/store';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/ui/button";
 import { LogOut, User, Settings } from "lucide-react";
@@ -12,9 +14,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from 'react';
 import ConfirmationModal from '@/components/ui/ConfirmationModal';
-import { showSuccessToast } from '@/lib/utils/toast';
+import { showSuccessToast, showErrorToast } from '@/lib/utils/toast';
 import { storage, StorageKeys } from '@/lib/utils/storage';
 
 interface ProfileDropdownProps {
@@ -31,18 +32,32 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
   const router = useRouter();
   const [isDialogOpen, setDialogOpen] = useState(false);
 
+  const { loading, error, isAuthenticated } = useSelector((state: RootState) => state.auth);
+
   const handleLogout = () => {
     setDialogOpen(true);
   };
 
   const confirmLogout = () => {
     const token = storage.get(StorageKeys.TOKEN);
-    dispatch(logoutRequest({refreshToken: token ? String(token) : undefined}))
-    storage.remove(StorageKeys.TOKEN);
-    storage.remove(StorageKeys.USER);
-    router.push('/');
-    showSuccessToast('Log out successfully');
+    dispatch(logoutRequest({ refreshToken: token ? String(token) : undefined }));
+    setDialogOpen(false);
   };
+
+  useEffect(() => {
+    if (error) {
+      showErrorToast(error);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (!isAuthenticated && !loading) {
+      showSuccessToast('Logged out successfully!');
+      storage.remove(StorageKeys.TOKEN);
+      storage.remove(StorageKeys.USER);
+      router.push('/');
+    }
+  }, [isAuthenticated, loading]);
 
   return (
     <>
@@ -82,6 +97,7 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
       <ConfirmationModal 
         isOpen={isDialogOpen} 
         onClose={() => setDialogOpen(false)} 
@@ -93,4 +109,4 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
       />
     </>
   );
-} 
+}

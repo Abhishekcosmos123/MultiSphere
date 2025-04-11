@@ -7,33 +7,36 @@ import { Experience } from "../../../types/profile"
 
 interface ExperienceTabProps {
   experience?: Experience[];
+  experiences: Experience[]
+  setExperiences: (list: Experience[]) => void
 }
 
-export default function ExperienceTab({ experience = [] }: ExperienceTabProps) {
-  const [experiences, setExperiences] = useState<Experience[]>([])
+export default function ExperienceTab({ experience = [], experiences,
+  setExperiences }: ExperienceTabProps) {
 
-  useEffect(() => {
-    if (experience.length > 0) {
-      const mapped = experience.map((exp) => ({
-        ...exp,
-        logo: null, 
-      }))
-      setExperiences(mapped)
-    } else {
-      setExperiences([
-        {
+    useEffect(() => {
+      if (Array.isArray(experience) && experience.length > 0) {
+        const mapped = experience.map((exp) => ({
+          ...exp,
           logo: null,
-          position: "",
-          companyName: "",
-          job_type: "",
-          time_period: "",
-          location: "",
-          work_mode: "",
-          skills: "",
-        },
-      ])
-    }
-  }, [experience])
+        }))
+        setExperiences(mapped)
+      } else {
+        setExperiences([
+          {
+            logo: null,
+            position: "",
+            companyName: "",
+            job_type: "",
+            time_period: "",
+            location: "",
+            work_mode: "",
+            skills: "",
+          },
+        ])
+      }
+    }, [experience])
+    
 
   return (
     <div className="space-y-8 w-full">

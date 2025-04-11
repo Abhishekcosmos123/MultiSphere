@@ -7,7 +7,7 @@ interface ProfileHeaderProps {
     title: string;
     location: string;
     connections: number;
-    profileImageUrl: string
+    profileImageUrl: File | null
     backgroundImageUrl: string
     university: string
     setIsEditing: (value: boolean) => void;
@@ -24,10 +24,6 @@ export default function ProfileHeader({
 }: ProfileHeaderProps) {
     return (
         <div className="relative">
-            <div className="absolute top-4 right-4 z-10">
-                <Image src="/placeholder.svg?height=40&width=40" alt="X Logo" width={40} height={40} className="opacity-80" />
-            </div>
-
             <div className="h-64 w-full relative bg-slate-300">
                 <Image
                     src={backgroundImageUrl || "/placeholder.svg"}
@@ -41,7 +37,13 @@ export default function ProfileHeader({
             <div className="px-4 relative">
                 <div className="absolute -top-20 left-4">
                     <div className="rounded-full border-4 border-white overflow-hidden h-36 w-36 relative">
-                        <Image src={profileImageUrl || "/placeholder.svg"} alt={name} fill className="object-cover" priority />
+                        <Image src={
+                            profileImageUrl
+                                ? typeof profileImageUrl === "string"
+                                    ? profileImageUrl
+                                    : URL.createObjectURL(profileImageUrl)
+                                : "/placeholder.svg"
+                        } alt={name} fill className="object-cover" priority />
                     </div>
                 </div>
 
@@ -127,7 +129,7 @@ export default function ProfileHeader({
                                     className="rounded-full"
                                 />
                                 <div className="ml-2">
-                                    <p className="font-medium">Devi Ahilya Vishwavidyalaya</p>
+                                    <p className="font-medium">{university}</p>
                                 </div>
                             </div>
 

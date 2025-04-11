@@ -11,14 +11,20 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/store"
 import { storage, StorageKeys } from "@/lib/utils/storage"
-import { showSuccessToast } from "@/lib/utils/toast"
+import { showErrorToast, showSuccessToast } from "@/lib/utils/toast"
 import { updateProfileRequest } from "@/store/slices/profileSlice"
 import ProfileSettings from "@/components/profile/profile-settings-page"
+import { Certification, EducationEntry, Experience } from "../../../types/profile"
 
 interface Module {
   id: number;
   name: string;
 }
+
+type SocialLink = {
+  id: string;
+  value: string;
+};
 
 export default function ProfilePage() {
   const reduxUser = useSelector((state: RootState) => state.auth.user);
@@ -45,10 +51,34 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const successMessage = useSelector((state: RootState) => state.profile);
 
-  const [name, setName] = useState(user?.name || "");
-  const [phone, setPhone] = useState(user?.phone || "");
-  const [email, setEmail] = useState(user?.email || "");
-  const [countryCode, setCountryCode] = useState(user?.country_code || "");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [countryCode, setCountryCode] = useState("");
+  const [educationList, setEducationList] = useState<EducationEntry[]>([])
+  const [experiences, setExperiences] = useState<Experience[]>([])
+  const [certifications, setCertifications] = useState<Certification[]>([])
+  const [skills, setSkills] = useState<string[]>([])
+  const [biography, setBiography] = useState("");
+  const [location, setLocation] = useState("")
+  const [language, setLanguage] = useState("")
+  const [website, setWebsite ]= useState("")
+  const [profileImage, setProfileImage] = useState<File | null>(null)
+
+  const normalizeSocialLinks = (rawLinks: Record<string, string | undefined>[]): SocialLink[] => {
+    return rawLinks.flatMap(obj =>
+      Object.entries(obj)
+        .filter(([_, value]) => typeof value === "string")
+        .map(([key, value]) => ({
+          id: key,
+          value: value as string,
+        }))
+    );
+  };
+
+  const [socialLinks, setSocialLinks] = useState<SocialLink[]>(
+    normalizeSocialLinks((user?.social_links as Record<string, string | undefined>[]) || [])
+  );
 
   useEffect(() => {
     if (user) {
@@ -56,6 +86,13 @@ export default function ProfilePage() {
       setPhone(user.phone || "");
       setEmail(user.email || "");
       setCountryCode(user.country_code || "");
+      setBiography(user?.biography)
+      setLocation(user?.user_location)
+      setLanguage(user?.language)
+      setWebsite(user?.website)
+      setSocialLinks(normalizeSocialLinks(user?.social_links || []));
+      setProfileImage(user?.profileImage || null)
+      setSkills(user.skills)
     }
   }, [user]);
 
@@ -69,20 +106,57 @@ export default function ProfilePage() {
   useEffect(() => {
     if (successMessage?.successMessage) {
       showSuccessToast(successMessage.successMessage);
+      setIsEditing(false);
+  
+      const formattedSocialLinks = socialLinks.map(({ id, value }) => ({ [id]: value }));
+  
+      setUser((prevUser: any) => ({
+        ...prevUser,
+        name,
+        phone,
+        email,
+        country_code: countryCode,
+        biography,
+        language,
+        location,
+        website,
+        social_links: formattedSocialLinks,
+        skills,
+        education: educationList,
+        experience: experiences,
+        license_certificate: certifications,
+        profileImage: profileImage || prevUser?.profileImage,
+      }));
     }
-  }, [successMessage?.successMessage]);
-
+  
+    if (successMessage?.error) {
+      showErrorToast(successMessage.error);
+    }
+  }, [successMessage?.successMessage, successMessage?.error]);
+  
+  
   const handleSave = () => {
     if (user) {
-      dispatch(updateProfileRequest({
-        id: user.id,
-        name,
-        email,
-        phone,
-        country_code: countryCode,
-        profile: user.profileImage || ""
-      }));
-      setIsEditing(false);
+      const formattedSocialLinks = socialLinks.map(({ id, value }) => ({ [id]: value }));
+      const formData = new FormData();
+  
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("phone", phone);
+      formData.append("country_code", countryCode);
+      formData.append("biography", biography);
+      formData.append("language", language);
+      formData.append("user_location", location);
+      formData.append("website", website);
+      formData.append("social_links", JSON.stringify(formattedSocialLinks));
+      formData.append("skills", JSON.stringify(skills));
+      formData.append("education", JSON.stringify(educationList.map(({ logo, ...rest }) => rest)));
+      formData.append("experience", JSON.stringify(experiences.map(({ logo, ...rest }) => rest)));
+      formData.append("license_certificate", JSON.stringify(certifications.map(({ logo, ...rest }) => rest)));
+      if (profileImage instanceof File) {
+        formData.append("profileImage", profileImage);
+      }
+      dispatch(updateProfileRequest({ id: user.id, formData }));
     }
   };
 
@@ -105,10 +179,33 @@ export default function ProfilePage() {
         {isEditing ? (
           <ProfileSettings
             user={user}
+            name={name}
             setName={setName}
+            phone={phone}
             setPhone={setPhone}
+            email={email}
             setEmail={setEmail}
+            biography={biography}
+            setBiography={setBiography}
+            location={location}
+            setLocation={setLocation}
+            language={language}
+            setLanguage={setLanguage}
+            website={website}
+            setWebsite={setWebsite}
+            socialLinks={socialLinks}
+            profileImage={profileImage}
+            setProfileImage={setProfileImage}
+            setSocialLinks={setSocialLinks}
             onSave={handleSave}
+            skills={skills}
+            setSkills={setSkills}
+            educationList={educationList}
+            setEducationList={setEducationList}
+            experiences={experiences}
+            setExperiences={setExperiences}
+            certifications={certifications}
+            setCertifications={setCertifications}
             onCancel={() => setIsEditing(false)}
           />
         ) : (
@@ -116,10 +213,10 @@ export default function ProfilePage() {
             <ProfileHeader
               name={user?.name || "User Name"}
               title={user?.role === 'consumer' ? "Student" : "Teacher"}
-              location={"India"}
+              location={user?.user_location || ""}
               connections={500}
-              profileImageUrl={user?.profileImage ||"/profileImage.jpeg"}
-              backgroundImageUrl={user?.cover_profile || "/background.jpeg"}
+              profileImageUrl={user?.profileImage || null}
+              backgroundImageUrl={"/background.jpeg"}
               university={user?.education?.[0]?.name || ""}
               setIsEditing={setIsEditing}
             />
@@ -155,15 +252,14 @@ export default function ProfilePage() {
 
               <CertificationsSection
                 certifications={(user?.license_certificate || []).map((cert: any) => ({
-                      title: cert.certificate_name,
-                      issuer: cert.issuing_organization,
-                      date: cert.issue_date,
-                      credentialId: cert.credential_id,
-                      logo: cert.logo
-                        ? `/${cert.logo.replace(/\\/g, '/')}`
-                        : "/default-logo.png",
-                    }))                
-                  }
+                  title: cert.certificate_name,
+                  issuer: cert.issuing_organization,
+                  date: cert.issue_date,
+                  credentialId: cert.credential_id,
+                  logo: cert.logo
+                    ? `/${cert.logo.replace(/\\/g, '/')}`
+                    : "/default-logo.png",
+                }))}
               />
 
               <CoursesSection
@@ -202,5 +298,5 @@ export default function ProfilePage() {
         )}
       </div>
     </div>
-  )
+  );
 }

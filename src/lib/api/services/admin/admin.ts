@@ -7,5 +7,5 @@ export const updateAdminProfile = async (
     id: string,
     payload: AdminProfilePayload
 ): Promise<{ message: string; data: any }> => {
-    return apiClient.put(`/admin/profile/${id}`, payload);
+    return apiClient.patch(`/admin/profile/${id}`, payload);
 };

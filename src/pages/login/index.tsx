@@ -22,6 +22,7 @@ import { loginRequest } from "@/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { storage, StorageKeys } from '@/lib/utils/storage';
+import { Spinner } from "@/components/ui/spinner";
 
 interface Module {
 	id: number;
@@ -57,10 +58,18 @@ export default function LoginPage() {
 			router.push("/");
 			showSuccessToast("Logged In Successfully");
 		}
-		if(user.error){
-			showErrorToast(user.error)
+		console.log(user.isAuthenticated,'user.isAuthenticated')
+	
+		if (user.isAuthenticated && loginMethod === 'phone') {
+			setIsOtpVerification(true);
+			showSuccessToast("OTP sent successfully");
 		}
-	}, [user.isAuthenticated, router, user.error]);
+	
+		if (user.error) {
+			showErrorToast(user.error);
+		}
+	}, [user.isAuthenticated, user.error, loginMethod, router]);
+	
 
 	const validateForm = () => {
 		const newErrors = {
@@ -112,10 +121,6 @@ export default function LoginPage() {
 			};
 
 			dispatch(loginRequest(payload));
-			if (loginMethod === 'phone') {
-				setIsOtpVerification(true);
-				showSuccessToast("OTP sent successfully");
-			}
 		} else {
 			showErrorToast("Please fix the errors before submitting");
 		}
@@ -280,14 +285,22 @@ export default function LoginPage() {
 												)}
 											</div>
 										)}
-										<Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700">
-											{loginMethod === 'email' ? (
+										<Button
+											type="submit"
+											className="w-full bg-purple-600 hover:bg-purple-700"
+											disabled={user.loading}
+										>
+											{user.loading ? (
+												<span className="flex items-center justify-center space-x-2">
+													<Spinner size={20} />
+													<span>Logging in...</span>
+												</span>
+											) : loginMethod === 'email' ? (
 												<><FaEnvelope className="mr-2" /> Continue with email</>
 											) : (
 												<><FaPhone className="mr-2" /> Continue with phone</>
 											)}
 										</Button>
-
 										<div className="relative mt-4">
 											<div className="absolute inset-0 flex items-center">
 												<div className="w-full border-t border-gray-300"></div>

@@ -23,28 +23,31 @@ export default function CertificationsSection({ certifications }: Certifications
 
       <div className="space-y-6">
         {certifications.map((certification, index) => (
-          <div key={index} className="flex">
-            <div className="mr-4">
-              <div className="h-12 w-12 bg-white border border-gray-200 rounded flex items-center justify-center">
-                <Image
-                  src={certification.logo || "/placeholder.svg"}
-                  alt={certification.issuer}
-                  width={32}
-                  height={32}
-                />
+          <div key={index}>
+            <div className="flex">
+              <div className="mr-4">
+                <div className="h-12 w-12 bg-white border border-gray-200 rounded flex items-center justify-center">
+                  <Image
+                    src={certification.logo || "/placeholder.svg"}
+                    alt={certification.issuer}
+                    width={32}
+                    height={32}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <h3 className="font-semibold">{certification.title}</h3>
+                <p className="text-sm text-gray-700">{certification.issuer}</p>
+                <p className="text-sm text-gray-500">{certification.date}</p>
+                <p className="text-sm text-gray-500">Credential ID {certification.credentialId}</p>
+
+                <Button variant="outline" className="mt-2 text-sm h-8 rounded-full">
+                  Show credential
+                </Button>
               </div>
             </div>
-
-            <div>
-              <h3 className="font-semibold">{certification.title}</h3>
-              <p className="text-sm text-gray-700">{certification.issuer}</p>
-              <p className="text-sm text-gray-500">{certification.date}</p>
-              <p className="text-sm text-gray-500">Credential ID {certification.credentialId}</p>
-
-              <Button variant="outline" className="mt-2 text-sm h-8 rounded-full">
-                Show credential
-              </Button>
-            </div>
+            {index < certifications.length - 1 && <hr className="mt-4" />}
           </div>
         ))}
       </div>

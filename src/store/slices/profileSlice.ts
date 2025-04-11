@@ -19,13 +19,9 @@ interface ProfileState {
 }
 
 interface UpdateProfilePayload {
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-    country_code: string;
-    profile: string;
-  }
+  formData: FormData;
+  id: string;
+}
 
 const initialState: ProfileState = {
   loading: false,

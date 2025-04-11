@@ -21,22 +21,29 @@ export default function EducationSection({ educations }: EducationSectionProps) 
       </div>
 
       {educations.map((education, index) => (
-        <div key={index} className="flex mt-4">
-          <div className="mr-4">
-            <div className="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
-              <Image src="/dav.png" alt={education.institution} width={32} height={32} />
+        <div key={index}>
+          <div className="flex mt-4">
+            <div className="mr-4">
+              <div className="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
+                <Image src="/dav.png" alt={education.institution} width={32} height={32} />
+              </div>
+            </div>
+
+            <div>
+              <h3 className="font-semibold">{education.institution}</h3>
+              <p className="text-sm text-gray-700">{education.degree}</p>
+              <p className="text-sm text-gray-500">{education.years}</p>
+              <div className="flex items-center text-sm text-gray-500 mt-1">
+                <MapPinIcon className="h-4 w-4 mr-1" />
+                <span>{education.location}</span>
+              </div>
             </div>
           </div>
 
-          <div>
-            <h3 className="font-semibold">{education.institution}</h3>
-            <p className="text-sm text-gray-700">{education.degree}</p>
-            <p className="text-sm text-gray-500">{education.years}</p>
-            <div className="flex items-center text-sm text-gray-500 mt-1">
-              <MapPinIcon className="h-4 w-4 mr-1" />
-              <span>{education.location}</span>
-            </div>
-          </div>
+          {/* Divider except after the last entry */}
+          {index < educations.length - 1 && (
+            <div className="border-b border-gray-200 my-4" />
+          )}
         </div>
       ))}
     </Card>

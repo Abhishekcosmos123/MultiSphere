@@ -16,6 +16,7 @@ import 'firebase/auth';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { adminLoginRequest } from "@/store/slices/admin/authAdminSlice";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function AdminLoginPage() {
     const dispatch = useDispatch();
@@ -99,7 +100,6 @@ export default function AdminLoginPage() {
                 }));
                 setIsOtpVerification(true);
             }
-        } else {
         }
     };
 
@@ -141,8 +141,8 @@ export default function AdminLoginPage() {
                             </>
                         )}
                         {isOtpVerification ? (
-                            <OTPValidation 
-                                email={phone} 
+                            <OTPValidation
+                                email={phone}
                                 onVerify={() => router.push("/admin/dashboard")}
                                 role="admin"
                             />
@@ -223,11 +223,22 @@ export default function AdminLoginPage() {
                                         )}
                                     </div>
                                 )}
-                                <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700">
-                                    {loginMethod === 'email' ? (
-                                        <><FaEnvelope className="mr-2" /> Login with email</>
+                                <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700" disabled={adminAuth.loading}>
+                                    {adminAuth.loading ? (
+                                        <span className="flex items-center justify-center space-x-2">
+                                            <Spinner size={20} />
+                                            <span>Logging in...</span>
+                                        </span>
+                                    ) : loginMethod === 'email' ? (
+                                        <>
+                                            <FaEnvelope className="mr-2" />
+                                            Login with email
+                                        </>
                                     ) : (
-                                        <><FaPhone className="mr-2" /> Continue with phone</>
+                                        <>
+                                            <FaPhone className="mr-2" />
+                                            Continue with phone
+                                        </>
                                     )}
                                 </Button>
                             </form>

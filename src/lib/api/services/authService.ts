@@ -99,7 +99,7 @@ export interface UpdateUser {
   is_deleted: boolean;
   profile_pic: string;
   role: string;
-  created_at?: string; 
+  created_at?: string;
   updated_at?: string;
 }
 
@@ -183,8 +183,12 @@ export const authService = {
     return apiClient.post<{ success: boolean; message: string; data: { users: AuthResponse['data']['user'][] } }>(`/admin/users?role=${role}`);
   },
 
-  async updateUserProfile({ id, ...body }: UpdateProfilePayload): Promise<{ message: string }> {
-    return apiClient.put(`/users/profile/${id}`, body);
+  async updateUserProfile({ id, formData }: { id: string; formData: FormData }): Promise<{ message: string; data: any }> {
+    return apiClient.patch(`/users/profile/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   },
 
   async searchUsers(searchBy: string, searchValue: string) {
@@ -197,8 +201,8 @@ export const authService = {
 
   async updateUser(payload: UpdateUserPayload): Promise<UpdateUser> {
     const { userId, userData } = payload;
-    return apiClient.put(`/admin/users/${userId}`, userData);
-  },  
+    return apiClient.patch(`/admin/users/${userId}`, userData);
+  },
 
   async createUser(payload: CreateUserPayload): Promise<CreatedUserResponse> {
     return apiClient.post("/admin/create-users", payload);

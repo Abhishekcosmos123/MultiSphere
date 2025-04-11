@@ -9,7 +9,7 @@ class ApiClient {
   constructor() {
     this.client = axios.create({
       // baseURL: API_BASE_URL,
-      baseURL: "https://7c85-116-73-52-104.ngrok-free.app/v1",
+      baseURL: "https://3c3a-116-73-52-104.ngrok-free.app/v1",
       headers: {
         'Content-Type': 'application/json',
       },
@@ -83,6 +83,17 @@ class ApiClient {
       throw error;
     }
   }
+
+  async patch<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+    try {
+      const response = await this.client.patch<T>(url, data, config);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+      throw error;
+    }
+  }
+  
 
   private handleError(error: any): void {
     if (axios.isAxiosError(error)) {

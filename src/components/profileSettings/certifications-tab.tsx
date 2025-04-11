@@ -6,22 +6,15 @@ import { Input } from "@/components/ui/input"
 import type { Certification } from "../../../types/profile"
 
 interface CertificationTabProps {
-  certification?: Certification[];
+  certification?: Certification[]
+  certifications: Certification[]
+  setCertifications: (list: Certification[]) => void
 }
 
-const defaultCertification: Certification = {
-  logo: null,
-  certificate_name: "",
-  issuing_organization: "",
-  issue_date: "",
-  credential_id: "",
-}
-
-export default function CertificationsTab({ certification = [] }: CertificationTabProps) {
-  const [certifications, setCertifications] = useState<Certification[]>([defaultCertification])
+export default function CertificationsTab({ certification = [], certifications, setCertifications }: CertificationTabProps) {
 
   useEffect(() => {
-    if (certification.length > 0) {
+    if (Array.isArray(certification) && certification.length > 0) {
       const mapped = certification.map((c) => ({
         logo: null,
         certificate_name: c.certificate_name || "",
@@ -30,18 +23,41 @@ export default function CertificationsTab({ certification = [] }: CertificationT
         credential_id: c.credential_id || "",
       }))
       setCertifications(mapped)
+    } else {
+      setCertifications([
+        {
+          logo: null,
+          certificate_name: "",
+          issuing_organization: "",
+          issue_date: "",
+          credential_id: "",
+        },
+      ])
     }
   }, [certification])
-
+  
   const handleChange = (index: number, field: keyof Certification, value: any) => {
-    setCertifications((prev) =>
-      prev.map((cert, i) => (i === index ? { ...cert, [field]: value } : cert))
+    const updated = certifications.map((cert, i) =>
+      i === index ? { ...cert, [field]: value } : cert
     )
+    setCertifications(updated)
   }
 
   const handleDelete = (index: number) => {
     const updated = certifications.filter((_, i) => i !== index)
-    setCertifications(updated.length > 0 ? updated : [defaultCertification])
+    setCertifications(
+      updated.length > 0
+        ? updated
+        : [
+            {
+              logo: null,
+              certificate_name: "",
+              issuing_organization: "",
+              issue_date: "",
+              credential_id: "",
+            },
+          ]
+    )
   }
 
   return (
@@ -68,11 +84,11 @@ export default function CertificationsTab({ certification = [] }: CertificationT
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <path d="M3 6h18"></path>
-              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-              <line x1="10" y1="11" x2="10" y2="17"></line>
-              <line x1="14" y1="11" x2="14" y2="17"></line>
+              <path d="M3 6h18" />
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+              <line x1="10" y1="11" x2="10" y2="17" />
+              <line x1="14" y1="11" x2="14" y2="17" />
             </svg>
           </button>
 
@@ -137,7 +153,18 @@ export default function CertificationsTab({ certification = [] }: CertificationT
       ))}
 
       <Button
-        onClick={() => setCertifications([...certifications, defaultCertification])}
+        onClick={() =>
+          setCertifications([
+            ...certifications,
+            {
+              logo: null,
+              certificate_name: "",
+              issuing_organization: "",
+              issue_date: "",
+              credential_id: "",
+            },
+          ])
+        }
         className="bg-purple-500 hover:bg-purple-600 text-white"
       >
         Add More

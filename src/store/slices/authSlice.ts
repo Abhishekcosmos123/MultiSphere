@@ -41,12 +41,13 @@ export interface User {
   country_code: string;
   provider: string;
   role: string;
-  profileImage?: string;
+  profileImage?: File | null;
   cover_profile: string;
   education: Education[];
   experience: Experience[];
   headline: string;
   biography: string;
+  user_location: string;
   language: string;
   website: string;
   social_links: SocialLink[];
@@ -137,7 +138,7 @@ const authSlice = createSlice({
     },
     loginSuccess: (state, action: PayloadAction<AuthResponse>) => {
       state.loading = false;
-      state.isAuthenticated = true;
+      state.isAuthenticated = action.payload.success;
       state.user = action.payload.data.user;
       state.token = null;
       state.error = null;
@@ -145,7 +146,7 @@ const authSlice = createSlice({
     },
     loginFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;
-      state.isAuthenticated = false;
+      // state.isAuthenticated = false;
       state.user = null;
       state.token = null;
       state.error = action.payload;

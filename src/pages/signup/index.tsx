@@ -23,6 +23,7 @@ import { registerRequest, verifyOtpRequest } from "@/store/slices/authSlice";
 import { RootState } from "@/store";
 import { getCookie } from "cookies-next";
 import { storage, StorageKeys } from '@/lib/utils/storage';
+import { Spinner } from "@/components/ui/spinner";
 
 interface Module {
     id: number;
@@ -170,11 +171,11 @@ export default function SignupPage() {
                 payload.email = formData.email;
                 payload.password = formData.password;
             } else {
-                const phoneNumber = formData.phone.replace(/^\+/, ''); 
-                const countryCode = phoneNumber.slice(0, phoneNumber.length - 10); 
-                const mobileNumber = phoneNumber.slice(-10); 
+                const phoneNumber = formData.phone.replace(/^\+/, '');
+                const countryCode = phoneNumber.slice(0, phoneNumber.length - 10);
+                const mobileNumber = phoneNumber.slice(-10);
                 payload.phone = mobileNumber;
-                payload.country_code = `+${countryCode}`; 
+                payload.country_code = `+${countryCode}`;
             }
 
             dispatch(registerRequest(payload));
@@ -190,7 +191,7 @@ export default function SignupPage() {
         } else if (registerAPIResponse?.registerResponse?.message) {
             showErrorToast(registerAPIResponse.registerResponse?.message || "Failed to sign up");
         }
-        if(registerAPIResponse.error){
+        if (registerAPIResponse.error) {
             showErrorToast(registerAPIResponse.error);
         }
     }, [registerAPIResponse.registerResponse, registerAPIResponse.error]);
@@ -251,11 +252,11 @@ export default function SignupPage() {
         if (signupMethod === 'email') {
             payload.email = formData.email;
         } else {
-            const phoneNumber = formData.phone.replace(/^\+/, ''); 
-            const countryCode = phoneNumber.slice(0, phoneNumber.length - 10); 
-            const mobileNumber = phoneNumber.slice(-10); 
+            const phoneNumber = formData.phone.replace(/^\+/, '');
+            const countryCode = phoneNumber.slice(0, phoneNumber.length - 10);
+            const mobileNumber = phoneNumber.slice(-10);
             payload.phone = mobileNumber;
-            payload.country_code = `+${countryCode}`; 
+            payload.country_code = `+${countryCode}`;
         }
         dispatch(verifyOtpRequest(payload));
     };
@@ -356,25 +357,25 @@ export default function SignupPage() {
                                 {!isOtpVerification ? (
                                     <form onSubmit={handleSubmit} className="space-y-6">
                                         {/* {!disableTeacher && ( */}
-                                            <div className="grid grid-cols-1 gap-4 mb-6">
+                                        <div className="grid grid-cols-1 gap-4 mb-6">
+                                            <div className="relative">
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                    Are you?
+                                                </label>
                                                 <div className="relative">
-                                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                        Are you?
-                                                    </label>
-                                                    <div className="relative">
-                                                        <select
-                                                            value={formData.userRole}
-                                                            onChange={handleRoleChange}
-                                                            className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-700 focus:border-purple-500 focus:ring-purple-500 appearance-none"
-                                                        >
-                                                            {userRoles.map(role => (
-                                                                <option key={role} value={role}>{role}</option>
-                                                            ))}
-                                                        </select>
-                                                        <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
-                                                    </div>
+                                                    <select
+                                                        value={formData.userRole}
+                                                        onChange={handleRoleChange}
+                                                        className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-700 focus:border-purple-500 focus:ring-purple-500 appearance-none"
+                                                    >
+                                                        {userRoles.map(role => (
+                                                            <option key={role} value={role}>{role}</option>
+                                                        ))}
+                                                    </select>
+                                                    <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
                                                 </div>
                                             </div>
+                                        </div>
                                         {renderInput("fullName", "Full Name")}
 
                                         <div className="flex border-b border-gray-200 mb-4">
@@ -403,13 +404,28 @@ export default function SignupPage() {
                                             renderInput("password", "Password", "password")
                                         )}
 
-                                        <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700">
-                                            {signupMethod === 'email' ?
-                                                <><FaEnvelope className="mr-2" />Sign up with email</> :
-                                                <><FaPhone className="mr-2" />Sign up with phone</>
-                                            }
+                                        <Button
+                                            type="submit"
+                                            className="w-full bg-purple-600 hover:bg-purple-700"
+                                            disabled={registerAPIResponse.loading}
+                                        >
+                                            {registerAPIResponse.loading ? (
+                                                <span className="flex items-center justify-center space-x-2">
+                                                    <Spinner size={20} />
+                                                    <span>Signing up...</span>
+                                                </span>
+                                            ) : signupMethod === 'email' ? (
+                                                <>
+                                                    <FaEnvelope className="mr-2" />
+                                                    Sign up with email
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <FaPhone className="mr-2" />
+                                                    Sign up with phone
+                                                </>
+                                            )}
                                         </Button>
-
                                         <div className="relative mt-4">
                                             <div className="absolute inset-0 flex items-center">
                                                 <div className="w-full border-t border-gray-300"></div>

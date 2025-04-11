@@ -83,7 +83,11 @@ export default function Navbar({ toggleSidebar }: NavbarProps) {
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
                   <AvatarImage
-                    src={localUser?.profileImage || "/placeholder.svg?height=32&width=32"}
+                    src={
+                      localUser?.profileImage instanceof File
+                        ? URL.createObjectURL(localUser.profileImage)
+                        : localUser?.profileImage || "/placeholder.svg?height=32&width=32"
+                    }
                     alt={localUser?.name || "User"}
                   />
                   <AvatarFallback>

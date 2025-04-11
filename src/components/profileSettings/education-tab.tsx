@@ -7,18 +7,18 @@ import { EducationEntry } from "../../../types/profile"
 
 interface EducationTabProps {
   education?: EducationEntry[]
+  educationList: EducationEntry[]
+  setEducationList: (list: EducationEntry[]) => void
 }
 
-export default function EducationTab({ education = [] }: EducationTabProps) {
-  const [educationList, setEducationList] = useState<EducationEntry[]>([])
-
+export default function EducationTab({ education = [] ,educationList, setEducationList }: EducationTabProps) {
   useEffect(() => {
-    if (education.length > 0) {
+    if (Array.isArray(education) && education.length > 0) {
       const mapped = education.map((edu) => ({
         ...edu,
         logo: null,
-      }))
-      setEducationList(mapped)
+      }));
+      setEducationList(mapped);
     } else {
       setEducationList([
         {
@@ -28,9 +28,10 @@ export default function EducationTab({ education = [] }: EducationTabProps) {
           time_period: "",
           course_description: "",
         },
-      ])
+      ]);
     }
-  }, [education])
+  }, [education]);
+  
 
   return (
     <div className="space-y-8 w-full">

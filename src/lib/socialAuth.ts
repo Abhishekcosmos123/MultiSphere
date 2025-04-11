@@ -41,6 +41,7 @@ const handleSocialLoginSuccess = async (user: any, provider: string) => {
       social_links: [],
       skills: [],
       license_certificate: [],
+      user_location: "",
     };
 
     store.dispatch(loginSuccess({
