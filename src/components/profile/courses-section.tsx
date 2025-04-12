@@ -1,6 +1,5 @@
 import { useRef } from "react"
 import { Card } from "@/components/ui/card"
-import Image from "next/image"
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa"
 
 interface Course {
@@ -55,12 +54,7 @@ export default function CoursesSection({ courses }: CoursesSectionProps) {
             className="w-1/4 min-w-[220px] border border-gray-200 rounded-lg overflow-hidden flex-shrink-0 bg-white"
           >
             <div className="relative h-40 w-full">
-              <Image
-                src={course.image || "/placeholder.svg"}
-                alt={course.title}
-                fill
-                className="object-cover"
-              />
+            <img src={course.image} alt={course.title} className="w-full h-40 object-cover" />
             </div>
 
             <div className="p-3">

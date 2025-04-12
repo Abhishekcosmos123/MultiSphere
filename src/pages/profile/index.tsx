@@ -258,7 +258,7 @@ export default function ProfilePage() {
                   credentialId: cert.credential_id,
                   logo: cert.logo
                     ? `/${cert.logo.replace(/\\/g, '/')}`
-                    : "/default-logo.png",
+                    : "/certificate.jpg",
                 }))}
               />
 
@@ -271,7 +271,7 @@ export default function ProfilePage() {
                     ratings: "4.6",
                     students: "1,551,258 students",
                     price: "₹1,499",
-                    image: "/placeholder.svg?height=120&width=160",
+                    image: "https://img-c.udemycdn.com/course/240x135/3600048_b195_20.jpg",
                   },
                   {
                     title: "The Complete SQL Bootcamp: Go from Zero to Hero",
@@ -280,7 +280,7 @@ export default function ProfilePage() {
                     ratings: "4.7",
                     students: "207,000 students",
                     price: "₹1,499",
-                    image: "/placeholder.svg?height=120&width=160",
+                    image: "https://img-c.udemycdn.com/course/240x135/5231088_b1e8_2.jpg",
                   },
                   {
                     title: "Python for Data Science and Machine Learning Bootcamp",
@@ -289,8 +289,35 @@ export default function ProfilePage() {
                     ratings: "4.6",
                     students: "418,658 students",
                     price: "₹4,999",
-                    image: "/placeholder.svg?height=120&width=160",
+                    image: "https://img-c.udemycdn.com/course/240x135/5672302_cfed.jpg",
                   },
+                  {
+                    title: "The Complete Python Bootcamp From Zero to Hero",
+                    platform: "Udemy",
+                    details: "Learn Python like a Professional! Start from the basics and go...",
+                    ratings: "4.6",
+                    students: "1,551,258 students",
+                    price: "₹1,499",
+                    image: "https://img-c.udemycdn.com/course/240x135/5672302_cfed.jpg",
+                  },
+                  {
+                    title: "The Complete SQL Bootcamp: Go from Zero to Hero",
+                    platform: "Udemy",
+                    details: "Become an expert at SQL!",
+                    ratings: "4.7",
+                    students: "207,000 students",
+                    price: "₹1,499",
+                    image: "https://img-c.udemycdn.com/course/240x135/5170404_d282_9.jpg",
+                  },
+                  {
+                    title: "Python for Data Science and Machine Learning Bootcamp",
+                    platform: "Udemy",
+                    details: "Learn how to use NumPy, Pandas, Seaborn, Matplotlib...",
+                    ratings: "4.6",
+                    students: "418,658 students",
+                    price: "₹4,999",
+                    image: "https://img-c.udemycdn.com/course/240x135/5672302_cfed.jpg",
+                  }
                 ]}
               />
             </div>
