@@ -314,7 +314,7 @@ export default function ProfilePage() {
                     platform: "Udemy",
                     details: "Learn how to use NumPy, Pandas, Seaborn, Matplotlib...",
                     ratings: "4.6",
-                    students: "418,658 students",
+                    students: "418,658 student",
                     price: "₹4,999",
                     image: "https://img-c.udemycdn.com/course/240x135/5672302_cfed.jpg",
                   }
