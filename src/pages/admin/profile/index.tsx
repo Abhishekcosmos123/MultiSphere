@@ -21,6 +21,7 @@ import { RootState } from "@/store";
 
 import "react-phone-input-2/lib/style.css";
 import "react-phone-input-2/lib/bootstrap.css";
+import { withAuth } from "@/hooks/middleware";
 
 
 const ProfileField = ({ label, value, icon }: { label: string; value?: string; icon: ReactNode }) => (
@@ -215,4 +216,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   };
 };
 
-export default ProfilePage;
+export default withAuth(ProfilePage, '/admin/login');

@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ArrowDownIcon, ArrowUpIcon, DollarSign, ShoppingCart, Users } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { withAuth } from "@/hooks/middleware"
 
 interface DashboardClientProps {
   salesData: any[]
@@ -12,7 +13,7 @@ interface DashboardClientProps {
   recentOrders: any[]
 }
 
-export default function DashboardClient({ salesData, trafficData, recentOrders }: DashboardClientProps) {
+function DashboardClient({ salesData, trafficData, recentOrders }: DashboardClientProps) {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">E-Learning Dashboard</h1>
@@ -189,3 +190,5 @@ export default function DashboardClient({ salesData, trafficData, recentOrders }
     </div>
   )
 }
+
+export default withAuth(DashboardClient,"/admin/login");

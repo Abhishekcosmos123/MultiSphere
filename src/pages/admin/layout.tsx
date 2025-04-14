@@ -2,18 +2,26 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Sidebar from "@/components/admin/Sidebar"
 import Navbar from "@/components/admin/Navbar"
+import { withAuth } from "@/hooks/middleware"
 
-export default function DashboardLayout({
+function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen)
@@ -58,3 +66,4 @@ export default function DashboardLayout({
   )
 }
 
+export default withAuth(DashboardLayout, "/admin/login");

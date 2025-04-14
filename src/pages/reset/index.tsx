@@ -16,6 +16,7 @@ import { forgetPasswordRequest, resetPasswordRequest } from "@/store/slices/auth
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { storage, StorageKeys } from '@/lib/utils/storage';
+import { ModuleName } from "..";
 
 interface Module {
 	id: number;
@@ -39,13 +40,13 @@ export default function ResetPasswordPage() {
     const router = useRouter();
     const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' });
     const forgetPasswordResponse = useSelector((state: RootState) => state.auth);
+    const { currentModule: selected } = useSelector((state: RootState) => state.currentModule);
 
 	useEffect(() => {
-		const savedModule = storage.getJson(StorageKeys.SELECTED_MODULE);
-		if (savedModule) {
-		  setSelectedModule(savedModule);
+		if (selected && typeof selected === "string") {
+		  setSelectedModule({ id: 0, name: selected as ModuleName });
 		}
-	}, []);
+	  }, []);  
 
     useEffect(() => {
         const { email: queryEmail } = router.query;

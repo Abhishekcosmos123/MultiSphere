@@ -38,6 +38,7 @@ import {
   UpdateUserPayload,
 } from "@/lib/api/services/authService";
 import { showErrorToast, showSuccessToast } from "@/lib/utils/toast";
+import { withAuth } from "@/hooks/middleware";
 
 // -------------------- UserTable --------------------
 const UserTable: React.FC<{
@@ -266,4 +267,4 @@ const UsersTable: React.FC = () => {
   );
 };
 
-export default UsersTable;
+export default withAuth(UsersTable, "/admin/login");

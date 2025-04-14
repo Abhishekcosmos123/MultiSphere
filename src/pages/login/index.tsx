@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { storage, StorageKeys } from '@/lib/utils/storage';
 import { Spinner } from "@/components/ui/spinner";
+import { ModuleName } from "..";
 
 interface Module {
 	id: number;
@@ -45,13 +46,13 @@ export default function LoginPage() {
 	});
 	const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' });
 	const user = useSelector((state: RootState) => state.auth);
+	const { currentModule: selected } = useSelector((state: RootState) => state.currentModule);
 
 	useEffect(() => {
-		const savedModule = storage.getJson(StorageKeys.SELECTED_MODULE);
-		if (savedModule) {
-			setSelectedModule(savedModule);
+		if (selected && typeof selected === "string") {
+		  setSelectedModule({ id: 0, name: selected as ModuleName });
 		}
-	}, []);
+	  }, []);  
 
 	useEffect(() => {
 		if (user.isAuthenticated && loginMethod === 'email') {

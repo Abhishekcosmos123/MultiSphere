@@ -439,7 +439,7 @@ export const popularProperties = [
     students: 110,
     price: 3100,
     originalPrice: 3400,
-    image: "https://images.pexels.com/photos/8136925/pexels-photo-8136925.jpeg",
+    image: "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg",
   }
 ];
 

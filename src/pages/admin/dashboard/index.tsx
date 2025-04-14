@@ -1,7 +1,8 @@
+import { withAuth } from "@/hooks/middleware"
 import DashboardLayout from "../layout"
 import DashboardClient from "./page-client"
 
-export default function DashboardPage() {
+function DashboardPage() {
     // Sample data for charts
     const salesData = [
         { month: "Jan", sales: 4000 },
@@ -35,3 +36,5 @@ export default function DashboardPage() {
     return (
         <DashboardLayout><DashboardClient salesData={salesData} trafficData={trafficData} recentOrders={recentOrders} /></DashboardLayout>)
 }
+
+export default withAuth(DashboardPage, "/admin/login");

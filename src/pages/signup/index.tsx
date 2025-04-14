@@ -24,6 +24,7 @@ import { RootState } from "@/store";
 import { getCookie } from "cookies-next";
 import { storage, StorageKeys } from '@/lib/utils/storage';
 import { Spinner } from "@/components/ui/spinner";
+import { ModuleName } from "..";
 
 interface Module {
     id: number;
@@ -75,13 +76,13 @@ export default function SignupPage() {
     const dispatch = useDispatch();
     const disableTeacher = getCookie("producerMode");
     const otpResponse = useSelector((state: RootState) => state.auth);
+    const { currentModule: selected } = useSelector((state: RootState) => state.currentModule);
 
-    useEffect(() => {
-        const savedModule = storage.getJson(StorageKeys.SELECTED_MODULE);
-        if (savedModule) {
-            setSelectedModule(savedModule);
-        }
-    }, []);
+	useEffect(() => {
+		if (selected && typeof selected === "string") {
+		  setSelectedModule({ id: 0, name: selected as ModuleName });
+		}
+	  }, []);  
 
     const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedRole = e.target.value;

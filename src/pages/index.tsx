@@ -22,13 +22,18 @@ import { HeroSection } from "@/components/dashboard/hero-section";
 import { NavigationBar } from "@/components/dashboard/navigation-bar";
 import { CourseCarousel } from "@/components/dashboard/course-carousel";
 import { storage, StorageKeys } from '@/lib/utils/storage';
+import { fetchCurrentModuleRequest } from '@/store/slices/ superAdmin/currentModuleSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import Loader from '@/ui/loader';
+import LoaderWithLabel from '@/ui/loader-with-label';
 
 interface Module {
   id: number;
   name: ModuleName;
 }
 
-type ModuleName = "Real Estate" | "Restaurants" | "CRM Management" | "E-learning";
+export type ModuleName = "Real Estate" | "Restaurants" | "CRM Management" | "E-learning";
 
 const moduleContentMap: Record<ModuleName, {
   buttons: any;
@@ -110,14 +115,24 @@ const ModuleContent = ({ module }: { module: Module | null }) => {
 };
 
 export default function Home() {
+  const dispatch = useDispatch();
+  const { currentModule: selected, loading } = useSelector((state: RootState) => state.currentModule);
+
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
 
   useEffect(() => {
-    const savedModule = storage.getJson(StorageKeys.SELECTED_MODULE);
-    if (savedModule) {
-      setSelectedModule(savedModule);
-    }
+    dispatch(fetchCurrentModuleRequest());
   }, []);
+
+  useEffect(() => {
+    if (selected && typeof selected === "string") {
+      setSelectedModule({ id: 0, name: selected as ModuleName });
+    }
+  }, [selected]);  
+
+  if (loading || !selectedModule) {
+    return <LoaderWithLabel label="Loading your personalized experience..." />;
+  }
 
   return (
     <div className="flex flex-col min-h-screen">

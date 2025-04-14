@@ -1,12 +1,15 @@
-import AccessManagement from "@/components/admin/access-management"
-import DashboardLayout from "../layout"
+import AccessManagement from "@/components/admin/access-management";
+import DashboardLayout from "../layout";
+import { withAuth } from "@/hooks/middleware";
 
-export default function ManageAccessPage() {
+function ManageAccessPage() {
   return (
     <DashboardLayout>
       <div className="container mx-auto py-6">
         <AccessManagement />
       </div>
     </DashboardLayout>
-  )
+  );
 }
+
+export default withAuth(ManageAccessPage, "/admin/login");

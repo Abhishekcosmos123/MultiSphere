@@ -15,6 +15,8 @@ import { showErrorToast, showSuccessToast } from "@/lib/utils/toast"
 import { updateProfileRequest } from "@/store/slices/profileSlice"
 import ProfileSettings from "@/components/profile/profile-settings-page"
 import { Certification, EducationEntry, Experience } from "../../../types/profile"
+import { withAuth } from "@/hooks/middleware"
+import { ModuleName } from ".."
 
 interface Module {
   id: number;
@@ -26,7 +28,7 @@ type SocialLink = {
   value: string;
 };
 
-export default function ProfilePage() {
+function ProfilePage() {
   const reduxUser = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
@@ -64,6 +66,7 @@ export default function ProfilePage() {
   const [language, setLanguage] = useState("")
   const [website, setWebsite ]= useState("")
   const [profileImage, setProfileImage] = useState<File | null>(null)
+  const { currentModule: selected } = useSelector((state: RootState) => state.currentModule);
 
   const normalizeSocialLinks = (rawLinks: Record<string, string | undefined>[]): SocialLink[] => {
     return rawLinks.flatMap(obj =>
@@ -96,12 +99,11 @@ export default function ProfilePage() {
     }
   }, [user]);
 
-  useEffect(() => {
-    const savedModule = storage.getJson(StorageKeys.SELECTED_MODULE);
-    if (savedModule) {
-      setSelectedModule(savedModule);
-    }
-  }, []);
+	useEffect(() => {
+		if (selected && typeof selected === "string") {
+		  setSelectedModule({ id: 0, name: selected as ModuleName });
+		}
+	  }, []);  
 
   useEffect(() => {
     if (successMessage?.successMessage) {
@@ -327,3 +329,5 @@ export default function ProfilePage() {
     </div>
   );
 }
+
+export default withAuth(ProfilePage, '/login');
