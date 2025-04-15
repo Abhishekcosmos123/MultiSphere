@@ -13,7 +13,7 @@ import { useSelector } from "react-redux"
 import { RootState } from "@/store"
 import { Spinner } from "../ui/spinner"
 
-interface ProfileSettingsProps {
+export interface ProfileSettingsProps {
   user: any
   name: string;
   setName: (val: string) => void

@@ -134,6 +134,15 @@ export interface CreatedUserResponse {
   };
 }
 
+export interface FetchModulesResponse {
+  success: boolean;
+  message: string;
+  data: {
+    modules: string[];
+    useCoordinator: { [key: string]: boolean };
+  };
+}
+
 export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     return apiClient.post<AuthResponse>('/auth/login', credentials);
@@ -206,5 +215,13 @@ export const authService = {
 
   async createUser(payload: CreateUserPayload): Promise<CreatedUserResponse> {
     return apiClient.post("/admin/create-users", payload);
+  },
+
+  async updateUserById(userId: string) {
+    return apiClient.post(`/users/user/${userId}`);
+  },
+
+  async fetchModules(): Promise<FetchModulesResponse> {
+    return apiClient.post('/super-admin/modules');
   },
 }; 

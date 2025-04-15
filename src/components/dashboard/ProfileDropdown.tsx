@@ -17,6 +17,7 @@ import {
 import ConfirmationModal from '@/components/ui/ConfirmationModal';
 import { showSuccessToast, showErrorToast } from '@/lib/utils/toast';
 import { storage, StorageKeys } from '@/lib/utils/storage';
+import { updateUserRequest } from '@/store/slices/profileSlice';
 
 interface ProfileDropdownProps {
   user: {
@@ -24,6 +25,7 @@ interface ProfileDropdownProps {
     email?: string;
     profileImage?: string;
     phone?: string;
+    id: string;
   };
 }
 
@@ -31,6 +33,7 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [isDialogOpen, setDialogOpen] = useState(false);
+  // const { userProfile } = useSelector((state: RootState) => state.profile);
 
   const { loading, error, isAuthenticated } = useSelector((state: RootState) => state.auth);
 
@@ -50,14 +53,23 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (!isAuthenticated && !loading) {
-      showSuccessToast('Logged out successfully!');
-      storage.remove(StorageKeys.TOKEN);
-      storage.remove(StorageKeys.USER);
-      router.push('/');
+  // useEffect(() => {
+  //   if (!isAuthenticated && !loading) {
+  //     showSuccessToast('Logged out successfully!');
+  //     storage.remove(StorageKeys.TOKEN);
+  //     // storage.remove(StorageKeys.USER);
+  //     router.push('/');
+  //   }
+  // }, [isAuthenticated, loading]);
+
+  const fetchProfile = async () => {
+    try {
+      dispatch(updateUserRequest(user?.id))
+      router.push('/profile');
+    } catch (error) {
+      showErrorToast('Failed to fetch profile data');
     }
-  }, [isAuthenticated, loading]);
+  };
 
   return (
     <>
@@ -82,7 +94,7 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => router.push('/profile')}>
+          <DropdownMenuItem onClick={fetchProfile}>
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </DropdownMenuItem>

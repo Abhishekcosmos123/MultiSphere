@@ -1,4 +1,6 @@
+import { AuthResponse, FetchModulesResponse } from "@/lib/api/services/authService";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ProfileResponse, UserData } from "../../../types/profile";
 
 interface User {
   id: string;
@@ -16,6 +18,9 @@ interface ProfileState {
   user: User | null;
   error: string | null;
   successMessage: string | null;
+  userProfile: UserData | null;
+  modules: string[];
+  useCoordinator: { [key: string]: boolean };
 }
 
 interface UpdateProfilePayload {
@@ -28,6 +33,9 @@ const initialState: ProfileState = {
   user: null,
   error: null,
   successMessage: null,
+  userProfile: null,
+  modules: [] as string[],
+  useCoordinator: {} as { [key: string]: boolean },
 };
 
 const profileSlice = createSlice({
@@ -48,6 +56,32 @@ const profileSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    updateUserRequest: (state, action: PayloadAction<string>) => {
+      state.loading = true
+      state.error = null
+    },
+    updateUserSuccess: (state, action: PayloadAction<ProfileResponse>) => {
+      state.loading = false
+      state.userProfile = action.payload.data
+    },
+    updateUserFailure: (state, action: PayloadAction<string>) => {
+      state.loading = false
+      state.userProfile = null;
+      state.error = action.payload
+    },
+    fetchModulesRequest: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchModulesSuccess: (state, action: PayloadAction<FetchModulesResponse>) => {
+      state.loading = false;
+      state.modules = action.payload.data.modules;
+      state.useCoordinator = action.payload.data?.useCoordinator;
+    },
+    fetchModulesFailure: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -55,6 +89,12 @@ export const {
   updateProfileRequest,
   updateProfileSuccess,
   updateProfileFailure,
+  updateUserRequest,
+  updateUserSuccess,
+  updateUserFailure,
+  fetchModulesRequest,
+  fetchModulesFailure,
+  fetchModulesSuccess,
 } = profileSlice.actions;
 
 export default profileSlice.reducer;
