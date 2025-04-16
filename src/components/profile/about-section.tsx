@@ -2,10 +2,13 @@ import { useState } from "react"
 import { Card } from "@/components/ui/card"
 
 interface AboutSectionProps {
-  description: string
+  description?: string | null
 }
 
 export default function AboutSection({ description }: AboutSectionProps) {
+
+  if (!description || description === "null" || description === "undefined") return null;
+
   const [expanded, setExpanded] = useState(false)
   const MAX_LENGTH = 500
 

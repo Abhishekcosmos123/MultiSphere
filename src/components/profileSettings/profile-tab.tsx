@@ -130,7 +130,7 @@ export default function ProfileTab({
           <Input
             id="location"
             placeholder="e.g., Remote, New York, etc."
-            value={location}
+            value={location === "null" || location === null ? "" : location}
             onChange={(e) => setLocation(e.target.value)}
             className="w-full border-gray-300"
           />
@@ -152,7 +152,7 @@ export default function ProfileTab({
               id="biography"
               className="w-full p-3 min-h-[150px] outline-none resize-none"
               placeholder="Tell us about yourself..."
-              value={biography}
+              value={biography === "null" || biography === null ? "" : biography}
               onChange={(e) => setBiography(e.target.value)}
             />
           </div>

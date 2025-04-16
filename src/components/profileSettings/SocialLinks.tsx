@@ -38,10 +38,13 @@ export default function SocialLinks({ socialLinks, setSocialLinks, website, setW
   return (
     <>
       {platforms.map(({ label, id, prefix, placeholder }) => {
-        const currentValue =
-          socialLinks.find(link => link.id === id)?.value ||
-          (id === "website" && typeof website === "string" ? website : "") ||
-          ""
+        const rawValue =
+        socialLinks.find(link => link.id === id)?.value ||
+        (id === "website" && typeof website === "string" ? website : "") ||
+        ""
+      
+      const currentValue = rawValue === "null" ? "" : rawValue
+      
 
         return (
           <div key={id} className="space-y-2">
