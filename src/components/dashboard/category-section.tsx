@@ -8,6 +8,8 @@ import { fetchCourses } from "@/lib/api"
 import { Badge } from "@/ui/badge"
 import { Button } from "@/ui/button"
 import { Course } from "@/lib/content"
+import { useSelector } from "react-redux"
+import { RootState } from "@/store"
 
 interface Topic {
   name: string;
@@ -25,12 +27,13 @@ export function CategorySection({ categories, popularTopics, module }: CategoryS
   const [selectedTopic, setSelectedTopic] = useState<string>(popularTopics[0]?.name)
   const [courses, setCourses] = useState<Course[]>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const { currentModule: selected } = useSelector((state: RootState) => state.currentModule);
 
   useEffect(() => {
     const loadCourses = async () => {
       setLoading(true)
       try {
-        const data = await fetchCourses(selectedCategory, selectedTopic)
+        const data = await fetchCourses(selectedCategory, selectedTopic, selected || "")
         setCourses(data)
       } catch (error) {
         console.error("Failed to fetch courses:", error)

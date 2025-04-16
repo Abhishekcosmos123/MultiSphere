@@ -2,17 +2,12 @@ import { coursesDatabase, realEstateListings, Course, restaurantListings, crmLis
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const getSavedModule = (): { name: string } => {
-  if (typeof window !== 'undefined' && window.localStorage) {
-    return JSON.parse(localStorage.getItem('selectedModule') || '{}') as { name: string };
-  }
-  return { name: "" };
-};
-
-export const fetchCourses = async (category: string, topic: string): Promise<Course[]> => {
+export const fetchCourses = async (
+  category: string,
+  topic: string,
+  savedModuleName: string
+): Promise<Course[]> => {
   await delay(800);
-
-  const savedModule = getSavedModule();
 
   const listingsMap: Record<string, Course[]> = {
     "Real Estate": realEstateListings as Course[], 
@@ -20,7 +15,7 @@ export const fetchCourses = async (category: string, topic: string): Promise<Cou
     "CRM Management": crmListings as Course[], 
   };
 
-  const listings: Course[] = listingsMap[savedModule?.name] || coursesDatabase;
+  const listings: Course[] = listingsMap[savedModuleName] || coursesDatabase;
 
   return listings.filter(course => {
     const categoryMatch = !category || course.category === category;
