@@ -202,9 +202,10 @@ const UsersTable: React.FC = () => {
           <TabsList className="mb-4">
             <TabsTrigger value="consumer">Consumers</TabsTrigger>
             <TabsTrigger value="producer">Producers</TabsTrigger>
+            <TabsTrigger value="coordinator">CoOrdinator</TabsTrigger>
           </TabsList>
 
-          {["consumer", "producer"].map((role) => (
+          {["consumer", "producer","coordinator"].map((role) => (
             <TabsContent key={role} value={role}>
               <div className="flex items-center gap-2 mb-4">
                 <select
@@ -228,7 +229,7 @@ const UsersTable: React.FC = () => {
                   className="bg-green-600 hover:bg-green-700 text-white"
                 >
                   <FaPlus className="mr-2" />
-                  Add {role === "consumer" ? "Consumer" : "Producer"}
+                  Add {role === "consumer" ? "Consumer" : role === "coordinator" ? "Coordinator" : "Producer"}
                 </Button>
               </div>
               <UserTable
@@ -245,7 +246,7 @@ const UsersTable: React.FC = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onSubmit={handleUserSubmit}
-          userType={activeTab === "consumer" ? "Consumer" : "Producer"}
+          userType={activeTab === "consumer" ? "Consumer" : activeTab === "producer" ? "Producer" : "Coordinator"}
         />
 
         <EditUserModal

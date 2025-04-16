@@ -31,7 +31,7 @@ interface AddUserModalProps {
     phone?: string;
     password?: string;
   }) => void;
-  userType: "Consumer" | "Producer";
+  userType: "Consumer" | "Producer" | "Coordinator";
 }
 
 const AddUserModal = forwardRef<AddUserModalHandle, AddUserModalProps>(

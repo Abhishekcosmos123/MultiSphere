@@ -6,7 +6,7 @@ import { useRouter } from "next/router"
 import type { RootState } from "@/store"
 import { storage, StorageKeys } from "@/lib/utils/storage"
 import { showSuccessToast } from "@/lib/utils/toast"
-import { updateProfileRequest } from "@/store/slices/profileSlice"
+import { updateProfileRequest, updateUserRequest } from "@/store/slices/profileSlice"
 import { logoutRequest } from "@/store/slices/authSlice"
 import { withAuth } from "@/hooks/middleware"
 import type { ModuleName } from ".."
@@ -17,6 +17,8 @@ import { CoordinatorProfile } from "@/components/profile/coordinator-profile"
 import { UserProfile } from "@/components/profile/user-profile"
 import { ProfileSettings } from "@/components/profile/profile-settings"
 import type { Certification, EducationEntry, Experience } from "../../../types/profile"
+import { Footer } from "@/components/dashboard/footer"
+import { fetchCurrentModuleRequest } from "@/store/slices/ superAdmin/currentModuleSlice"
 
 type SocialLink = {
   id: string
@@ -69,7 +71,6 @@ function ProfilePage() {
     normalizeSocialLinks((user?.social_links as Record<string, string | undefined>[]) || []),
   )
 
-  // Initialize user data
   useEffect(() => {
     if (userProfile) {
       setUser(userProfile)
@@ -81,14 +82,22 @@ function ProfilePage() {
     }
   }, [userProfile])
 
-  // Set selected module
   useEffect(() => {
     if (selected && typeof selected === "string") {
       setSelectedModule({ id: 0, name: selected as ModuleName })
     }
   }, [selected])
 
-  // Update form fields when user data changes
+  useEffect(() => {
+    dispatch(fetchCurrentModuleRequest())
+  }, [])
+
+  useEffect(() => {
+    if (user?.id) {
+      dispatch(updateUserRequest(user.id))
+    }
+  }, [user?.id])
+
   useEffect(() => {
     if (user) {
       setName(user.name || "")
@@ -105,7 +114,6 @@ function ProfilePage() {
     }
   }, [user])
 
-  // Handle success/error messages
   useEffect(() => {
     if (successMessage?.successMessage) {
       showSuccessToast(successMessage.successMessage)
@@ -175,7 +183,7 @@ function ProfilePage() {
     phone,
     setPhone,
     email,
-    setEmail, 
+    setEmail,
     countryCode,
     biography,
     location,
@@ -191,6 +199,7 @@ function ProfilePage() {
     setContactConsent,
     setIsEditing,
     handleLogout,
+    selected,
   }
 
   const settingsProps = {
@@ -223,32 +232,44 @@ function ProfilePage() {
     certifications,
     setCertifications,
     onCancel: () => setIsEditing(false),
+    selected,
   }
 
+  const renderNavigation = () =>
+    selectedModule ? (
+      <NavigationBar
+        buttons={
+          {
+            "E-learning": ELearningButtons,
+            "Real Estate": RealEstateButtons,
+            "CRM Management": CRMButtons,
+            "Restaurants": RestaurantButtons,
+          }[selectedModule.name]
+        }
+      />
+    ) : (
+      <LoaderWithLabel label="Loading your personalized experience..." />
+    )
+
   if (user?.role === "coordinator") {
-    return <CoordinatorProfile {...profileProps} isEditing={isEditing} handleSave={handleSave} />
+    return (
+      <div className="flex flex-col min-h-screen">
+        {renderNavigation()}
+        <div className="bg-white shadow-sm overflow-hidden">
+          <CoordinatorProfile {...profileProps} isEditing={isEditing} handleSave={handleSave} />
+        </div>
+        <Footer />
+      </div>
+    )
   }
 
   return (
     <div className="flex flex-col min-h-screen">
-      {selectedModule ? (
-        <NavigationBar
-          buttons={
-            {
-              "E-learning": ELearningButtons,
-              "Real Estate": RealEstateButtons,
-              "CRM Management": CRMButtons,
-              "Restaurants": RestaurantButtons,
-            }[selectedModule.name]
-          }
-        />
-      ) : (
-        <LoaderWithLabel label="Loading your personalized experience..." />
-      )}
-
+      {renderNavigation()}
       <div className="bg-white shadow-sm overflow-hidden">
         {isEditing ? <ProfileSettings {...settingsProps} /> : <UserProfile {...profileProps} />}
       </div>
+      <Footer />
     </div>
   )
 }

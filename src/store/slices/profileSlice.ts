@@ -21,6 +21,7 @@ interface ProfileState {
   userProfile: UserData | null;
   modules: string[];
   useCoordinator: { [key: string]: boolean };
+  useProducer: { [key: string]: boolean };
 }
 
 interface UpdateProfilePayload {
@@ -36,6 +37,7 @@ const initialState: ProfileState = {
   userProfile: null,
   modules: [] as string[],
   useCoordinator: {} as { [key: string]: boolean },
+  useProducer: {} as { [key: string]: boolean },
 };
 
 const profileSlice = createSlice({
@@ -77,6 +79,7 @@ const profileSlice = createSlice({
       state.loading = false;
       state.modules = action.payload.data.modules;
       state.useCoordinator = action.payload.data?.useCoordinator;
+      state.useProducer = action.payload.data?.useProducers;
     },
     fetchModulesFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;

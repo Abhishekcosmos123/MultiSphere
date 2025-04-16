@@ -23,7 +23,6 @@ import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons, use
 import { useDispatch, useSelector } from "react-redux"
 import { registerRequest, verifyOtpRequest } from "@/store/slices/authSlice"
 import type { RootState } from "@/store"
-import { getCookie } from "cookies-next"
 import { Spinner } from "@/components/ui/spinner"
 import type { ModuleName } from ".."
 import { fetchModulesRequest } from "@/store/slices/profileSlice"
@@ -78,11 +77,13 @@ export default function SignupPage() {
   const [selectedModule, setSelectedModule] = useState<Module | null>(null)
   const registerAPIResponse = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch()
-  const disableTeacher = getCookie("producerMode")
   const otpResponse = useSelector((state: RootState) => state.auth)
   const { currentModule: selected } = useSelector((state: RootState) => state.currentModule)
   const fetchedModuleRequest = useSelector((state: RootState) => state.profile.useCoordinator)
+  const singleVendor = useSelector((state: RootState) => state.profile.useProducer)
   const [localUserRoles, setLocalUserRoles] = useState<string[]>(userRoles)
+  const isSelectedVendor =
+    selected !== null && singleVendor[selected] === true;
 
   useEffect(() => {
     if (selected && typeof selected === "string") {
@@ -192,7 +193,7 @@ export default function SignupPage() {
       const provider = signupMethod === "email" ? "email" : "phone"
       const payload: any = {
         name: formData.fullName,
-        role: disableTeacher
+        role: isSelectedVendor
           ? "consumer"
           : formData.userRole === "Student"
             ? "consumer"
@@ -386,26 +387,27 @@ export default function SignupPage() {
               <CardContent>
                 {!isOtpVerification ? (
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* {!disableTeacher && ( */}
-                    <div className="grid grid-cols-1 gap-4 mb-6">
-                      <div className="relative">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Are you?</label>
+                    {!isSelectedVendor && (
+                      <div className="grid grid-cols-1 gap-4 mb-6">
                         <div className="relative">
-                          <select
-                            value={formData.userRole}
-                            onChange={handleRoleChange}
-                            className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-700 focus:border-purple-500 focus:ring-purple-500 appearance-none"
-                          >
-                            {localUserRoles.map((role) => (
-                              <option key={role} value={role}>
-                                {role}
-                              </option>
-                            ))}
-                          </select>
-                          <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Are you?</label>
+                          <div className="relative">
+                            <select
+                              value={formData.userRole}
+                              onChange={handleRoleChange}
+                              className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-700 focus:border-purple-500 focus:ring-purple-500 appearance-none"
+                            >
+                              {localUserRoles.map((role) => (
+                                <option key={role} value={role}>
+                                  {role}
+                                </option>
+                              ))}
+                            </select>
+                            <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                     {renderInput("fullName", "Full Name")}
 
                     <div className="flex border-b border-gray-200 mb-4">
@@ -506,7 +508,7 @@ export default function SignupPage() {
                             onChange={(e) => {
                               handleOtpChange(index, e.target.value)
                               if (e.target.value && e.target.nextElementSibling) {
-                                ;(e.target.nextElementSibling as HTMLElement).focus()
+                                ; (e.target.nextElementSibling as HTMLElement).focus()
                               }
                             }}
                             onKeyDown={(e) => {

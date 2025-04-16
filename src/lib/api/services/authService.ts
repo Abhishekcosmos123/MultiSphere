@@ -140,6 +140,7 @@ export interface FetchModulesResponse {
   data: {
     modules: string[];
     useCoordinator: { [key: string]: boolean };
+    useProducers: { [key: string]: boolean };
   };
 }
 

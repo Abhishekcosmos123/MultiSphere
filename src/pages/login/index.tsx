@@ -24,6 +24,7 @@ import { RootState } from "@/store";
 import { storage, StorageKeys } from '@/lib/utils/storage';
 import { Spinner } from "@/components/ui/spinner";
 import { ModuleName } from "..";
+import { fetchCurrentModuleRequest } from "@/store/slices/ superAdmin/currentModuleSlice";
 
 interface Module {
 	id: number;
@@ -44,15 +45,19 @@ export default function LoginPage() {
 		phone: "",
 		password: "",
 	});
-	const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' });
+	const [selectedModule, setSelectedModule] = useState<Module | null>(null)
 	const user = useSelector((state: RootState) => state.auth);
 	const { currentModule: selected } = useSelector((state: RootState) => state.currentModule);
+
+	useEffect(() => {
+		dispatch(fetchCurrentModuleRequest())
+	  }, [])
 
 	useEffect(() => {
 		if (selected && typeof selected === "string") {
 		  setSelectedModule({ id: 0, name: selected as ModuleName });
 		}
-	  }, []);  
+	  }, [selected]);  
 
 	useEffect(() => {
 		if (user.isAuthenticated && loginMethod === 'email') {

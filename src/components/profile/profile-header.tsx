@@ -11,6 +11,7 @@ interface ProfileHeaderProps {
     backgroundImageUrl: string
     university: string
     setIsEditing: (value: boolean) => void;
+    selected: string | null;
 }
 
 export default function ProfileHeader({
@@ -21,6 +22,7 @@ export default function ProfileHeader({
     backgroundImageUrl,
     university,
     setIsEditing,
+    selected,
 }: ProfileHeaderProps) {
     return (
         <div className="relative">
@@ -118,42 +120,44 @@ export default function ProfileHeader({
                             </div>
                         </div>
 
-                        <div className="mt-4">
-                            {/* University section */}
-                            <div className="flex items-center gap-2">
-                                <Image
-                                    src="/dav.png"
-                                    alt="University logo"
-                                    width={40}
-                                    height={40}
-                                    className="rounded-full"
-                                />
-                                <div className="ml-2">
-                                    <p className="font-medium">{university}</p>
-                                </div>
-                            </div>
-
-                            {/* Learners + Reviews section */}
-                            <div className="flex justify-start gap-8 mt-4 mb-6">
-                                <div className="text-center">
-                                    <p className="text-2xl font-bold">1211</p>
-                                    <p className="text-gray-500">Total learners</p>
-                                </div>
-
-                                <div className="text-center flex flex-col items-center">
-                                    <div className="flex items-center">
-                                        <p className="text-2xl font-bold mr-2">212</p>
-                                        <div className="flex">
-                                            <StarIcon className="h-6 w-6 text-yellow-400 fill-yellow-400" />
-                                            <StarIcon className="h-6 w-6 text-yellow-400 fill-yellow-400" />
-                                            <StarIcon className="h-6 w-6 text-yellow-400 fill-yellow-400" />
-                                            <StarIcon className="h-6 w-6 text-gray-200" />
-                                        </div>
+                        {selected !== "Restaurants" && selected !== "Real Estate" && university && (
+                            <div className="mt-4">
+                                {/* University section */}
+                                <div className="flex items-center gap-2">
+                                    <Image
+                                        src="/dav.png"
+                                        alt="University logo"
+                                        width={40}
+                                        height={40}
+                                        className="rounded-full"
+                                    />
+                                    <div className="ml-2">
+                                        <p className="font-medium">{university}</p>
                                     </div>
-                                    <p className="text-gray-500">Reviews</p>
+                                </div>
+
+                                {/* Learners + Reviews section */}
+                                <div className="flex justify-start gap-8 mt-4 mb-6">
+                                    <div className="text-center">
+                                        <p className="text-2xl font-bold">1211</p>
+                                        <p className="text-gray-500">Total learners</p>
+                                    </div>
+
+                                    <div className="text-center flex flex-col items-center">
+                                        <div className="flex items-center">
+                                            <p className="text-2xl font-bold mr-2">212</p>
+                                            <div className="flex">
+                                                <StarIcon className="h-6 w-6 text-yellow-400 fill-yellow-400" />
+                                                <StarIcon className="h-6 w-6 text-yellow-400 fill-yellow-400" />
+                                                <StarIcon className="h-6 w-6 text-yellow-400 fill-yellow-400" />
+                                                <StarIcon className="h-6 w-6 text-gray-200" />
+                                            </div>
+                                        </div>
+                                        <p className="text-gray-500">Reviews</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
 
                     </div>
                 </div>

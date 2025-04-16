@@ -35,7 +35,7 @@ interface Module {
 
 export type ModuleName = "Real Estate" | "Restaurants" | "CRM Management" | "E-learning";
 
-const moduleContentMap: Record<ModuleName, {
+export const moduleContentMap: Record<ModuleName, {
   buttons: any;
   hero: any;
   categories: any;

@@ -22,9 +22,10 @@ interface CourseCarouselProps {
   title: string
   courses: Course[]
   module: string
+  profile?: boolean
 }
 
-export function CourseCarousel({ title, courses, module }: CourseCarouselProps) {
+export function CourseCarousel({ title, courses, module, profile }: CourseCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollPosition, setScrollPosition] = useState(0)
 
@@ -44,8 +45,10 @@ export function CourseCarousel({ title, courses, module }: CourseCarouselProps) 
 
   return (
     <div className="py-6">
-      <div className="px-2 mx-auto max-w-7xl">
-        <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+      <div className={`px-2 mx-auto ${profile ? '' : 'max-w-7xl'}`}>
+        <h2 className="text-2xl font-bold text-gray-900">
+          {profile ? title.replace("Trending", "My") : title}
+        </h2>
 
         <div className="relative flex items-center mt-6">
           <Button
@@ -60,7 +63,7 @@ export function CourseCarousel({ title, courses, module }: CourseCarouselProps) 
 
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth" 
+            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
             onScroll={(e) => setScrollPosition(e.currentTarget.scrollLeft)}
           >
             {courses.map((course) => (

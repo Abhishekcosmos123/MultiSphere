@@ -43,6 +43,7 @@ export interface ProfileSettingsProps {
   certifications: Certification[]
   setCertifications: (list: Certification[]) => void
   onCancel: () => void
+  selected: string | null
 }
 
 export default function ProfileSettings({
@@ -75,13 +76,16 @@ export default function ProfileSettings({
   certifications,
   setCertifications,
   onCancel,
+  selected,
 }: ProfileSettingsProps) {
   const [activeSubTab, setActiveSubTab] = useState("profile")
   const successMessage = useSelector((state: RootState) => state.profile)
 
   const tabs = [
     { value: "profile", label: "Profile" },
-    { value: "education", label: "Education" },
+    ...(selected !== "Restaurants" && selected !== "Real Estate"
+    ? [{ value: "education", label: "Education" }]
+    : []),
     { value: "experience", label: "Experience" },
     { value: "certifications", label: "Licenses & Certifications" },
   ]
@@ -154,7 +158,7 @@ export default function ProfileSettings({
             name={name}
             phone={phone}
             email={email}
-            countryCode={user?.countryCode}
+            countryCode={user?.country_code}
             setName={setName}
             setPhone={setPhone}
             setEmail={setEmail}
@@ -172,6 +176,7 @@ export default function ProfileSettings({
             setWebsite={setWebsite}
             socialLinks={socialLinks}
             setSocialLinks={setSocialLinks}
+            selected={selected}
           />
         )}
 

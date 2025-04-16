@@ -4,51 +4,66 @@ import SkillsSection from "@/components/profile/skills-section"
 import EducationSection from "@/components/profile/education-section"
 import ExperienceSection from "@/components/profile/experience-section"
 import CertificationsSection from "@/components/profile/certifications-section"
-import CoursesSection from "@/components/profile/courses-section"
+import { ModuleName, moduleContentMap } from "@/pages"
+import { CourseCarousel } from "../dashboard/course-carousel"
 
 interface UserProfileProps {
   user: any
   name: string
   setIsEditing: (value: boolean) => void
+  selected: string | null
 }
 
-export const UserProfile = ({ user, name, setIsEditing }: UserProfileProps) => {
+export const UserProfile = ({
+  user,
+  name,
+  setIsEditing,
+  selected,
+}: UserProfileProps) => {
+  console.log(user,'234321')
+  const selectedModule = { id: 0, name: selected };
+  const content = moduleContentMap[selectedModule.name as ModuleName] || {}
+
   return (
     <>
       <ProfileHeader
         name={user?.name || "User Name"}
         title={user?.role === "consumer" ? "Student" : "Teacher"}
-        location={user?.user_location || ""}
+        location={user?.location || ""}
         connections={500}
-        profileImageUrl={user?.profileImage || null}
-        backgroundImageUrl={"/background.jpeg"}
+        profileImageUrl={user?.profileImage || "/profileImage.jpeg"}
+        backgroundImageUrl="/background.jpeg"
         university={user?.education?.[0]?.name || ""}
         setIsEditing={setIsEditing}
+        selected={selected}
       />
 
       <div className="px-4 py-2">
         <AboutSection description={user?.biography || "No biography added"} />
+        {selected !== "Restaurants" && selected !== "Real Estate" && (
+          <>
+            <SkillsSection skills={Array.isArray(user?.skills) ? user.skills : []} />
 
-        <SkillsSection skills={Array.isArray(user?.skills) ? user.skills : []} />
-
-        <EducationSection
-          educations={(user?.education || []).map((edu: any) => ({
-            institution: edu.name,
-            degree: edu.course_name,
-            years: edu.time_period,
-            location: edu.course_description,
-            logo: edu.logo ? `/${edu.logo.replace(/\\/g, "/")}` : "",
-          }))}
-        />
+            <EducationSection
+              educations={(user?.education || []).map((edu: any) => ({
+                institution: edu.name || "N/A",
+                degree: edu.course_name || "N/A",
+                years: edu.time_period || "N/A",
+                location: edu.course_description || "N/A",
+                logo: edu.logo ? `/${edu.logo.replace(/\\/g, "/")}` : "/avatar.png",
+              }))}
+            />
+          </>
+        )}
 
         <ExperienceSection
           experiences={(user?.experience || []).map((exp: any) => ({
             role: exp.position,
-            company: exp.position,
+            company: exp.company || exp.position,
             type: exp.job_type,
             duration: exp.time_period,
             location: exp.location,
-            logo: exp.logo ? `/${exp.logo.replace(/\\/g, "/")}` : "",
+            logo: exp.logo ? `/${exp.logo.replace(/\\/g, "/")}` : "/avatar.png",
             skills: exp.skills ? exp.skills.split(",") : [],
           }))}
         />
@@ -63,65 +78,13 @@ export const UserProfile = ({ user, name, setIsEditing }: UserProfileProps) => {
           }))}
         />
 
-        <CoursesSection
-          courses={[
-            {
-              title: "The Complete Python Bootcamp From Zero to Hero",
-              platform: "Udemy",
-              details: "Learn Python like a Professional! Start from the basics and go...",
-              ratings: "4.6",
-              students: "1,551,258 students",
-              price: "₹1,499",
-              image: "https://img-c.udemycdn.com/course/240x135/3600048_b195_20.jpg",
-            },
-            {
-              title: "The Complete SQL Bootcamp: Go from Zero to Hero",
-              platform: "Udemy",
-              details: "Become an expert at SQL!",
-              ratings: "4.7",
-              students: "207,000 students",
-              price: "₹1,499",
-              image: "https://img-c.udemycdn.com/course/240x135/5231088_b1e8_2.jpg",
-            },
-            {
-              title: "Python for Data Science and Machine Learning Bootcamp",
-              platform: "Udemy",
-              details: "Learn how to use NumPy, Pandas, Seaborn, Matplotlib...",
-              ratings: "4.6",
-              students: "418,658 students",
-              price: "₹4,999",
-              image: "https://img-c.udemycdn.com/course/240x135/5672302_cfed.jpg",
-            },
-            {
-              title: "The Complete Python Bootcamp From Zero to Hero",
-              platform: "Udemy",
-              details: "Learn Python like a Professional! Start from the basics and go...",
-              ratings: "4.6",
-              students: "1,551,258 students",
-              price: "₹1,499",
-              image: "https://img-c.udemycdn.com/course/240x135/5672302_cfed.jpg",
-            },
-            {
-              title: "The Complete SQL Bootcamp: Go from Zero to Hero",
-              platform: "Udemy",
-              details: "Become an expert at SQL!",
-              ratings: "4.7",
-              students: "207,000 students",
-              price: "₹1,499",
-              image: "https://img-c.udemycdn.com/course/240x135/5170404_d282_9.jpg",
-            },
-            {
-              title: "Python for Data Science and Machine Learning Bootcamp",
-              platform: "Udemy",
-              details: "Learn how to use NumPy, Pandas, Seaborn, Matplotlib...",
-              ratings: "4.6",
-              students: "418,658 student",
-              price: "₹4,999",
-              image: "https://img-c.udemycdn.com/course/240x135/5672302_cfed.jpg",
-            },
-          ]}
+        <CourseCarousel
+          title={content.carouselTitle || "Recommended Courses"}
+          courses={content.courses || []}
+          module={selected || ""}
+          profile={true}
         />
       </div>
     </>
-  )
-}
+  );
+};

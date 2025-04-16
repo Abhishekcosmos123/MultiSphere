@@ -33,6 +33,7 @@ interface ProfileTabProps {
   setWebsite: (val: string) => void
   socialLinks: { id: string; value: string }[]
   setSocialLinks: React.Dispatch<React.SetStateAction<{ id: string; value: string }[]>>
+  selected: string | null
 }
 
 export default function ProfileTab({
@@ -56,7 +57,8 @@ export default function ProfileTab({
   website,
   setWebsite,
   socialLinks,
-  setSocialLinks
+  setSocialLinks,
+  selected,
 }: ProfileTabProps) {
   useEffect(() => {
     if (website && !socialLinks.some(link => link.id === "website")) {
@@ -93,6 +95,7 @@ export default function ProfileTab({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full border-gray-300"
+            disabled
           />
         </div>
 
@@ -101,8 +104,8 @@ export default function ProfileTab({
           <label htmlFor="phone" className="block text-gray-700">Phone</label>
           <div className="mt-1">
             <PhoneInput
-              country={'us'}
-              value={countryCode}
+              country={'in'}
+              value={`${countryCode}${phone}`}
               onChange={(value) => setPhone(value)}
               inputClass="w-full"
               containerClass="phone-input-container"
@@ -115,9 +118,10 @@ export default function ProfileTab({
         </div>
 
         {/* Skills */}
-        <div className="space-y-2">
-          <SkillInput skills={skills} setSkills={setSkills} />
-        </div>
+        {selected !== "Restaurants" && selected !== "Real Estate" && (
+          <div className="space-y-2">
+            <SkillInput skills={skills} setSkills={setSkills} />
+          </div>)}
 
         {/* Location */}
         <div className="space-y-2">
