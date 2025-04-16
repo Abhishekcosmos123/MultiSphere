@@ -113,6 +113,7 @@ export default function ProfileTab({
               dropdownClass="phone-input-dropdown"
               searchClass="phone-input-search"
               placeholder="Enter mobile number"
+              disabled
             />
           </div>
         </div>

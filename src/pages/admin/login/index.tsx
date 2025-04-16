@@ -207,7 +207,7 @@ export default function AdminLoginPage() {
                                         </label>
                                         <div className="mt-1">
                                             <PhoneInput
-                                                country={'us'}
+                                                country={'in'}
                                                 value={phone}
                                                 onChange={(value) => setPhone(value)}
                                                 inputClass={`w-full ${errors.phone ? "border-red-500" : ""}`}

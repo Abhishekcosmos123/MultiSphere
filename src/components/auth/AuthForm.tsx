@@ -251,7 +251,7 @@ export default function AuthForm({ type, role, onSubmit }: AuthFormProps) {
                                     </label>
                                     <div className="mt-1">
                                         <PhoneInput
-                                            country={'us'}
+                                            country={'in'}
                                             value={formData.mobileNumber}
                                             onChange={(value) => handleInputChange({ target: { name: 'mobileNumber', value } } as any)}
                                             inputClass={`w-full ${errors.mobileNumber ? "border-red-500" : ""}`}

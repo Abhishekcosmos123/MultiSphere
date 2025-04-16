@@ -148,8 +148,8 @@ function ProfilePage() {
 
       formData.append("name", name)
       formData.append("email", email)
-      formData.append("phone", phone)
-      formData.append("country_code", countryCode)
+      // formData.append("phone", phone)
+      // formData.append("country_code", countryCode)
       formData.append("biography", biography)
       formData.append("language", language)
       formData.append("user_location", location)

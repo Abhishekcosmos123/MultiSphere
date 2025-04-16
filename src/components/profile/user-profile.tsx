@@ -20,7 +20,6 @@ export const UserProfile = ({
   setIsEditing,
   selected,
 }: UserProfileProps) => {
-  console.log(user,'234321')
   const selectedModule = { id: 0, name: selected };
   const content = moduleContentMap[selectedModule.name as ModuleName] || {}
 

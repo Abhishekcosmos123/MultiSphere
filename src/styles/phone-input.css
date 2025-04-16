@@ -10,6 +10,7 @@
   padding-left: 48px;
   font-size: 0.875rem;
   line-height: 1.25rem;
+  margin-left: 10px;
 }
 
 .phone-input-container .form-control:focus {
