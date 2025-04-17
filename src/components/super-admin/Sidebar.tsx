@@ -38,16 +38,16 @@ export default function Sidebar() {
       <div className="py-2">
         <h2 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Main</h2>
         <div className="space-y-1">
-          <SidebarItem icon={LayoutDashboard} title="Dashboard" href="/super-admin/dashboard" active={pathname === "/super-admin/dashboard"} />
-          <SidebarItem icon={BarChart3} title="Analytics" href="/super-admin/analytics" active={pathname === "/super-admin/analytics"} />
+          <SidebarItem icon={LayoutDashboard} title="Dashboard" href="/admin/dashboard" active={pathname === "/admin/dashboard"} />
+          <SidebarItem icon={BarChart3} title="Analytics" href="/admin/analytics" active={pathname === "/admin/analytics"} />
         </div>
       </div>
       <div className="py-2">
         <h2 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Management</h2>
         <div className="space-y-1">
-          <SidebarItem icon={Users} title="Users" href="/super-admin/users" active={pathname === "/super-admin/users"} />
-          <SidebarItem icon={ShoppingCart} title="Products" href="/super-admin/products" active={pathname === "/super-admin/products"} />
-          <SidebarItem icon={Settings} title="Settings" href="/super-admin/settings" active={pathname === "/super-admin/settings"} />
+          <SidebarItem icon={Users} title="Users" href="/admin/users" active={pathname === "/admin/users"} />
+          <SidebarItem icon={ShoppingCart} title="Products" href="/admin/products" active={pathname === "/admin/products"} />
+          <SidebarItem icon={Settings} title="Settings" href="/admin/settings" active={pathname === "/admin/settings"} />
         </div>
       </div>
     </div>

@@ -19,9 +19,13 @@ import {
   adminResetPasswordRequest,
   adminResetPasswordSuccess,
   adminResetPasswordFailure,
+  adminResendOtpRequest,
+  adminResendOtpFailure,
+  adminResendOtpSuccess,
 } from '@/store/slices/admin/authAdminSlice';
 import { adminAuthService, LoginCredentials, LogoutToken } from '@/lib/api/services/admin/adminAuthService.ts';
 import { storage, StorageKeys } from '@/lib/utils/storage';
+import { ResendOtpResponse } from '../../../../types/auth';
 
 /**
  * Saga worker for handling login process
@@ -98,6 +102,21 @@ function* adminResetPasswordSaga(action: ReturnType<typeof adminResetPasswordReq
   }
 }
 
+export function* adminResendOtpSaga(action: PayloadAction<{ email: string }>): Generator {
+  try {
+    const response = (yield call(adminAuthService.adminResendOtp, action.payload)) as ResendOtpResponse;
+
+    // Handle success
+    if (response.success) {
+      yield put(adminResendOtpSuccess(response));
+    } else {
+      yield put(adminResendOtpFailure(response.message || 'Failed to resend OTP'));
+    }
+  } catch (error: any) {
+    yield put(adminResendOtpFailure(error.message || 'Failed to resend OTP'));
+  }
+}
+
 /**
  * Root auth saga that watches for auth actions
  * - Handles login requests
@@ -112,4 +131,5 @@ export default function* adminAuthSaga() {
   yield takeLatest(adminForgetPasswordRequest.type, adminForgetPasswordSaga);
   yield takeLatest(adminVerifyForgetPasswordOtpRequest.type, adminVerifyForgetPasswordOtpSaga);
   yield takeLatest(adminResetPasswordRequest.type, adminResetPasswordSaga);
+  yield takeLatest(adminResendOtpRequest.type, adminResendOtpSaga);
 }

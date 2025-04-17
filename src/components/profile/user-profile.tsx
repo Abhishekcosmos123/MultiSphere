@@ -12,6 +12,7 @@ interface UserProfileProps {
   name: string
   setIsEditing: (value: boolean) => void
   selected: string | null
+  readonly?: boolean
 }
 
 export const UserProfile = ({
@@ -19,6 +20,7 @@ export const UserProfile = ({
   name,
   setIsEditing,
   selected,
+  readonly,
 }: UserProfileProps) => {
   const selectedModule = { id: 0, name: selected };
   const content = moduleContentMap[selectedModule.name as ModuleName] || {}
@@ -35,6 +37,7 @@ export const UserProfile = ({
         university={user?.education?.[0]?.name || ""}
         setIsEditing={setIsEditing}
         selected={selected}
+        readonly={readonly}
       />
 
       <div className="px-4 py-2">

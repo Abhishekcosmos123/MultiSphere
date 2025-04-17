@@ -15,12 +15,12 @@ import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons } fr
 import { forgetPasswordRequest, resetPasswordRequest } from "@/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { storage, StorageKeys } from '@/lib/utils/storage';
 import { ModuleName } from "..";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Module {
-	id: number;
-	name: string;
+    id: number;
+    name: string;
 }
 
 export default function ResetPasswordPage() {
@@ -40,13 +40,14 @@ export default function ResetPasswordPage() {
     const router = useRouter();
     const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' });
     const forgetPasswordResponse = useSelector((state: RootState) => state.auth);
+    console.log(forgetPasswordResponse, 'forgetPasswordResponse')
     const { currentModule: selected } = useSelector((state: RootState) => state.currentModule);
 
-	useEffect(() => {
-		if (selected && typeof selected === "string") {
-		  setSelectedModule({ id: 0, name: selected as ModuleName });
-		}
-	  }, []);  
+    useEffect(() => {
+        if (selected && typeof selected === "string") {
+            setSelectedModule({ id: 0, name: selected as ModuleName });
+        }
+    }, []);
 
     useEffect(() => {
         const { email: queryEmail } = router.query;
@@ -58,12 +59,12 @@ export default function ResetPasswordPage() {
     useEffect(() => {
         const response = forgetPasswordResponse?.forgetPasswordResponse;
         if (response?.success) {
-          showSuccessToast(response.message);
-          setShowOTPVerification(true);
+            showSuccessToast(response.message);
+            setShowOTPVerification(true);
         } else if (forgetPasswordResponse?.error) {
-          showErrorToast(forgetPasswordResponse.error);
+            showErrorToast(forgetPasswordResponse.error);
         }
-      }, [forgetPasswordResponse?.forgetPasswordResponse?.success, forgetPasswordResponse?.error]);
+    }, [forgetPasswordResponse?.forgetPasswordResponse?.success, forgetPasswordResponse?.error]);
 
     const validateForm = () => {
         const newErrors = {
@@ -165,15 +166,15 @@ export default function ResetPasswordPage() {
     return (
         <div className="flex flex-col min-h-screen">
             {selectedModule && (
-				<NavigationBar buttons={
-					{
-						"E-learning": ELearningButtons,
-						"Real Estate": RealEstateButtons,
-						"CRM Management": CRMButtons,
-						"Restaurants": RestaurantButtons,
-					}[selectedModule.name]
-				} />
-			)}
+                <NavigationBar buttons={
+                    {
+                        "E-learning": ELearningButtons,
+                        "Real Estate": RealEstateButtons,
+                        "CRM Management": CRMButtons,
+                        "Restaurants": RestaurantButtons,
+                    }[selectedModule.name]
+                } />
+            )}
             <div className="flex-grow flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8 py-6">
                 <div className="max-w-5xl w-full flex bg-white shadow-lg rounded-lg overflow-hidden">
                     <div className="hidden md:flex w-1/2 items-center justify-center p-8 h-fit">
@@ -188,14 +189,14 @@ export default function ResetPasswordPage() {
                         <Card>
                             <CardHeader>
                                 <CardTitle className="text-2xl font-bold text-center">
-                                    {showNewPasswordForm ? "Set New Password" : 
-                                     showOTPVerification ? "" : 
-                                     "Reset your password"}
+                                    {showNewPasswordForm ? "Set New Password" :
+                                        showOTPVerification ? "" :
+                                            "Reset your password"}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
                                 {showOTPVerification ? (
-                                    <OTPVerification 
+                                    <OTPVerification
                                         email={email}
                                         onVerify={handleOTPVerification}
                                         role="user"
@@ -282,8 +283,22 @@ export default function ResetPasswordPage() {
                                             )}
                                         </div>
 
-                                        <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700">
-                                            <FaEnvelope className="mr-2" /> Send Reset Instructions
+                                        <Button
+                                            type="submit"
+                                            className="w-full bg-purple-600 hover:bg-purple-700"
+                                            disabled={forgetPasswordResponse.loading}
+                                        >
+                                            {forgetPasswordResponse.loading ? (
+                                                <span className="flex items-center space-x-2">
+                                                    <Spinner size={16} />
+                                                    <span>Sending Instructions...</span>
+                                                </span>
+                                            ) : (
+                                                <span className="flex items-center">
+                                                    <FaEnvelope className="mr-2" />
+                                                    Send Reset Instructions
+                                                </span>
+                                            )}
                                         </Button>
                                         <div className="text-center text-sm">
                                             Remember your password? <Link href="/login" className="text-blue-600 hover:text-blue-500">Back to Login</Link>

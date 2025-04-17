@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import Loader from '@/ui/loader';
 import LoaderWithLabel from '@/ui/loader-with-label';
+import { showErrorToast } from '@/lib/utils/toast';
 
 interface Module {
   id: number;
@@ -116,7 +117,7 @@ const ModuleContent = ({ module }: { module: Module | null }) => {
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { currentModule: selected, loading } = useSelector((state: RootState) => state.currentModule);
+  const { currentModule: selected, loading, error } = useSelector((state: RootState) => state.currentModule);
 
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
 
@@ -125,10 +126,16 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (error) {
+      showErrorToast(error);
+    }
+  }, [error]);
+
+  useEffect(() => {
     if (selected && typeof selected === "string") {
       setSelectedModule({ id: 0, name: selected as ModuleName });
     }
-  }, [selected]);  
+  }, [selected]);
 
   if (loading || !selectedModule) {
     return <LoaderWithLabel label="Loading your personalized experience..." />;

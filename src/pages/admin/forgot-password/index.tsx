@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { adminForgetPasswordRequest, adminResetPasswordRequest } from "@/store/slices/admin/authAdminSlice";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function AdminForgotPasswordPage() {
     const dispatch = useDispatch();
@@ -32,15 +33,15 @@ export default function AdminForgotPasswordPage() {
 
     useEffect(() => {
         const res = forgetPasswordResponse?.forgetPasswordResponse;
-      
+
         if (res?.success) {
-          showSuccessToast(res.message);
-          setIsOtpVerification(true);
+            showSuccessToast(res.message);
+            setIsOtpVerification(true);
         } else if (forgetPasswordResponse?.error) {
-          showErrorToast(forgetPasswordResponse.error);
+            showErrorToast(forgetPasswordResponse.error);
         }
-      }, [forgetPasswordResponse]);
-      
+    }, [forgetPasswordResponse?.forgetPasswordResponse]);
+
     const validateForm = () => {
         const newErrors = {
             email: "",
@@ -87,7 +88,7 @@ export default function AdminForgotPasswordPage() {
                 const data = { email };
                 dispatch(adminForgetPasswordRequest(data));
             } else {
-                dispatch(adminResetPasswordRequest({email: email, password: newPassword}));
+                dispatch(adminResetPasswordRequest({ email: email, password: newPassword }));
                 showSuccessToast("Password reset successfully!");
                 router.push("/admin/login");
             }
@@ -109,7 +110,7 @@ export default function AdminForgotPasswordPage() {
         <AuthLayout>
             <div className="max-w-md w-full">
                 {isOtpVerification ? (
-                    <OTPVerification 
+                    <OTPVerification
                         email={email}
                         onVerify={handleOTPVerify}
                         role="admin"
@@ -212,9 +213,20 @@ export default function AdminForgotPasswordPage() {
                                         <>Reset Password</>
                                     ) : (
                                         <>
-                                            <FaEnvelope className="mr-2" /> Send Reset Link
+                                            {forgetPasswordResponse.loading ? (
+                                                <span className="flex items-center space-x-2">
+                                                    <Spinner size={20} />
+                                                    <span>Sending Reset Link ...</span>
+                                                </span>
+                                            ) : (
+                                                <>
+                                                    <FaEnvelope className="mr-2" />
+                                                    Send Reset Link
+                                                </>
+                                            )}
                                         </>
-                                    )}
+                                    )
+                                    }
                                 </Button>
                                 <div className="text-center text-sm">
                                     Remember your password?{" "}

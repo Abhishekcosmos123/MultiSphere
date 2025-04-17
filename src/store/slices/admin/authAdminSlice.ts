@@ -64,6 +64,9 @@ export interface AuthState {
     data: Record<string, unknown>;
   } | null;
   getUsers: GetUsers[] | null;
+  success: boolean;
+  message: string;
+  isLoading: boolean;
 }
 
 export interface ResetPasswordData {
@@ -82,6 +85,9 @@ const initialState: AuthState = {
   registerResponse: null,
   forgetPasswordResponse: null,
   getUsers: null,
+  success: false,
+  message: '',
+  isLoading: false,
 };
 
 const authAdminSlice = createSlice({
@@ -180,6 +186,19 @@ const authAdminSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    adminResendOtpRequest(state, action: PayloadAction<{ email: string }>) {
+      state.isLoading = true;
+      state.error = null;
+    },
+    adminResendOtpSuccess(state, action: PayloadAction<{ success: boolean; message: string }>) {
+      state.isLoading = false;
+      state.success = action.payload.success;
+      state.message = action.payload.message;
+    },
+    adminResendOtpFailure(state, action: PayloadAction<string>) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -201,7 +220,10 @@ export const {
   adminVerifyForgetPasswordOtpFailure,
   adminResetPasswordRequest,
   adminResetPasswordSuccess,
-  adminResetPasswordFailure
+  adminResetPasswordFailure,
+  adminResendOtpRequest,
+  adminResendOtpSuccess,
+  adminResendOtpFailure,
 } = authAdminSlice.actions;
 
 export default authAdminSlice.reducer; 

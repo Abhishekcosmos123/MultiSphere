@@ -108,6 +108,9 @@ export interface AuthState {
     data: Record<string, unknown>; 
   } | null; 
   getUsers: GetUsers[] | null;
+  success: boolean;
+  message: string;
+  isLoading: boolean;
 }
 
 export interface ResetPasswordData {
@@ -126,6 +129,9 @@ const initialState: AuthState = {
   registerResponse: null,
   forgetPasswordResponse: null,
   getUsers: null,
+  success: false,
+  message: '',
+  isLoading: false,
 };
 
 const authSlice = createSlice({
@@ -307,6 +313,19 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    resendOtpRequest(state, action: PayloadAction<{ email: string }>) {
+      state.isLoading = true;
+      state.error = null;
+    },
+    resendOtpSuccess(state, action: PayloadAction<{ success: boolean; message: string }>) {
+      state.isLoading = false;
+      state.success = action.payload.success;
+      state.message = action.payload.message;
+    },
+    resendOtpFailure(state, action: PayloadAction<string>) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -343,7 +362,10 @@ export const {
   socialLoginFailure,
   getUsersRequest,
   getUsersSuccess,
-  getUsersFailure
+  getUsersFailure,
+  resendOtpRequest,
+  resendOtpSuccess,
+  resendOtpFailure,
 } = authSlice.actions;
 
 export default authSlice.reducer; 

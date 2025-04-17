@@ -41,6 +41,7 @@ interface CoordinatorProfileProps {
   setName: (value: string) => void
   setEmail: (value: string) => void
   setPhone: (value: string) => void
+  readonly?: boolean
 }
 
 export const CoordinatorProfile = ({
@@ -58,6 +59,7 @@ export const CoordinatorProfile = ({
   setName,
   setEmail,
   setPhone,
+  readonly,
 }: CoordinatorProfileProps) => {
   return (
     <div className="flex flex-col min-h-screen p-4 sm:p-8 md:p-10 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
@@ -122,30 +124,34 @@ export const CoordinatorProfile = ({
         )}
 
         <div className="flex flex-wrap justify-center gap-4 mt-10">
-          {isEditing ? (
+          {!readonly && (
             <>
-              <Button
-                onClick={handleSave}
-                disabled={!contactConsent}
-                className="bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <Save className="mr-2" size={18} />
-                Save Profile
-              </Button>
-              <Button variant="outline" onClick={() => setIsEditing(false)}>
-                Cancel
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button variant="outline" onClick={() => setIsEditing(true)}>
-                <Edit className="mr-2" size={18} />
-                Edit Profile
-              </Button>
-              <Button variant="destructive" onClick={handleLogout}>
-                <LogOut className="mr-2" size={18} />
-                Log Out
-              </Button>
+              {isEditing ? (
+                <>
+                  <Button
+                    onClick={handleSave}
+                    disabled={!contactConsent}
+                    className="bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Save className="mr-2" size={18} />
+                    Save Profile
+                  </Button>
+                  <Button variant="outline" onClick={() => setIsEditing(false)}>
+                    Cancel
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="outline" onClick={() => setIsEditing(true)}>
+                    <Edit className="mr-2" size={18} />
+                    Edit Profile
+                  </Button>
+                  <Button variant="destructive" onClick={handleLogout}>
+                    <LogOut className="mr-2" size={18} />
+                    Log Out
+                  </Button>
+                </>
+              )}
             </>
           )}
         </div>

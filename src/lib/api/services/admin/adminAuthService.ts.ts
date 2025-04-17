@@ -1,3 +1,4 @@
+import { ResendOtpPayload, ResendOtpResponse } from "../../../../../types/auth";
 import { apiClient } from "../../client";
 
 export interface LoginCredentials {
@@ -116,5 +117,9 @@ export const adminAuthService = {
 
   async adminLogout(data: LogoutToken): Promise<void> {
     return apiClient.post('/admin/logout', data);
+  },
+
+  async adminResendOtp(payload: ResendOtpPayload): Promise<ResendOtpResponse> {
+    return apiClient.post<ResendOtpResponse>('/admin/resend-otp', payload);
   },
 }; 

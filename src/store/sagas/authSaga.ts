@@ -30,10 +30,14 @@ import {
   socialLoginFailure,
   getUsersRequest,
   getUsersSuccess,
-  getUsersFailure
+  getUsersFailure,
+  resendOtpRequest,
+  resendOtpFailure,
+  resendOtpSuccess
 } from '../slices/authSlice';
 import { authService, LoginCredentials, LogoutToken, RegisterData, SocialLoginData } from '@/lib/api/services/authService';
 import { storage, StorageKeys } from '@/lib/utils/storage';
+import { ResendOtpResponse } from '../../../types/auth';
 
 /**
  * Saga worker for handling login process
@@ -183,6 +187,21 @@ export function* getUsersSaga(action: PayloadAction<{ role: string }>): Generato
   }
 }
 
+export function* resendOtpSaga(action: PayloadAction<{ email: string }>): Generator {
+  try {
+    const response = (yield call(authService.resendOtp, action.payload)) as ResendOtpResponse;
+
+    // Handle success
+    if (response.success) {
+      yield put(resendOtpSuccess(response));
+    } else {
+      yield put(resendOtpFailure(response.message || 'Failed to resend OTP'));
+    }
+  } catch (error: any) {
+    yield put(resendOtpFailure(error.message || 'Failed to resend OTP'));
+  }
+}
+
 /**
  * Root auth saga that watches for auth actions
  * - Handles login requests
@@ -202,4 +221,5 @@ export function* authSaga() {
   yield takeLatest(resetPasswordRequest.type, resetPasswordSaga);
   yield takeLatest(socialLoginRequest.type, socialLoginSaga);
   yield takeLatest(getUsersRequest.type, getUsersSaga)
+  yield takeLatest(resendOtpRequest.type, resendOtpSaga);
 }

@@ -12,6 +12,7 @@ interface ProfileHeaderProps {
     university: string
     setIsEditing: (value: boolean) => void;
     selected: string | null;
+    readonly?: boolean;
 }
 
 export default function ProfileHeader({
@@ -23,6 +24,7 @@ export default function ProfileHeader({
     university,
     setIsEditing,
     selected,
+    readonly,
 }: ProfileHeaderProps) {
     return (
         <div className="relative">
@@ -49,11 +51,18 @@ export default function ProfileHeader({
                     </div>
                 </div>
 
-                <div className="absolute top-4 right-4">
-                    <Button variant="ghost" size="icon" className="rounded-full h-10 w-10 bg-white/80 hover:bg-white/90" onClick={() => setIsEditing(true)}>
-                        <PencilIcon className="h-5 w-5" />
-                    </Button>
-                </div>
+                {!readonly && (
+                    <div className="absolute top-4 right-4">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="rounded-full h-10 w-10 bg-white/80 hover:bg-white/90"
+                            onClick={() => setIsEditing(true)}
+                        >
+                            <PencilIcon className="h-5 w-5" />
+                        </Button>
+                    </div>
+                )}
 
                 <div className="pt-20 pb-2">
                     <div className="flex justify-between items-start">

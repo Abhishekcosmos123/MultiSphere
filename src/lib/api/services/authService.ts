@@ -1,5 +1,6 @@
 import { User } from '@/store/slices/authSlice';
 import { apiClient } from '../client';
+import { ResendOtpPayload, ResendOtpResponse } from '../../../../types/auth';
 
 export interface LoginCredentials {
   email?: string;
@@ -224,5 +225,9 @@ export const authService = {
 
   async fetchModules(): Promise<FetchModulesResponse> {
     return apiClient.post('/super-admin/modules');
+  },
+
+  async resendOtp(payload: ResendOtpPayload): Promise<ResendOtpResponse> {
+    return apiClient.post<ResendOtpResponse>('/auth/resend-otp', payload);
   },
 }; 
