@@ -1,23 +1,16 @@
-import { coursesDatabase, realEstateListings, Course, restaurantListings, crmListings } from "./content";
+import { Course } from "./content";
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const fetchCourses = async (
   category: string,
   topic: string,
-  savedModuleName: string
+  savedModuleName: string,
+  listing: Course[]
 ): Promise<Course[]> => {
   await delay(800);
 
-  const listingsMap: Record<string, Course[]> = {
-    "Real Estate": realEstateListings as Course[], 
-    "Restaurants": restaurantListings as Course[], 
-    "CRM Management": crmListings as Course[], 
-  };
-
-  const listings: Course[] = listingsMap[savedModuleName] || coursesDatabase;
-
-  return listings.filter(course => {
+  return listing.filter(course => {
     const categoryMatch = !category || course.category === category;
     const topicMatch = !topic || course.topics.includes(topic);
     return categoryMatch && topicMatch;

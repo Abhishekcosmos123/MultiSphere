@@ -139,7 +139,9 @@ export interface FetchModulesResponse {
   success: boolean;
   message: string;
   data: {
-    modules: string[];
+    allModules: string[];
+    currentModule: string;
+    content: string;
     useCoordinator: { [key: string]: boolean };
     useProducers: { [key: string]: boolean };
   };

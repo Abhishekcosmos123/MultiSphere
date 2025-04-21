@@ -1,6 +1,5 @@
 "use client"
 import { useEffect, useState } from "react"
-import type React from "react"
 
 import Link from "next/link"
 import { Button } from "@/ui/button"
@@ -19,15 +18,15 @@ import "react-phone-input-2/lib/style.css"
 import "@/styles/phone-input.css"
 import { googleLogin, facebookLogin, microsoftLogin, appleLogin } from "@/lib/socialAuth"
 import "firebase/auth"
-import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons, userRoles } from "@/lib/content"
 import { useDispatch, useSelector } from "react-redux"
 import { registerRequest, verifyOtpRequest } from "@/store/slices/authSlice"
 import type { RootState } from "@/store"
 import { Spinner } from "@/components/ui/spinner"
 import type { ModuleName } from ".."
 import { fetchModulesRequest } from "@/store/slices/profileSlice"
-import { fetchCurrentModuleRequest } from "@/store/slices/ superAdmin/currentModuleSlice"
 import LoaderWithLabel from "@/ui/loader-with-label"
+import { fetchModuleContent } from "@/utils/fetchModuleContent"
+import { roleMappingByModule, userRoles } from "@/lib/content"
 
 interface Module {
   id: number
@@ -78,12 +77,13 @@ export default function SignupPage() {
   const registerAPIResponse = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch()
   const otpResponse = useSelector((state: RootState) => state.auth)
-  const { currentModule: selected } = useSelector((state: RootState) => state.currentModule)
+  const { currentModule: selected } = useSelector((state: RootState) => state.profile)
   const fetchedModuleRequest = useSelector((state: RootState) => state.profile.useCoordinator)
   const singleVendor = useSelector((state: RootState) => state.profile.useProducer)
   const [localUserRoles, setLocalUserRoles] = useState<string[]>(userRoles)
   const isSelectedVendor =
     selected !== null && singleVendor[selected] === true;
+  const [moduleContent, setModuleContent] = useState<any>(null);
 
   useEffect(() => {
     if (selected && typeof selected === "string") {
@@ -92,26 +92,46 @@ export default function SignupPage() {
   }, [selected])
 
   useEffect(() => {
-    dispatch(fetchCurrentModuleRequest())
     dispatch(fetchModulesRequest())
   }, [])
 
   useEffect(() => {
-    let updatedRoles = [...userRoles]
+    let updatedRoles: string[] = []
+
+    if (moduleContent?.userRoles?.length) {
+      updatedRoles = [...moduleContent.userRoles]
+    }
+
     if (selectedModule?.name === "Real Estate" && fetchedModuleRequest["Real Estate"] === true) {
       if (!updatedRoles.includes("Agents")) {
-        updatedRoles = [...updatedRoles, "Agents"]
+        updatedRoles.push("Agents")
       }
     }
 
     if (selectedModule?.name === "Restaurants" && fetchedModuleRequest["Restaurants"] === true) {
       if (!updatedRoles.includes("Delivery Partner")) {
-        updatedRoles = [...updatedRoles, "Delivery Partner"]
+        updatedRoles.push("Delivery Partner")
       }
     }
 
     setLocalUserRoles(updatedRoles)
-  }, [selectedModule, fetchedModuleRequest])
+  }, [selectedModule, fetchedModuleRequest, moduleContent?.userRoles])
+
+  useEffect(() => {
+    const loadModuleContent = async () => {
+      try {
+        if (selectedModule && selectedModule.name) {
+          const data = await fetchModuleContent(selectedModule.name);
+          setModuleContent(data);
+        }
+      } catch (err) {
+        console.error("Failed to load module content", err);
+        showErrorToast("Unable to load content.");
+      }
+    };
+
+    loadModuleContent();
+  }, [selectedModule]);
 
   const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedRole = e.target.value
@@ -188,37 +208,41 @@ export default function SignupPage() {
   }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (validateForm()) {
-      const provider = signupMethod === "email" ? "email" : "phone"
-      const payload: any = {
-        name: formData.fullName,
-        role: isSelectedVendor
-          ? "consumer"
-          : formData.userRole === "Student"
-            ? "consumer"
-            : formData.userRole === "Agents"
-              ? "coordinator"
-              : "producer",
-        provider: provider,
-      }
+    e.preventDefault();
 
-      if (signupMethod === "email") {
-        payload.email = formData.email
-        payload.password = formData.password
-      } else {
-        const phoneNumber = formData.phone.replace(/^\+/, "")
-        const countryCode = phoneNumber.slice(0, phoneNumber.length - 10)
-        const mobileNumber = phoneNumber.slice(-10)
-        payload.phone = mobileNumber
-        payload.country_code = `+${countryCode}`
-      }
-
-      dispatch(registerRequest(payload))
-    } else {
-      showErrorToast("Please fix the errors before submitting")
+    if (!validateForm()) {
+      showErrorToast("Please fix the errors before submitting");
+      return;
     }
-  }
+
+    const provider = signupMethod === "email" ? "email" : "phone";
+
+    const moduleName = selectedModule?.name?.trim() || "";
+    const selectedRole = formData.userRole?.trim();
+
+    const mappedRole = isSelectedVendor
+      ? "consumer"
+      : roleMappingByModule[moduleName]?.[selectedRole] || "producer";
+
+    const payload: any = {
+      name: formData.fullName,
+      role: mappedRole,
+      provider,
+    };
+
+    if (signupMethod === "email") {
+      payload.email = formData.email;
+      payload.password = formData.password;
+    } else {
+      const phoneNumber = formData.phone.replace(/^\+/, "");
+      const countryCode = phoneNumber.slice(0, phoneNumber.length - 10);
+      const mobileNumber = phoneNumber.slice(-10);
+      payload.phone = mobileNumber;
+      payload.country_code = `+${countryCode}`;
+    }
+
+    dispatch(registerRequest(payload));
+  };
 
   useEffect(() => {
     if (registerAPIResponse?.registerResponse?.success) {
@@ -358,17 +382,8 @@ export default function SignupPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {selectedModule ? (
-        <NavigationBar
-          buttons={
-            {
-              "E-learning": ELearningButtons,
-              "Real Estate": RealEstateButtons,
-              "CRM Management": CRMButtons,
-              "Restaurants": RestaurantButtons,
-            }[selectedModule.name]
-          }
-        />
+      {selectedModule && moduleContent ? (
+        <NavigationBar buttons={moduleContent.navbarButtons} />
       ) : (
         <LoaderWithLabel label="Loading your personalized experience..." />
       )}
@@ -387,7 +402,7 @@ export default function SignupPage() {
               <CardContent>
                 {!isOtpVerification ? (
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    {!isSelectedVendor && (
+                    {!isSelectedVendor && localUserRoles.length > 0 && (
                       <div className="grid grid-cols-1 gap-4 mb-6">
                         <div className="relative">
                           <label className="block text-sm font-medium text-gray-700 mb-1">Are you?</label>
@@ -543,7 +558,7 @@ export default function SignupPage() {
           </div>
         </div>
       </div>
-      <Footer />
+      <Footer socialLinks={moduleContent?.socialLinks || []} footerLinks={moduleContent?.footerLinks || []} />
     </div>
   )
 }

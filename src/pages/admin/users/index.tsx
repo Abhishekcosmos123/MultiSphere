@@ -21,7 +21,7 @@ import {
   TabsTrigger,
   TabsContent,
 } from "@/components/ui/tabs";
-
+import { Switch } from "@/components/ui/switch"; // Assuming you have a Switch component for the toggle
 import {
   getUsersRequest,
   GetUsers,
@@ -32,7 +32,6 @@ import {
   searchUsersRequest,
   updateUserRequest,
 } from "@/store/slices/admin/userSlice";
-
 import { RootState } from "@/store";
 import {
   CreateUserPayload,
@@ -55,38 +54,49 @@ const UserTable: React.FC<{
       <TableHeader>
         <TableRow className="bg-gray-200">
           {[
-            "ID", "Name", "Email", "Mobile", "Status",
-            "Deleted", "Updated", "Access", "Actions"
+            "ID", "Name", "Email", "Mobile", "Updated At", "Status",
+            "Deleted", "Access", "Actions"
           ].map((head) => (
             <TableHead key={head}>{head}</TableHead>
           ))}
         </TableRow>
       </TableHeader>
       <TableBody>
-        {users.map((user) => (
+        {users.map((user, index) => (
           <TableRow key={user.id} className="hover:bg-gray-50">
+            <TableCell>{index + 1}</TableCell>
             <TableCell>
               <button
-                onClick={() => router.push({
-                  pathname: `/admin/users/${user.id}`,
-                  query: { role: user?.role },
-                })}
+                onClick={() =>
+                  router.push({
+                    pathname: `/admin/users/${user.id}`,
+                    query: { role: user?.role },
+                  })
+                }
                 className="text-blue-500 hover:underline"
               >
-                {user.id}
+                {user.name}
               </button>
             </TableCell>
-            <TableCell>{user.name}</TableCell>
+
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.phone}</TableCell>
             <TableCell>
-              <input type="checkbox" checked={user.is_active} readOnly className="h-5 w-5 text-green-600" />
-            </TableCell>
-            <TableCell>
-              <input type="checkbox" checked={user.is_deleted} readOnly className="h-5 w-5 text-green-600" />
-            </TableCell>
-            <TableCell>
               {new Date(user.updated_at).toLocaleDateString("en-GB")}
+            </TableCell>
+            <TableCell>
+              <Switch
+                checked={user.is_active}
+                onCheckedChange={() => { }}
+                className="text-green-600"
+              />
+            </TableCell>
+            <TableCell>
+              <Switch
+                checked={user.is_deleted}
+                onCheckedChange={() => { }}
+                className="text-red-600"
+              />
             </TableCell>
             <TableCell>
               <a href="/admin/manage-access" className="text-blue-500 hover:underline">

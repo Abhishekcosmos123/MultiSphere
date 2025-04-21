@@ -1,0 +1,456 @@
+{
+  "categoryHeader": "Your next opportunity starts here",
+  "categorySubHeader": "Whether you're starting out or leveling up, Cosmostaker connects you to the roles and companies that fit your future.",
+  "categories": [
+    "Lead Nurturing",
+    "Opportunities",
+    "Contacts",
+    "Tasks"
+  ],
+  "popularTopics": [
+    {
+      "name": "Lead Nurturing",
+      "count": "8M+ viewers"
+    },
+    {
+      "name": "Sales Pipeline Management",
+      "count": "6.5M+ learners"
+    },
+    {
+      "name": "Customer Retention",
+      "count": "5M+ learners"
+    },
+    {
+      "name": "CRM Automation",
+      "count": "7M+ learners"
+    },
+    {
+      "name": "Effective Follow-ups",
+      "count": "4.5M+ learners"
+    }
+  ],
+  "listing": [],
+  "popularCourses": {
+    "carouselTitle": "Trending Tools",
+    "popularCourses": [
+      {
+        "id": 1,
+        "title": "Salesforce CRM",
+        "instructors": [
+          "Marc Benioff",
+          "CRM Expert Specialist"
+        ],
+        "rating": 4.9,
+        "reviewCount": 520,
+        "students": 25000,
+        "price": 99,
+        "originalPrice": 120,
+        "image": "https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg"
+      },
+      {
+        "id": 2,
+        "title": "HubSpot CRM",
+        "instructors": [
+          "Brian Halligan",
+          "Inbound Marketing Guru"
+        ],
+        "rating": 4.8,
+        "reviewCount": 430,
+        "students": 22000,
+        "price": 89,
+        "originalPrice": 105,
+        "image": "https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg"
+      },
+      {
+        "id": 3,
+        "title": "Zoho CRM",
+        "instructors": [
+          "Sridhar Vembu",
+          "Automation Specialist"
+        ],
+        "rating": 4.7,
+        "reviewCount": 380,
+        "students": 18500,
+        "price": 79,
+        "originalPrice": 95,
+        "image": "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg"
+      },
+      {
+        "id": 4,
+        "title": "Pipedrive",
+        "instructors": [
+          "Timo Rein",
+          "Inbound Sales Optimization"
+        ],
+        "rating": 4.6,
+        "reviewCount": 290,
+        "students": 16000,
+        "price": 69,
+        "originalPrice": 85,
+        "image": "https://images.pexels.com/photos/571600/pexels-photo-571600.jpeg"
+      },
+      {
+        "id": 5,
+        "title": "Freshsales",
+        "instructors": [
+          "Girish Mathrubootham",
+          "Customer Experience Leader"
+        ],
+        "rating": 4.8,
+        "reviewCount": 310,
+        "students": 17500,
+        "price": 74,
+        "originalPrice": 90,
+        "image": "https://images.pexels.com/photos/3182834/pexels-photo-3182834.jpeg"
+      },
+      {
+        "id": 6,
+        "title": "Microsoft Dynamics 365",
+        "instructors": [
+          "Satya Nadella",
+          "Enterprise Solutions Expert"
+        ],
+        "rating": 4.9,
+        "reviewCount": 450,
+        "students": 30000,
+        "price": 120,
+        "originalPrice": 140,
+        "image": "https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg"
+      },
+      {
+        "id": 7,
+        "title": "Monday.com CRM",
+        "instructors": [
+          "Eran Zinman",
+          "Workflow Automation Expert"
+        ],
+        "rating": 4.7,
+        "reviewCount": 260,
+        "students": 15000,
+        "price": 68,
+        "originalPrice": 80,
+        "image": "https://images.pexels.com/photos/3182773/pexels-photo-3182773.jpeg"
+      }
+    ]
+  },
+  "propertyDetails": {
+    "name": "Top Experts",
+    "location": "All Locations",
+    "properties": [
+      {
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzbcRd8Hv5VQrwTl6vg1Nka55REaEC8oVSEQ&s",
+        "title": "Advanced Lead Generation",
+        "description": "Master the art of attracting and converting leads effectively.",
+        "instructors": "John Doe, Sales Expert",
+        "rating": 4.9,
+        "ratingsCount": 450,
+        "totalHours": 40,
+        "lectures": 20,
+        "level": "Advanced",
+        "price": 199,
+        "originalPrice": 249,
+        "new": true
+      },
+      {
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSirV-oWdtkPLExLtEf6AYiALdktDYesGTjnA&s",
+        "title": "CRM Automation Masterclass",
+        "description": "Automate your sales and customer management with top CRM tools.",
+        "instructors": "Jane Smith, CRM Consultant",
+        "rating": 4.8,
+        "ratingsCount": 390,
+        "totalHours": 35,
+        "lectures": 18,
+        "level": "Intermediate",
+        "price": 149,
+        "originalPrice": 199,
+        "new": false
+      },
+      {
+        "image": "https://www.herbalife.com/dmassets/global-reusable-assets/images/lh-Exec-Michael-Johnson-global.jpg",
+        "title": "Customer Relationship Management Essentials",
+        "description": "Learn the fundamentals of building and maintaining strong customer relationships.",
+        "instructors": "Michael Johnson, Business Coach",
+        "rating": 4.7,
+        "ratingsCount": 350,
+        "totalHours": 45,
+        "lectures": 25,
+        "level": "Beginner",
+        "price": 129,
+        "originalPrice": 179,
+        "new": true
+      },
+      {
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk-Gko4Yh6tqnASt-xtsgj4jzuZ2Adf26lAQ&s",
+        "title": "Sales Pipeline Optimization",
+        "description": "Improve your sales process and close more deals efficiently.",
+        "instructors": "Emily Davis, Sales Trainer",
+        "rating": 4.6,
+        "ratingsCount": 280,
+        "totalHours": 30,
+        "lectures": 15,
+        "level": "Intermediate",
+        "price": 99,
+        "originalPrice": 149,
+        "new": false
+      },
+      {
+        "image": "https://media.licdn.com/dms/image/v2/D4E03AQHvhWo4JZGfdQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1723159964299?e=2147483647&v=beta&t=AnzQMIBH5ksVrzkb9RwDU6-om9jgsoOAX6U0arR92D4",
+        "title": "Customer Retention Strategies",
+        "description": "Boost customer loyalty with proven retention techniques.",
+        "instructors": "Sarah Lee, Marketing Strategist",
+        "rating": 4.8,
+        "ratingsCount": 200,
+        "totalHours": 38,
+        "lectures": 22,
+        "level": "Advanced",
+        "price": 179,
+        "originalPrice": 229,
+        "new": true
+      },
+      {
+        "image": "https://media.licdn.com/dms/image/v2/D5603AQG7daFnd9iNDA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1723067143190?e=2147483647&v=beta&t=gmu7c0r1qNcPukC37gyAHwX3Dj26wCl6h6f9NftFOLE",
+        "title": "Data-Driven Sales & CRM Analytics",
+        "description": "Use analytics to optimize your CRM and sales performance.",
+        "instructors": "Robert Wilson, Data Analyst",
+        "rating": 4.9,
+        "ratingsCount": 400,
+        "totalHours": 50,
+        "lectures": 30,
+        "level": "Expert",
+        "price": 249,
+        "originalPrice": 299,
+        "new": true
+      },
+      {
+        "image": "https://media.licdn.com/dms/image/v2/D4E03AQHumvzknfAHNg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1729674884027?e=2147483647&v=beta&t=vDQysqlSPLj0FMwAAbGrT9tAf7vFcdoLB6yvBLsl8lU",
+        "title": "Effective Follow-Up Techniques",
+        "description": "Learn how to follow up with leads and customers for maximum conversion.",
+        "instructors": "David Brown, Sales Coach",
+        "rating": 4.7,
+        "ratingsCount": 600,
+        "totalHours": 28,
+        "lectures": 12,
+        "level": "Beginner",
+        "price": 79,
+        "originalPrice": 129,
+        "new": false
+      }
+    ]
+  },
+  "testimonialsSection": {
+    "testimonial": "Learn how companies are improving customer engagement..",
+    "testimonials": [
+      {
+        "id": 1,
+        "text": "This course transformed the way I manage customer relationships. I can now track leads and automate follow-ups effortlessly!",
+        "author": "Lucas D.",
+        "course": "CRM Fundamentals & Customer Engagement"
+      },
+      {
+        "id": 2,
+        "text": "Learning how to optimize CRM workflows helped our sales team close more deals efficiently. Highly recommend this course!",
+        "author": "Olivia S.",
+        "course": "Sales Automation with CRM"
+      },
+      {
+        "id": 3,
+        "text": "I had no idea how powerful CRM systems could be until I took this course. Now, I leverage data-driven insights to boost customer retention.",
+        "author": "Ethan J.",
+        "course": "Data-Driven CRM Strategies"
+      },
+      {
+        "id": 4,
+        "text": "This course gave me a deep understanding of CRM tools and integrations. I’ve successfully streamlined our customer support process!",
+        "author": "Sophia K.",
+        "course": "CRM for Customer Support & Success"
+      }
+    ]
+  },
+  "ElearningHeroSection": {
+    "title": "Streamline Your Customer Relationships!",
+    "buttons": [
+      {
+        "label": "Jobs",
+        "index": 0
+      },
+      {
+        "label": "Companies",
+        "index": 1
+      },
+      {
+        "label": "Applications",
+        "index": 2
+      },
+      {
+        "label": "Saved Jobs",
+        "index": 3
+      },
+      {
+        "label": "Interviews",
+        "index": 4
+      }
+    ],
+    "imageSrc": "/crm-hero.jpg"
+  },
+  "footerLinks": [
+    {
+      "name": "About us",
+      "href": "#"
+    },
+    {
+      "name": "Careers",
+      "href": "#"
+    },
+    {
+      "name": "Accessibility",
+      "href": "#"
+    },
+    {
+      "name": "Feedback",
+      "href": "#"
+    },
+    {
+      "name": "Media room",
+      "href": "#"
+    },
+    {
+      "name": "Ad Choices",
+      "href": "#"
+    },
+    {
+      "name": "Advertise with us",
+      "href": "#"
+    },
+    {
+      "name": "Agent support",
+      "href": "#"
+    },
+    {
+      "name": "Privacy",
+      "href": "#"
+    },
+    {
+      "name": "Terms",
+      "href": "#"
+    },
+    {
+      "name": "Home Made",
+      "href": "#"
+    },
+    {
+      "name": "Tech Blog",
+      "href": "#"
+    },
+    {
+      "name": "Agent Blog",
+      "href": "#"
+    },
+    {
+      "name": "Sitemap",
+      "href": "#"
+    }
+  ],
+  "socialLinks": [
+    {
+      "name": "Facebook",
+      "href": "#",
+      "icon": "facebook"
+    },
+    {
+      "name": "Twitter",
+      "href": "#",
+      "icon": "twitter"
+    },
+    {
+      "name": "LinkedIn",
+      "href": "#",
+      "icon": "linkedin"
+    },
+    {
+      "name": "Instagram",
+      "href": "#",
+      "icon": "instagram"
+    },
+    {
+      "name": "YouTube",
+      "href": "#",
+      "icon": "youtube"
+    }
+  ],
+  "trustedCompanies": [
+    {
+      "id": 1,
+      "name": "Volkswagen",
+      "logo": "https://cms-images.udemycdn.com/content/mueb2ve09x/svg/volkswagen_logo.svg?position=c&quality=80&x.app=portals"
+    },
+    {
+      "id": 2,
+      "name": "Samsung",
+      "logo": "https://cms-images.udemycdn.com/content/2gevcc0kxt/svg/samsung_logo.svg?position=c&quality=80&x.app=portals"
+    },
+    {
+      "id": 3,
+      "name": "Cisco",
+      "logo": "https://cms-images.udemycdn.com/content/mueb2ve09x/svg/cisco_logo.svg?position=c&quality=80&x.app=portals"
+    },
+    {
+      "id": 4,
+      "name": "Vimeo",
+      "logo": "https://cms-images.udemycdn.com/content/ryaowrcjb2/svg/vimeo_logo_resized-2.svg?position=c&quality=80&x.app=portals"
+    },
+    {
+      "id": 5,
+      "name": "P&G",
+      "logo": "https://cms-images.udemycdn.com/content/bthyo156te/svg/procter_gamble_logo.svg?position=c&quality=80&x.app=portals"
+    },
+    {
+      "id": 6,
+      "name": "Hewlett Packard Enterprise",
+      "logo": "https://cms-images.udemycdn.com/content/luqe0d6mx2/svg/hewlett_packard_enterprise_logo.svg?position=c&quality=80&x.app=portals"
+    },
+    {
+      "id": 7,
+      "name": "Citi",
+      "logo": "https://cms-images.udemycdn.com/content/siaewwmkch/svg/citi_logo.svg?position=c&quality=80&x.app=portals"
+    },
+    {
+      "id": 8,
+      "name": "Ericsson",
+      "logo": "https://cms-images.udemycdn.com/content/swmv0okrlh/svg/ericsson_logo.svg?position=c&quality=80&x.app=portals"
+    }
+  ],
+  "navbarButtons": [
+    {
+      "label": "Dashboard",
+      "index": 0
+    },
+    {
+      "label": "Customer Profiles",
+      "index": 1
+    },
+    {
+      "label": "Orders & Transactions",
+      "index": 2
+    },
+    {
+      "label": "Leads & Opportunities",
+      "index": 3
+    },
+    {
+      "label": "Marketing Campaigns",
+      "index": 4
+    },
+    {
+      "label": "Support Tickets",
+      "index": 5
+    }
+  ],
+  "userRoles": [
+    "Employer",
+    "Candidates"
+  ],
+  "ctaContent": {
+    "heading": "Effortlessly Manage and Grow Your Customer Relationships!",
+    "backgroundImage": "/crm.jpg"
+  }
+}

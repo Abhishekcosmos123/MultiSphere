@@ -11,12 +11,13 @@ import { showSuccessToast, showErrorToast } from "@/lib/utils/toast";
 import { NavigationBar } from "@/components/dashboard/navigation-bar";
 import { Footer } from "@/components/dashboard/footer";
 import OTPVerification from "@/components/auth/OTPVerification";
-import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons } from "@/lib/content";
 import { forgetPasswordRequest, resetPasswordRequest } from "@/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { ModuleName } from "..";
 import { Spinner } from "@/components/ui/spinner";
+import { fetchModuleContent } from "@/utils/fetchModuleContent";
+import { fetchModulesRequest } from "@/store/slices/profileSlice";
 
 interface Module {
     id: number;
@@ -38,16 +39,36 @@ export default function ResetPasswordPage() {
         confirmPassword: ""
     });
     const router = useRouter();
-    const [selectedModule, setSelectedModule] = useState<Module>({ id: 0, name: 'E-learning' });
+    const [selectedModule, setSelectedModule] = useState<Module | null>(null)
     const forgetPasswordResponse = useSelector((state: RootState) => state.auth);
-    console.log(forgetPasswordResponse, 'forgetPasswordResponse')
-    const { currentModule: selected } = useSelector((state: RootState) => state.currentModule);
+    const { currentModule: selected } = useSelector((state: RootState) => state.profile);
+    const [moduleContent, setModuleContent] = useState<any>(null);
 
     useEffect(() => {
         if (selected && typeof selected === "string") {
             setSelectedModule({ id: 0, name: selected as ModuleName });
         }
-    }, []);
+    }, [selected]);
+
+    useEffect(() => {
+        dispatch(fetchModulesRequest())
+      }, [])
+
+    useEffect(() => {
+		const loadModuleContent = async () => {
+			try {
+				if (selectedModule && selectedModule.name) {
+					const data = await fetchModuleContent(selectedModule.name);
+					setModuleContent(data);
+				}
+			} catch (err) {
+				console.error("Failed to load module content", err);
+				showErrorToast("Unable to load content.");
+			}
+		};
+
+		loadModuleContent();
+	}, [selectedModule]);
 
     useEffect(() => {
         const { email: queryEmail } = router.query;
@@ -165,16 +186,9 @@ export default function ResetPasswordPage() {
 
     return (
         <div className="flex flex-col min-h-screen">
-            {selectedModule && (
-                <NavigationBar buttons={
-                    {
-                        "E-learning": ELearningButtons,
-                        "Real Estate": RealEstateButtons,
-                        "CRM Management": CRMButtons,
-                        "Restaurants": RestaurantButtons,
-                    }[selectedModule.name]
-                } />
-            )}
+            {selectedModule && moduleContent && (
+				<NavigationBar buttons={moduleContent.navbarButtons} />
+			)}
             <div className="flex-grow flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8 py-6">
                 <div className="max-w-5xl w-full flex bg-white shadow-lg rounded-lg overflow-hidden">
                     <div className="hidden md:flex w-1/2 items-center justify-center p-8 h-fit">
@@ -310,7 +324,7 @@ export default function ResetPasswordPage() {
                     </div>
                 </div>
             </div>
-            <Footer />
+            <Footer socialLinks={moduleContent?.socialLinks || []} footerLinks={moduleContent?.footerLinks || []} />
         </div>
     );
 }

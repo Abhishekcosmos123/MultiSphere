@@ -1,0 +1,572 @@
+{
+    "categoryHeader": "Find your perfect space in one place",
+    "categorySubHeader": "From cozy homes to commercial hubs, Cosmostaker helps you navigate every step of your real estate journey.",
+    "categories": [
+        "Residential Properties",
+        "Commercial Properties",
+        "Luxury Homes",
+        "Apartments & Condos",
+        "Vacation Rentals"
+    ],
+    "popularTopics": [
+        {
+            "name": "Residential Properties",
+            "count": "5M+ viewers"
+        },
+        {
+            "name": "Real Estate Investing",
+            "count": "8M+ viewers"
+        },
+        {
+            "name": "Property Flipping",
+            "count": "4M+ viewers"
+        },
+        {
+            "name": "Rental Property Management",
+            "count": "6M+ viewers"
+        },
+        {
+            "name": "Luxury Real Estate",
+            "count": "3M+ viewers"
+        },
+        {
+            "name": "Commercial Real Estate",
+            "count": "7M+ viewers"
+        },
+        {
+            "name": "Mortgage & Financing",
+            "count": "5.5M+ viewers"
+        }
+    ],
+    "listing": [
+        {
+            "id": 1,
+            "title": "Luxury 3BHK Apartment in Downtown LA",
+            "instructors": "Elite Realty Group",
+            "rating": 4.7,
+            "reviews": 125,
+            "price": 1200000,
+            "originalPrice": 1300000,
+            "image": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&h=250&fit=crop",
+            "badges": [
+                "Luxury",
+                "Hot Deal"
+            ],
+            "category": "Residential Properties",
+            "topics": [
+                "Residential Properties",
+                "Real Estate Investing"
+            ]
+        },
+        {
+            "id": 2,
+            "title": "Spacious 4BHK Villa with Garden",
+            "instructors": "Prime Estates",
+            "rating": 4.8,
+            "reviews": 98,
+            "price": 1850000,
+            "originalPrice": 1950000,
+            "image": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=250&fit=crop",
+            "badges": [
+                "Premium",
+                "New Listing"
+            ],
+            "category": "Residential Properties",
+            "topics": [
+                "Commercial Real Estate",
+                "Residential Properties",
+                "Luxury Real Estate"
+            ]
+        },
+        {
+            "id": 3,
+            "title": "Modern Studio Apartment near Central Park",
+            "instructors": "Urban Realty Co.",
+            "rating": 4.6,
+            "reviews": 210,
+            "price": 650000,
+            "originalPrice": 700000,
+            "image": "https://images.unsplash.com/photo-1592595896551-a7b31c1776d7?w=400&h=250&fit=crop",
+            "badges": [
+                "Best Seller"
+            ],
+            "category": "Real Estate Investing",
+            "topics": [
+                "Mortgage & Financing",
+                "Commercial Real Estate"
+            ]
+        },
+        {
+            "id": 4,
+            "title": "Cozy 2BHK House for Rent",
+            "instructors": "Home Sweet Homes",
+            "rating": 4.5,
+            "reviews": 87,
+            "price": 2500,
+            "originalPrice": 2800,
+            "image": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=250&fit=crop",
+            "badges": [
+                "Pet Friendly"
+            ],
+            "category": "Residential Properties",
+            "topics": [
+                "Commercial Real Estate",
+                "Mortgage & Financing",
+                "Luxury Real Estate"
+            ]
+        },
+        {
+            "id": 5,
+            "title": "Commercial Office Space in Silicon Valley",
+            "instructors": "Silicon Valley Properties",
+            "rating": 4.9,
+            "reviews": 143,
+            "price": 5000000,
+            "originalPrice": 5500000,
+            "image": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&h=250&fit=crop",
+            "badges": [
+                "High Demand"
+            ],
+            "category": "Residential Properties",
+            "topics": [
+                "Mortgage & Financing",
+                "Commercial Real Estate"
+            ]
+        }
+    ],
+    "popularCourses": {
+        "carouselTitle": "Trending Properties",
+        "popularCourses": [
+            {
+                "id": 1,
+                "title": "Luxury 3BHK Apartment in Downtown LA",
+                "instructors": [
+                    "John Doe",
+                    "Real Estate Agent"
+                ],
+                "rating": 4.8,
+                "reviewCount": 154,
+                "students": 120,
+                "price": 3500,
+                "originalPrice": 4000,
+                "image": "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg"
+            },
+            {
+                "id": 2,
+                "title": "Modern 2BHK Condo with Ocean View",
+                "instructors": [
+                    "Jane Smith",
+                    "Luxury Properties"
+                ],
+                "rating": 4.7,
+                "reviewCount": 98,
+                "students": 85,
+                "price": 2800,
+                "originalPrice": 3200,
+                "image": "https://images.pexels.com/photos/1643389/pexels-photo-1643389.jpeg"
+            },
+            {
+                "id": 3,
+                "title": "Spacious 4BHK Villa with Private Pool",
+                "instructors": [
+                    "Robert Johnson",
+                    "Villa Specialist"
+                ],
+                "rating": 4.9,
+                "reviewCount": 76,
+                "students": 65,
+                "price": 5000,
+                "originalPrice": 5500,
+                "image": "https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg"
+            },
+            {
+                "id": 4,
+                "title": "Cozy Studio Apartment in New York",
+                "instructors": [
+                    "Emily Davis",
+                    "Rental Expert"
+                ],
+                "rating": 4.5,
+                "reviewCount": 230,
+                "students": 190,
+                "price": 2200,
+                "originalPrice": 2500,
+                "image": "https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
+            },
+            {
+                "id": 5,
+                "title": "Modern 3BHK Townhouse with Garage",
+                "instructors": [
+                    "Michael Brown",
+                    "Townhouse"
+                ],
+                "rating": 4.8,
+                "reviewCount": 110,
+                "students": 95,
+                "price": 4500,
+                "originalPrice": 4800,
+                "image": "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg"
+            },
+            {
+                "id": 6,
+                "title": "Penthouse Suite with Skyline View",
+                "instructors": [
+                    "Sophia Wilson",
+                    "High-Rise"
+                ],
+                "rating": 4.9,
+                "reviewCount": 89,
+                "students": 72,
+                "price": 7000,
+                "originalPrice": 7500,
+                "image": "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg"
+            },
+            {
+                "id": 7,
+                "title": "Elegant 2BHK Apartment in Seattle",
+                "instructors": [
+                    "Daniel Lee",
+                    "Seattle Real Estate"
+                ],
+                "rating": 4.6,
+                "reviewCount": 125,
+                "students": 110,
+                "price": 3100,
+                "originalPrice": 3400,
+                "image": "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg"
+            }
+        ]
+    },
+    "propertyDetails": {
+        "name": "Top Sellers",
+        "location": "All Locations",
+        "properties": [
+            {
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ73wzyPaF718GvLjg0Pbc0ebfXB0SODEz7yQ&s",
+                "title": "Skyline Heights",
+                "description": "A luxurious high-rise with breathtaking city views and top-tier amenities.",
+                "instructors": "Agent Michael Carter",
+                "rating": 4.9,
+                "ratingsCount": 320,
+                "totalHours": 1500,
+                "lectures": 50,
+                "level": "Luxury",
+                "price": 950000,
+                "originalPrice": 1050000,
+                "new": true
+            },
+            {
+                "image": "https://photos.zillowstatic.com/fp/55b92d7dd348a345d250766d1a115bf3-h_l.jpg",
+                "title": "Sunset Villas",
+                "description": "A serene collection of beachfront villas perfect for a peaceful retreat.",
+                "instructors": "Agent Sophia Martinez",
+                "rating": 4.8,
+                "ratingsCount": 280,
+                "totalHours": 1400,
+                "lectures": 35,
+                "level": "Premium",
+                "price": 750000,
+                "originalPrice": 820000,
+                "new": false
+            },
+            {
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQHPfQUVz-IIzGuVQH4EYE6zq75BAfY7h9xg&s",
+                "title": "Maplewood Residences",
+                "description": "A charming suburban neighborhood with modern homes and green spaces.",
+                "instructors": "Agent David Reynolds",
+                "rating": 4.7,
+                "ratingsCount": 350,
+                "totalHours": 1600,
+                "lectures": 60,
+                "level": "Family-Friendly",
+                "price": 500000,
+                "originalPrice": 550000,
+                "new": true
+            },
+            {
+                "image": "https://photos.zillowstatic.com/fp/455ba54d4780a324ce94cd9801af917e-h_l.jpg",
+                "title": "Metropolitan Lofts",
+                "description": "Urban-style lofts with open floor plans and industrial aesthetics.",
+                "instructors": "Agent Olivia Bennett",
+                "rating": 4.6,
+                "ratingsCount": 260,
+                "totalHours": 1350,
+                "lectures": 40,
+                "level": "Modern Living",
+                "price": 670000,
+                "originalPrice": 710000,
+                "new": false
+            },
+            {
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmlEGYPb02fx7KaFxaBmGhX8JTBOVqZL9KRQ&s",
+                "title": "The Green Estates",
+                "description": "Sustainable and eco-friendly homes built with energy-efficient designs.",
+                "instructors": "Agent Ethan Sullivan",
+                "rating": 4.8,
+                "ratingsCount": 200,
+                "totalHours": 1200,
+                "lectures": 30,
+                "level": "Eco-Friendly",
+                "price": 620000,
+                "originalPrice": 680000,
+                "new": true
+            },
+            {
+                "image": "https://media.licdn.com/dms/image/v2/D5603AQH2toubaw_Bag/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1713851119380?e=2147483647&v=beta&t=byZJsEMtNMaLAa64iH1Qi2K1krkjw76vIx7Bift_aSM",
+                "title": "Historic Brownstones",
+                "description": "Timeless architecture with a blend of classic and modern interiors.",
+                "instructors": "Agent Amelia Brooks",
+                "rating": 4.9,
+                "ratingsCount": 400,
+                "totalHours": 1550,
+                "lectures": 45,
+                "level": "Classic Charm",
+                "price": 800000,
+                "originalPrice": 860000,
+                "new": true
+            },
+            {
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIRV0RKMZGw5hRkHRk1Xv4i_FFFBo-H50erw&s",
+                "title": "Parkside Towers",
+                "description": "Elegant apartments with park-facing balconies and luxury amenities.",
+                "instructors": "Agent Ryan Foster",
+                "rating": 4.7,
+                "ratingsCount": 500,
+                "totalHours": 1300,
+                "lectures": 55,
+                "level": "Luxury Apartments",
+                "price": 900000,
+                "originalPrice": 970000,
+                "new": false
+            }
+        ]
+    },
+    "testimonialsSection": {
+        "testimonial": "See how others are finding their dream properties.",
+        "testimonials": [
+            {
+                "id": 1,
+                "text": "This real estate course gave me the confidence and knowledge to make my first investment successfully. Highly recommended!",
+                "author": "James R.",
+                "course": "Real Estate Investment Fundamentals"
+            },
+            {
+                "id": 2,
+                "text": "The insights from this course helped me understand market trends and negotiate better deals. It was a game-changer for my career.",
+                "author": "Sophia M.",
+                "course": "Advanced Real Estate Strategies"
+            },
+            {
+                "id": 3,
+                "text": "I started with zero knowledge about real estate, but this course gave me everything I needed to start flipping houses profitably.",
+                "author": "Daniel K.",
+                "course": "House Flipping Mastery"
+            },
+            {
+                "id": 4,
+                "text": "As a new real estate agent, this course provided me with essential skills in property valuation, marketing, and client management. A must for beginners!",
+                "author": "Emily T.",
+                "course": "Real Estate Agent Essentials"
+            }
+        ]
+    },
+    "ElearningHeroSection": {
+        "title": "Your #1 Destination for Buying, Selling & Renting Homes.",
+        "buttons": [
+            {
+                "label": "Property Listings",
+                "index": 0
+            },
+            {
+                "label": "Inquiries & Leads",
+                "index": 1
+            },
+            {
+                "label": "Appointments & Visits",
+                "index": 2
+            },
+            {
+                "label": "Client Feedback",
+                "index": 3
+            },
+            {
+                "label": "Agent Management",
+                "index": 4
+            }
+        ],
+        "imageSrc": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1600&h=600&auto=format&fit=crop"
+    },
+    "footerLinks": [
+        {
+            "name": "About us",
+            "href": "#"
+        },
+        {
+            "name": "Careers",
+            "href": "#"
+        },
+        {
+            "name": "Accessibility",
+            "href": "#"
+        },
+        {
+            "name": "Feedback",
+            "href": "#"
+        },
+        {
+            "name": "Media room",
+            "href": "#"
+        },
+        {
+            "name": "Ad Choices",
+            "href": "#"
+        },
+        {
+            "name": "Advertise with us",
+            "href": "#"
+        },
+        {
+            "name": "Agent support",
+            "href": "#"
+        },
+        {
+            "name": "Privacy",
+            "href": "#"
+        },
+        {
+            "name": "Terms",
+            "href": "#"
+        },
+        {
+            "name": "Home Made",
+            "href": "#"
+        },
+        {
+            "name": "Tech Blog",
+            "href": "#"
+        },
+        {
+            "name": "Agent Blog",
+            "href": "#"
+        },
+        {
+            "name": "Sitemap",
+            "href": "#"
+        }
+    ],
+    "socialLinks": [
+        {
+            "name": "Facebook",
+            "href": "#",
+            "icon": "facebook"
+        },
+        {
+            "name": "Twitter",
+            "href": "#",
+            "icon": "twitter"
+        },
+        {
+            "name": "LinkedIn",
+            "href": "#",
+            "icon": "linkedin"
+        },
+        {
+            "name": "Instagram",
+            "href": "#",
+            "icon": "instagram"
+        },
+        {
+            "name": "YouTube",
+            "href": "#",
+            "icon": "youtube"
+        }
+    ],
+    "trustedCompanies": [
+        {
+            "id": 1,
+            "name": "Volkswagen",
+            "logo": "https://cms-images.udemycdn.com/content/mueb2ve09x/svg/volkswagen_logo.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 2,
+            "name": "Samsung",
+            "logo": "https://cms-images.udemycdn.com/content/2gevcc0kxt/svg/samsung_logo.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 3,
+            "name": "Cisco",
+            "logo": "https://cms-images.udemycdn.com/content/mueb2ve09x/svg/cisco_logo.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 4,
+            "name": "Vimeo",
+            "logo": "https://cms-images.udemycdn.com/content/ryaowrcjb2/svg/vimeo_logo_resized-2.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 5,
+            "name": "P&G",
+            "logo": "https://cms-images.udemycdn.com/content/bthyo156te/svg/procter_gamble_logo.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 6,
+            "name": "Hewlett Packard Enterprise",
+            "logo": "https://cms-images.udemycdn.com/content/luqe0d6mx2/svg/hewlett_packard_enterprise_logo.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 7,
+            "name": "Citi",
+            "logo": "https://cms-images.udemycdn.com/content/siaewwmkch/svg/citi_logo.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 8,
+            "name": "Ericsson",
+            "logo": "https://cms-images.udemycdn.com/content/swmv0okrlh/svg/ericsson_logo.svg?position=c&quality=80&x.app=portals"
+        }
+    ],
+    "navbarButtons": [
+        {
+            "label": "Home",
+            "index": 0
+        },
+        {
+            "label": "Buy",
+            "index": 1
+        },
+        {
+            "label": "Rent",
+            "index": 2
+        },
+        {
+            "label": "Sell",
+            "index": 3
+        },
+        {
+            "label": "Commercial",
+            "index": 4
+        },
+        {
+            "label": "Mortgage",
+            "index": 5
+        },
+        {
+            "label": "Agents",
+            "index": 6
+        },
+        {
+            "label": "Market Trends",
+            "index": 7
+        },
+        {
+            "label": "Contact Us",
+            "index": 8
+        }
+    ],
+    "userRoles": [
+        "Seller",
+        "Buyer"
+    ],
+    "ctaContent": {
+        "heading": "Find Your Dream Home Today?",
+        "backgroundImage": "/realEstate.png"
+    }
+}

@@ -1,9 +1,13 @@
 import Link from "next/link"
 import Image from "next/image"
-import { footerLinks, socialLinks } from "@/lib/content"
 import { Facebook, Twitter, Linkedin, Instagram, Youtube } from "lucide-react"
 
-export function Footer() {
+type FooterProps = {
+  socialLinks: { name: string; href: string; icon: string }[]
+  footerLinks: { name: string; href: string }[]
+}
+
+export function Footer({ socialLinks, footerLinks }: FooterProps) {
   const getSocialIcon = (icon: string) => {
     switch (icon) {
       case "facebook":
@@ -24,6 +28,7 @@ export function Footer() {
   return (
     <footer className="py-12 bg-black text-white">
       <div className="px-4 mx-auto max-w-7xl">
+        {/* Social Links */}
         <div className="flex flex-wrap justify-center gap-4 mb-8">
           {socialLinks.map((link) => (
             <Link
@@ -37,19 +42,24 @@ export function Footer() {
           ))}
         </div>
 
+        {/* Footer Links */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10">
           {footerLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
-              className={`text-sm hover:text-white ${link.name === "Do Not Sell or Share My Personal Information" ? "text-yellow-400" : "text-gray-400"
-                }`}
+              className={`text-sm hover:text-white ${
+                link.name === "Do Not Sell or Share My Personal Information"
+                  ? "text-yellow-400"
+                  : "text-gray-400"
+              }`}
             >
               {link.name}
             </Link>
           ))}
         </div>
 
+        {/* App Info and Legal */}
         <div className="flex flex-col items-center justify-between gap-4 pt-8 mt-8 md:flex-row">
           <div className="text-sm text-gray-400">
             <p>Get the app</p>
@@ -75,8 +85,7 @@ export function Footer() {
             </div>
           </div>
 
-
-          <div className="text-xs text-gray-400 space-y-3">
+          <div className="text-xs text-gray-400 space-y-3 text-center md:text-left">
             <p>
               Any mortgage-related information or activity is performed by NMLS LLC (NMLS #12345), a subsidiary of Home,
               Inc.

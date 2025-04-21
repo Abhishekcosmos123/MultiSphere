@@ -20,20 +20,23 @@ interface CategorySectionProps {
   categories: string[];
   popularTopics: Topic[];
   module: string;
+  listing: Course[];
+  header: string;
+  subHeader: string;
 }
 
-export function CategorySection({ categories, popularTopics, module }: CategorySectionProps) {
+export function CategorySection({ categories, popularTopics, module, listing, header, subHeader }: CategorySectionProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>(categories[0])
   const [selectedTopic, setSelectedTopic] = useState<string>(popularTopics[0]?.name)
   const [courses, setCourses] = useState<Course[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const { currentModule: selected } = useSelector((state: RootState) => state.currentModule);
+  const { currentModule: selected } = useSelector((state: RootState) => state.profile);
 
   useEffect(() => {
     const loadCourses = async () => {
       setLoading(true)
       try {
-        const data = await fetchCourses(selectedCategory, selectedTopic, selected || "")
+        const data = await fetchCourses(selectedCategory, selectedTopic, selected || "", listing)
         setCourses(data)
       } catch (error) {
         console.error("Failed to fetch courses:", error)
@@ -48,9 +51,9 @@ export function CategorySection({ categories, popularTopics, module }: CategoryS
     <main className="py-6 bg-white mx-auto max-w-7xl">
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-6 md:py-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">All the skills you need in one place</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{header}</h1>
         <p className="text-lg text-gray-600 mt-2">
-          From critical skills to technical topics, Cosmostaker supports your professional development.
+          {subHeader}
         </p>
       </section>
 

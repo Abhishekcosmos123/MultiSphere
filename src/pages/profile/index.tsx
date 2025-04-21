@@ -6,19 +6,18 @@ import { useRouter } from "next/router"
 import type { RootState } from "@/store"
 import { storage, StorageKeys } from "@/lib/utils/storage"
 import { showSuccessToast } from "@/lib/utils/toast"
-import { updateProfileRequest, updateUserRequest } from "@/store/slices/profileSlice"
+import { fetchModulesRequest, updateProfileRequest, updateUserRequest } from "@/store/slices/profileSlice"
 import { logoutRequest } from "@/store/slices/authSlice"
 import { withAuth } from "@/hooks/middleware"
 import type { ModuleName } from ".."
 import { NavigationBar } from "@/components/dashboard/navigation-bar"
-import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons } from "@/lib/content"
 import LoaderWithLabel from "@/ui/loader-with-label"
 import { CoordinatorProfile } from "@/components/profile/coordinator-profile"
 import { UserProfile } from "@/components/profile/user-profile"
 import { ProfileSettings } from "@/components/profile/profile-settings"
 import type { Certification, EducationEntry, Experience } from "../../../types/profile"
 import { Footer } from "@/components/dashboard/footer"
-import { fetchCurrentModuleRequest } from "@/store/slices/ superAdmin/currentModuleSlice"
+import { fetchModuleContent } from "@/utils/fetchModuleContent"
 
 type SocialLink = {
   id: string
@@ -35,7 +34,7 @@ function ProfilePage() {
   const router = useRouter()
   const { userProfile } = useSelector((state: RootState) => state.profile)
   const successMessage = useSelector((state: RootState) => state.profile)
-  const { currentModule: selected } = useSelector((state: RootState) => state.currentModule)
+  const { currentModule: selected } = useSelector((state: RootState) => state.profile)
 
   const [user, setUser] = useState(userProfile)
   const [selectedModule, setSelectedModule] = useState<Module | null>(null)
@@ -55,6 +54,22 @@ function ProfilePage() {
   const [website, setWebsite] = useState("")
   const [profileImage, setProfileImage] = useState<File | null>(null)
   const [contactConsent, setContactConsent] = useState(false)
+  const [moduleContent, setModuleContent] = useState<any>(null);
+
+  useEffect(() => {
+		const loadModuleContent = async () => {
+			try {
+				if (selectedModule && selectedModule.name) {
+					const data = await fetchModuleContent(selectedModule.name);
+					setModuleContent(data);
+				}
+			} catch (err) {
+				console.error("Failed to load module content", err);
+			}
+		};
+
+		loadModuleContent();
+	}, [selectedModule]);
 
   const normalizeSocialLinks = (rawLinks: Record<string, string | undefined>[]): SocialLink[] => {
     return rawLinks.flatMap((obj) =>
@@ -89,7 +104,7 @@ function ProfilePage() {
   }, [selected])
 
   useEffect(() => {
-    dispatch(fetchCurrentModuleRequest())
+    dispatch(fetchModulesRequest())
   }, [])
 
   useEffect(() => {
@@ -236,17 +251,8 @@ function ProfilePage() {
   }
 
   const renderNavigation = () =>
-    selectedModule ? (
-      <NavigationBar
-        buttons={
-          {
-            "E-learning": ELearningButtons,
-            "Real Estate": RealEstateButtons,
-            "CRM Management": CRMButtons,
-            "Restaurants": RestaurantButtons,
-          }[selectedModule.name]
-        }
-      />
+    selectedModule  && moduleContent ? (
+      <NavigationBar buttons={moduleContent.navbarButtons} />
     ) : (
       <LoaderWithLabel label="Loading your personalized experience..." />
     )
@@ -258,7 +264,7 @@ function ProfilePage() {
         <div className="bg-white shadow-sm overflow-hidden">
           <CoordinatorProfile {...profileProps} isEditing={isEditing} handleSave={handleSave} />
         </div>
-        <Footer />
+        <Footer socialLinks={moduleContent?.socialLinks || []} footerLinks={moduleContent?.footerLinks || []} />
       </div>
     )
   }
@@ -269,7 +275,7 @@ function ProfilePage() {
       <div className="bg-white shadow-sm overflow-hidden">
         {isEditing ? <ProfileSettings {...settingsProps} /> : <UserProfile {...profileProps} />}
       </div>
-      <Footer />
+      <Footer socialLinks={moduleContent?.socialLinks || []} footerLinks={moduleContent?.footerLinks || []} />
     </div>
   )
 }

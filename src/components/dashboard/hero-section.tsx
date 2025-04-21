@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export function HeroSection({ title, options, imageSrc }: { title: string, options: string[], imageSrc: string }) {
+export function HeroSection({ title, options, imageSrc }: { title: string, options: { label: string, index: number }[], imageSrc: string }) {
   const [index, setIndex] = useState(0);
   const [searchText, setSearchText] = useState("");
 
@@ -13,7 +13,7 @@ export function HeroSection({ title, options, imageSrc }: { title: string, optio
     }, 3000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [options.length]);
 
   return (
     <div className="relative">
@@ -43,20 +43,21 @@ export function HeroSection({ title, options, imageSrc }: { title: string, optio
                 className="w-full px-6 py-4 text-gray-900 rounded-l-full focus:outline-none"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
+                aria-label="Search for courses or trainers"
               />
               {searchText === "" && (
-                <div className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-500">
+                <div className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-500" aria-live="polite">
                   Search for{" "}
                   <AnimatePresence mode="wait">
                     <motion.span
-                      key={options[index]}
+                      key={options[index].label}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.5 }}
                       className="inline-block"
                     >
-                      '{options[index]}'
+                      '{options[index].label}'
                     </motion.span>
                   </AnimatePresence>
                 </div>

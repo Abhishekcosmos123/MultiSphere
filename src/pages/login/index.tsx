@@ -15,16 +15,15 @@ import OTPValidation from "@/components/auth/OTPVerification";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import '@/styles/phone-input.css';
-import { googleLogin, facebookLogin, microsoftLogin, appleLogin, handleRedirectResult } from '@/lib/socialAuth';
+import { googleLogin, facebookLogin, microsoftLogin, appleLogin } from '@/lib/socialAuth';
 import 'firebase/auth';
-import { CRMButtons, ELearningButtons, RealEstateButtons, RestaurantButtons } from "@/lib/content";
 import { loginRequest } from "@/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { storage, StorageKeys } from '@/lib/utils/storage';
 import { Spinner } from "@/components/ui/spinner";
 import { ModuleName } from "..";
-import { fetchCurrentModuleRequest } from "@/store/slices/ superAdmin/currentModuleSlice";
+import { fetchModuleContent } from "@/utils/fetchModuleContent";
+import { fetchModulesRequest } from "@/store/slices/profileSlice";
 
 interface Module {
 	id: number;
@@ -47,34 +46,35 @@ export default function LoginPage() {
 	});
 	const [selectedModule, setSelectedModule] = useState<Module | null>(null)
 	const user = useSelector((state: RootState) => state.auth);
-	const { currentModule: selected } = useSelector((state: RootState) => state.currentModule);
+	const { currentModule: selected } = useSelector((state: RootState) => state.profile);
+	const [moduleContent, setModuleContent] = useState<any>(null);
 
 	useEffect(() => {
-		dispatch(fetchCurrentModuleRequest())
-	  }, [])
+		dispatch(fetchModulesRequest())
+	}, [])
 
 	useEffect(() => {
 		if (selected && typeof selected === "string") {
-		  setSelectedModule({ id: 0, name: selected as ModuleName });
+			setSelectedModule({ id: 0, name: selected as ModuleName });
 		}
-	  }, [selected]);  
+	}, [selected]);
 
 	useEffect(() => {
 		if (user.isAuthenticated && loginMethod === 'email') {
 			router.push("/");
 			showSuccessToast("Logged In Successfully");
 		}
-	
+
 		if (user.isAuthenticated && loginMethod === 'phone') {
 			setIsOtpVerification(true);
 			showSuccessToast("OTP sent successfully");
 		}
-	
+
 		if (user.error) {
 			showErrorToast(user.error);
 		}
 	}, [user.isAuthenticated, user.error, loginMethod, router]);
-	
+
 
 	const validateForm = () => {
 		const newErrors = {
@@ -164,17 +164,26 @@ export default function LoginPage() {
 		}
 	};
 
+	useEffect(() => {
+		const loadModuleContent = async () => {
+			try {
+				if (selectedModule && selectedModule.name) {
+					const data = await fetchModuleContent(selectedModule.name);
+					setModuleContent(data);
+				}
+			} catch (err) {
+				console.error("Failed to load module content", err);
+				showErrorToast("Unable to load content.");
+			}
+		};
+
+		loadModuleContent();
+	}, [selectedModule]);
+
 	return (
 		<div className="flex flex-col min-h-screen">
-			{selectedModule && (
-				<NavigationBar buttons={
-					{
-						"E-learning": ELearningButtons,
-						"Real Estate": RealEstateButtons,
-						"CRM Management": CRMButtons,
-						"Restaurants": RestaurantButtons,
-					}[selectedModule.name]
-				} />
+			{selectedModule && moduleContent && (
+				<NavigationBar buttons={moduleContent.navbarButtons} />
 			)}
 			<div className="flex-grow flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8 py-6">
 				<div className="max-w-5xl w-full flex bg-white shadow-lg rounded-lg overflow-hidden">
@@ -356,7 +365,7 @@ export default function LoginPage() {
 					</div>
 				</div>
 			</div>
-			<Footer />
+			<Footer socialLinks={moduleContent?.socialLinks || []} footerLinks={moduleContent?.footerLinks || []} />
 		</div>
 	);
 }

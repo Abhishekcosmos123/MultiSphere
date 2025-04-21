@@ -1,0 +1,557 @@
+{
+    "categoryHeader": "Savor flavors from around the world",
+    "categorySubHeader": "Discover top-rated spots, hidden gems, and everything in between—your next favorite meal is just a click away.",
+    "categories": [
+        "Local Restaurants",
+        "Japanese",
+        "Street Food Adventures",
+        "American"
+    ],
+    "popularTopics": [
+        {
+            "name": "Local Restaurants",
+            "count": "10M+ viewers"
+        },
+        {
+            "name": "Trending Dishes",
+            "count": "7M+ viewers"
+        },
+        {
+            "name": "Healthy Eating",
+            "count": "5M+ viewers"
+        },
+        {
+            "name": "Street Food Adventures",
+            "count": "6.5M+ viewers"
+        },
+        {
+            "name": "Fine Dining Experiences",
+            "count": "4M+ viewers"
+        }
+    ],
+    "listing": [
+        {
+            "id": 1,
+            "title": "Authentic Italian Pasta & Pizza",
+            "instructors": "La Bella Italia",
+            "rating": 4.8,
+            "reviews": 320,
+            "price": 20,
+            "originalPrice": 25,
+            "image": "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=250&fit=crop",
+            "badges": [
+                "Best Seller",
+                "Customer Favorite"
+            ],
+            "category": "Local Restaurants",
+            "topics": [
+                "Trending Dishes",
+                "Fine Dining Experiences",
+                "Local Restaurants"
+            ]
+        },
+        {
+            "id": 2,
+            "title": "Sushi & Sashimi Special Platter",
+            "instructors": "Tokyo Bites",
+            "rating": 4.9,
+            "reviews": 275,
+            "price": 35,
+            "originalPrice": 40,
+            "image": "https://images.unsplash.com/photo-1562158074-1602c2db2c76?w=400&h=250&fit=crop",
+            "badges": [
+                "Premium",
+                "Fresh Ingredients"
+            ],
+            "category": "Japanese Cuisine",
+            "topics": [
+                "Street Food Adventures",
+                "Sashimi",
+                "Healthy Eating"
+            ]
+        },
+        {
+            "id": 3,
+            "title": "BBQ Ribs & Smoked Brisket",
+            "instructors": "Texas Smokehouse",
+            "rating": 4.7,
+            "reviews": 198,
+            "price": 28,
+            "originalPrice": 32,
+            "image": "https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=400&h=250&fit=crop",
+            "badges": [
+                "Grill Master",
+                "Crowd Favorite"
+            ],
+            "category": "Local Restaurants",
+            "topics": [
+                "Street Food Adventures",
+                "Slow Cooked",
+                "Meat Lovers"
+            ]
+        },
+        {
+            "id": 4,
+            "title": "Vegan Buddha Bowl & Smoothies",
+            "instructors": "Green Earth Cafe",
+            "rating": 4.6,
+            "reviews": 250,
+            "price": 18,
+            "originalPrice": 22,
+            "image": "https://images.unsplash.com/photo-1523181300153-daa1de7bb0a4?w=400&h=250&fit=crop",
+            "badges": [
+                "Vegan",
+                "Gluten-Free"
+            ],
+            "category": "Local Restaurants",
+            "topics": [
+                "Plant-Based",
+                "Organic",
+                "Local Restaurants"
+            ]
+        },
+        {
+            "id": 5,
+            "title": "Classic French Pastries & Desserts",
+            "instructors": "Parisian Delights",
+            "rating": 4.9,
+            "reviews": 312,
+            "price": 15,
+            "originalPrice": 18,
+            "image": "https://images.unsplash.com/photo-1541592106381-e175b94c74b5?w=400&h=250&fit=crop",
+            "badges": [
+                "Sweet Tooth",
+                "Authentic"
+            ],
+            "category": "Desserts & Pastries",
+            "topics": [
+                "French Bakery",
+                "Street Food Adventures",
+                "Cakes"
+            ]
+        }
+    ],
+    "popularCourses": {
+        "carouselTitle": "Trending Restaurants",
+        "popularCourses": [
+            {
+                "id": 1,
+                "title": "Signature Truffle Pasta",
+                "instructors": [
+                    "Chef Mario Rossi",
+                    "Italian Cuisine Specialist"
+                ],
+                "rating": 4.9,
+                "reviewCount": 320,
+                "students": 1500,
+                "price": 25,
+                "originalPrice": 30,
+                "image": "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg"
+            },
+            {
+                "id": 2,
+                "title": "Sushi & Sashimi Deluxe",
+                "instructors": [
+                    "Chef Hiro Tanaka",
+                    "Japanese Culinary Expert"
+                ],
+                "rating": 4.8,
+                "reviewCount": 280,
+                "students": 1350,
+                "price": 40,
+                "originalPrice": 45,
+                "image": "https://images.pexels.com/photos/3298182/pexels-photo-3298182.jpeg"
+            },
+            {
+                "id": 3,
+                "title": "Texas BBQ Ribs",
+                "instructors": [
+                    "Chef Jack Thompson",
+                    "BBQ Pitmaster"
+                ],
+                "rating": 4.7,
+                "reviewCount": 250,
+                "students": 1120,
+                "price": 28,
+                "originalPrice": 32,
+                "image": "https://images.pexels.com/photos/3756523/pexels-photo-3756523.jpeg"
+            },
+            {
+                "id": 4,
+                "title": "Avocado & Quinoa Bowl",
+                "instructors": [
+                    "Chef Lisa Green",
+                    "Healthy Eating Advocate"
+                ],
+                "rating": 4.6,
+                "reviewCount": 210,
+                "students": 980,
+                "price": 18,
+                "originalPrice": 22,
+                "image": "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg"
+            },
+            {
+                "id": 5,
+                "title": "Classic French Croissants",
+                "instructors": [
+                    "Chef Pierre Laurent",
+                    "Pastry Artisan"
+                ],
+                "rating": 4.9,
+                "reviewCount": 270,
+                "students": 1250,
+                "price": 15,
+                "originalPrice": 18,
+                "image": "https://images.pexels.com/photos/887827/pexels-photo-887827.jpeg"
+            },
+            {
+                "id": 6,
+                "title": "Cheeseburger & Fries",
+                "instructors": [
+                    "Chef David Miller",
+                    "Burger Specialist"
+                ],
+                "rating": 4.8,
+                "reviewCount": 260,
+                "students": 1300,
+                "price": 22,
+                "originalPrice": 26,
+                "image": "https://images.pexels.com/photos/2983101/pexels-photo-2983101.jpeg"
+            },
+            {
+                "id": 7,
+                "title": "Mango Sticky Rice",
+                "instructors": [
+                    "Chef Suthida Wong",
+                    "Thai Dessert Expert"
+                ],
+                "rating": 4.7,
+                "reviewCount": 190,
+                "students": 890,
+                "price": 12,
+                "originalPrice": 15,
+                "image": "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg"
+            }
+        ]
+    },
+    "propertyDetails": {
+        "name": "Top Chefs",
+        "location": "All Locations",
+        "properties": [
+            {
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRE4TVoqp_sXtHL8mN4oEUmVK8sMrwu9_C-g&s",
+                "title": "The Gourmet Bistro",
+                "description": "A fine dining experience with a curated selection of international cuisines.",
+                "instructors": "Chef Gordon Ramsey",
+                "rating": 4.9,
+                "ratingsCount": 450,
+                "totalHours": 1200,
+                "lectures": 120,
+                "level": "Luxury",
+                "price": 150,
+                "originalPrice": 200,
+                "new": true
+            },
+            {
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJI34h2joZ0NmhXEOph2UQY4SV3P-2SH4mGg&s",
+                "title": "Sakura Sushi Bar",
+                "description": "Authentic Japanese sushi prepared by top sushi masters.",
+                "instructors": "Chef Hiroshi Tanaka",
+                "rating": 4.8,
+                "ratingsCount": 390,
+                "totalHours": 1100,
+                "lectures": 85,
+                "level": "Premium",
+                "price": 80,
+                "originalPrice": 120,
+                "new": false
+            },
+            {
+                "image": "https://media.licdn.com/dms/image/v2/C4D03AQEI4Jf9fw1psA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1550130891822?e=2147483647&v=beta&t=NNo25IhDAb5u5KxSTqA3_ZFKfHQyiTP1ngPhzgULDdE",
+                "title": "La Maison Française",
+                "description": "Experience traditional French cuisine with an artistic modern twist.",
+                "instructors": "Chef Pierre Laurent",
+                "rating": 4.7,
+                "ratingsCount": 350,
+                "totalHours": 1300,
+                "lectures": 100,
+                "level": "Fine Dining",
+                "price": 140,
+                "originalPrice": 180,
+                "new": true
+            },
+            {
+                "image": "https://porkbarrelbbq.com/cdn/shop/articles/Myron_Mixon_BBQ_Pitmaster_b302dd8f-14ef-4c01-bafa-6d1c2265675f_400x.jpg?v=1535240290",
+                "title": "Texas Smokehouse",
+                "description": "Authentic Texas BBQ with the best slow-cooked ribs and brisket.",
+                "instructors": "Pitmaster Jack Thompson",
+                "rating": 4.6,
+                "ratingsCount": 280,
+                "totalHours": 1000,
+                "lectures": 75,
+                "level": "Casual",
+                "price": 50,
+                "originalPrice": 70,
+                "new": false
+            },
+            {
+                "image": "https://media.licdn.com/dms/image/v2/D4D22AQGLPvpFlED_vA/feedshare-shrink_800/feedshare-shrink_800/0/1729413378194?e=2147483647&v=beta&t=GMtHzPgMzk62qNj093LbRuUWYOCMm4WI7ouvy-iouz8",
+                "title": "Mediterranean Delights",
+                "description": "Fresh and healthy Mediterranean cuisine inspired by the coasts of Greece and Italy.",
+                "instructors": "Chef Maria Papadopoulos",
+                "rating": 4.8,
+                "ratingsCount": 200,
+                "totalHours": 1150,
+                "lectures": 90,
+                "level": "Healthy & Organic",
+                "price": 75,
+                "originalPrice": 100,
+                "new": true
+            },
+            {
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREKBZewhuLTTUOFyxYqqdFvfd_tVb5tc0tFw&s",
+                "title": "The Vegan Haven",
+                "description": "A paradise for plant-based eaters with an extensive vegan menu.",
+                "instructors": "Chef Lisa Green",
+                "rating": 4.9,
+                "ratingsCount": 400,
+                "totalHours": 1250,
+                "lectures": 110,
+                "level": "Plant-Based",
+                "price": 65,
+                "originalPrice": 85,
+                "new": true
+            },
+            {
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWvHJHvbolHhQq-M4_i1rcNpYh0WRkMG-bfA&s",
+                "title": "Neapolitan Pizza Co.",
+                "description": "Wood-fired pizzas made with fresh ingredients straight from Italy.",
+                "instructors": "Chef Antonio Ricci",
+                "rating": 4.7,
+                "ratingsCount": 600,
+                "totalHours": 1050,
+                "lectures": 50,
+                "level": "Casual",
+                "price": 30,
+                "originalPrice": 45,
+                "new": false
+            }
+        ]
+    },
+    "testimonialsSection": {
+        "testimonial": "Discover the best dining spots, loved by food enthusiasts.",
+        "testimonials": [
+            {
+                "id": 1,
+                "text": "This course helped me turn my passion for cooking into a successful restaurant business. The insights on menu design and cost control were invaluable!",
+                "author": "Michael B.",
+                "course": "Restaurant Business Mastery"
+            },
+            {
+                "id": 2,
+                "text": "I learned everything from customer service to kitchen management. This course gave me the confidence to open my own café!",
+                "author": "Sophia L.",
+                "course": "Hospitality & Restaurant Management"
+            },
+            {
+                "id": 3,
+                "text": "The marketing strategies taught in this course helped me attract more customers and increase revenue. It was a game-changer!",
+                "author": "David R.",
+                "course": "Restaurant Marketing & Branding"
+            },
+            {
+                "id": 4,
+                "text": "Before taking this course, I struggled with inventory and staff management. Now, I run my restaurant efficiently and profitably!",
+                "author": "Emma W.",
+                "course": "Efficient Restaurant Operations"
+            }
+        ]
+    },
+    "ElearningHeroSection": {
+        "title": "Delicious Meals, Anytime, Anywhere!",
+        "buttons": [
+            {
+                "label": "Menu",
+                "index": 0
+            },
+            {
+                "label": "Reservations",
+                "index": 1
+            },
+            {
+                "label": "Orders",
+                "index": 2
+            },
+            {
+                "label": "Customer Feedback",
+                "index": 3
+            },
+            {
+                "label": "Staff Management",
+                "index": 4
+            }
+        ],
+        "imageSrc": "https://assets.architecturaldigest.in/photos/65e9631d9719efc62841b9d5/16:9/w_2560%2Cc_limit/DSC07703_11zon.jpg"
+    },
+    "footerLinks": [
+        {
+            "name": "About us",
+            "href": "#"
+        },
+        {
+            "name": "Careers",
+            "href": "#"
+        },
+        {
+            "name": "Accessibility",
+            "href": "#"
+        },
+        {
+            "name": "Feedback",
+            "href": "#"
+        },
+        {
+            "name": "Media room",
+            "href": "#"
+        },
+        {
+            "name": "Ad Choices",
+            "href": "#"
+        },
+        {
+            "name": "Advertise with us",
+            "href": "#"
+        },
+        {
+            "name": "Agent support",
+            "href": "#"
+        },
+        {
+            "name": "Privacy",
+            "href": "#"
+        },
+        {
+            "name": "Terms",
+            "href": "#"
+        },
+        {
+            "name": "Home Made",
+            "href": "#"
+        },
+        {
+            "name": "Tech Blog",
+            "href": "#"
+        },
+        {
+            "name": "Agent Blog",
+            "href": "#"
+        },
+        {
+            "name": "Sitemap",
+            "href": "#"
+        }
+    ],
+    "socialLinks": [
+        {
+            "name": "Facebook",
+            "href": "#",
+            "icon": "facebook"
+        },
+        {
+            "name": "Twitter",
+            "href": "#",
+            "icon": "twitter"
+        },
+        {
+            "name": "LinkedIn",
+            "href": "#",
+            "icon": "linkedin"
+        },
+        {
+            "name": "Instagram",
+            "href": "#",
+            "icon": "instagram"
+        },
+        {
+            "name": "YouTube",
+            "href": "#",
+            "icon": "youtube"
+        }
+    ],
+    "trustedCompanies": [
+        {
+            "id": 1,
+            "name": "Volkswagen",
+            "logo": "https://cms-images.udemycdn.com/content/mueb2ve09x/svg/volkswagen_logo.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 2,
+            "name": "Samsung",
+            "logo": "https://cms-images.udemycdn.com/content/2gevcc0kxt/svg/samsung_logo.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 3,
+            "name": "Cisco",
+            "logo": "https://cms-images.udemycdn.com/content/mueb2ve09x/svg/cisco_logo.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 4,
+            "name": "Vimeo",
+            "logo": "https://cms-images.udemycdn.com/content/ryaowrcjb2/svg/vimeo_logo_resized-2.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 5,
+            "name": "P&G",
+            "logo": "https://cms-images.udemycdn.com/content/bthyo156te/svg/procter_gamble_logo.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 6,
+            "name": "Hewlett Packard Enterprise",
+            "logo": "https://cms-images.udemycdn.com/content/luqe0d6mx2/svg/hewlett_packard_enterprise_logo.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 7,
+            "name": "Citi",
+            "logo": "https://cms-images.udemycdn.com/content/siaewwmkch/svg/citi_logo.svg?position=c&quality=80&x.app=portals"
+        },
+        {
+            "id": 8,
+            "name": "Ericsson",
+            "logo": "https://cms-images.udemycdn.com/content/swmv0okrlh/svg/ericsson_logo.svg?position=c&quality=80&x.app=portals"
+        }
+    ],
+    "navbarButtons": [
+        {
+            "label": "Dashboard",
+            "index": 0
+        },
+        {
+            "label": "Menu Management",
+            "index": 1
+        },
+        {
+            "label": "Order Management",
+            "index": 2
+        },
+        {
+            "label": "Reservations & Bookings",
+            "index": 3
+        },
+        {
+            "label": "Customer Feedback",
+            "index": 4
+        },
+        {
+            "label": "Staff Management",
+            "index": 5
+        }
+    ],
+    "userRoles": [
+        "Seller",
+        "Buyer"
+    ],
+    "ctaContent": {
+        "heading": "Streamline Service, Delight Your Guests!",
+        "backgroundImage": "/restaurants.png"
+    }
+}

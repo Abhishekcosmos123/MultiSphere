@@ -1,18 +1,21 @@
-import ProfileHeader from "@/components/profile/profile-header"
-import AboutSection from "@/components/profile/about-section"
-import SkillsSection from "@/components/profile/skills-section"
-import EducationSection from "@/components/profile/education-section"
-import ExperienceSection from "@/components/profile/experience-section"
-import CertificationsSection from "@/components/profile/certifications-section"
-import { ModuleName, moduleContentMap } from "@/pages"
-import { CourseCarousel } from "../dashboard/course-carousel"
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+
+import ProfileHeader from "@/components/profile/profile-header";
+import AboutSection from "@/components/profile/about-section";
+import SkillsSection from "@/components/profile/skills-section";
+import EducationSection from "@/components/profile/education-section";
+import ExperienceSection from "@/components/profile/experience-section";
+import CertificationsSection from "@/components/profile/certifications-section";
+import { CourseCarousel } from "../dashboard/course-carousel";
 
 interface UserProfileProps {
-  user: any
-  name: string
-  setIsEditing: (value: boolean) => void
-  selected: string | null
-  readonly?: boolean
+  user: any;
+  name: string;
+  setIsEditing: (value: boolean) => void;
+  selected: string | null;
+  readonly?: boolean;
 }
 
 export const UserProfile = ({
@@ -22,8 +25,31 @@ export const UserProfile = ({
   selected,
   readonly,
 }: UserProfileProps) => {
-  const selectedModule = { id: 0, name: selected };
-  const content = moduleContentMap[selectedModule.name as ModuleName] || {}
+  const { contentUrl } = useSelector((state: RootState) => state.profile);
+  const [moduleContent, setModuleContent] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      if (!contentUrl) return;
+      try {
+        const isAbsolute = /^https?:\/\//.test(contentUrl);
+        const url = isAbsolute ? contentUrl : `${window.location.origin}${contentUrl}`;
+
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+        const data = await res.json();
+        setModuleContent(data);
+      } catch (err) {
+        console.error("Failed to load module content", err);
+      }
+    };
+
+    fetchContent();
+  }, [contentUrl]);
+
+  const heroTitle = moduleContent?.popularCourses?.carouselTitle || "Recommended Courses";
+  const heroCourses = moduleContent?.popularCourses?.popularCourses || [];
 
   return (
     <>
@@ -81,8 +107,8 @@ export const UserProfile = ({
         />
 
         <CourseCarousel
-          title={content.carouselTitle || "Recommended Courses"}
-          courses={content.courses || []}
+          title={heroTitle}
+          courses={heroCourses}
           module={selected || ""}
           profile={true}
         />
