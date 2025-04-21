@@ -192,8 +192,8 @@ export const authService = {
     return apiClient.post<AuthResponse>('/auth/social-login', data);
   },
 
-  async getUsers(role: string): Promise<{ success: boolean; message: string; data: { users: AuthResponse['data']['user'][] } }> {
-    return apiClient.post<{ success: boolean; message: string; data: { users: AuthResponse['data']['user'][] } }>(`/admin/users?role=${role}`);
+  async getUsers(role: string, page: number, limit: number): Promise<{ success: boolean; message: string; data: { users: AuthResponse['data']['user'][] } }> {
+    return apiClient.post<{ success: boolean; message: string; data: { users: AuthResponse['data']['user'][] } }>(`/admin/users?role=${role}&page=${page}&limit=${limit}`);
   },
 
   async updateUserProfile({ id, formData }: { id: string; formData: FormData }): Promise<{ message: string; data: any }> {

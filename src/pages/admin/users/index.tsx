@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
-import { useRouter } from "next/router"; // Import useRouter from next/router
+import { useRouter } from "next/router";
 import DashboardLayout from "../layout";
 import AddUserModal, { AddUserModalHandle } from "@/components/admin/AddUserModal";
 import EditUserModal from "@/components/admin/EditUserModal";
@@ -21,7 +21,7 @@ import {
   TabsTrigger,
   TabsContent,
 } from "@/components/ui/tabs";
-import { Switch } from "@/components/ui/switch"; // Assuming you have a Switch component for the toggle
+import { Switch } from "@/components/ui/switch";
 import {
   getUsersRequest,
   GetUsers,
@@ -78,7 +78,6 @@ const UserTable: React.FC<{
                 {user.name}
               </button>
             </TableCell>
-
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.phone}</TableCell>
             <TableCell>
@@ -136,15 +135,18 @@ const UsersTable: React.FC = () => {
   const [editUser, setEditUser] = useState<GetUsers | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+
   const modalRef = useRef<AddUserModalHandle>(null);
 
   useEffect(() => {
     if (searchTerm.trim()) {
       dispatch(searchUsersRequest({ searchBy, searchValue: searchTerm }));
     } else {
-      dispatch(getUsersRequest({ role: activeTab }));
+      dispatch(getUsersRequest({ role: activeTab, page, limit }));
     }
-  }, [searchTerm, searchBy, activeTab, dispatch]);
+  }, [searchTerm, searchBy, activeTab, page, limit, dispatch]);
 
   useEffect(() => {
     if (createUserStatus?.createdUser?.data) {
@@ -152,11 +154,15 @@ const UsersTable: React.FC = () => {
       setIsEditModalOpen(false);
       modalRef.current?.resetForm();
       setIsModalOpen(false);
-      dispatch(getUsersRequest({ role: activeTab }));
+      dispatch(getUsersRequest({ role: activeTab, page, limit }));
     } else if (createUserStatus?.error) {
       showErrorToast(createUserStatus.error);
     }
   }, [createUserStatus?.createdUser, createUserStatus?.error]);
+
+  useEffect(() => {
+    setPage(1); 
+  }, [activeTab]);
 
   const handleDeleteUser = (id: string) => {
     setUserIdToDelete(id);
@@ -266,12 +272,32 @@ const UsersTable: React.FC = () => {
               </div>
               {isLoading ? (
                 <LoaderWithLabel label="Loading Users..." />
-              ) :
-                (<UserTable
-                  users={filteredUsers}
-                  deleteUser={handleDeleteUser}
-                  onEditUser={handleEditClick}
-                />)}
+              ) : (
+                <>
+                  <UserTable
+                    users={filteredUsers}
+                    deleteUser={handleDeleteUser}
+                    onEditUser={handleEditClick}
+                  />
+                  <div className="mt-4 flex justify-end items-center gap-4">
+                    <Button
+                      disabled={page === 1}
+                      onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                      variant="outline"
+                    >
+                      Previous
+                    </Button>
+                    <span className="text-sm">Page {page}</span>
+                    <Button
+                      disabled={filteredUsers.length < limit}
+                      onClick={() => setPage((prev) => prev + 1)}
+                      variant="outline"
+                    >
+                      Next
+                    </Button>
+                  </div>
+                </>
+              )}
             </TabsContent>
           ))}
         </Tabs>

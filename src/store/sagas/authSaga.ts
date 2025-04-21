@@ -178,9 +178,9 @@ export function* socialLoginSaga(action: PayloadAction<SocialLoginData>): Genera
   }
 }
 
-export function* getUsersSaga(action: PayloadAction<{ role: string }>): Generator {
+export function* getUsersSaga(action: PayloadAction<{ role: string, page: number, limit: number }>): Generator {
   try {
-    const response = yield call([authService, authService.getUsers], action.payload.role);
+    const response = yield call([authService, authService.getUsers], action.payload.role, action.payload.page, action.payload.limit);
     yield put(getUsersSuccess(response));
   } catch (error: any) {
     yield put(getUsersFailure(error.message));

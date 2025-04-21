@@ -300,7 +300,7 @@ const authSlice = createSlice({
       state.token = null;
       state.error = action.payload;
     },
-    getUsersRequest: (state, action: PayloadAction<{ role: string }>) => {
+    getUsersRequest: (state, action: PayloadAction<{ role: string, page: number, limit: number }>) => {
       state.loading = true;
       state.error = null;
     },
