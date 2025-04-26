@@ -47,6 +47,8 @@ const ModuleContent = ({
         title={content.popularCourses.carouselTitle}
         courses={content.popularCourses.popularCourses}
         module={moduleName}
+        productDetailsFields={content.productDetailsFields}
+        productInformation={content.productInformation}
       />
       <PropertySection
         title={content.propertyDetails.name}

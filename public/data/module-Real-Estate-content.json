@@ -568,5 +568,171 @@
     "ctaContent": {
         "heading": "Find Your Dream Home Today?",
         "backgroundImage": "/realEstate.png"
-    }
+    },
+    "productDetailsFields": [
+        {
+            "name": "state",
+            "label": "State",
+            "placeholder": "State",
+            "type": "text"
+        },
+        {
+            "name": "city",
+            "label": "City",
+            "placeholder": "City",
+            "type": "text"
+        },
+        {
+            "name": "picsVideos",
+            "label": "Pics/Videos (URLs)",
+            "placeholder": "Enter URL",
+            "type": "url"
+        },
+        {
+            "name": "shortDescription",
+            "label": "Short Description",
+            "placeholder": "Enter short description",
+            "type": "text"
+        },
+        {
+            "name": "propertyType",
+            "label": "Type (Plot, Flat, House, Commercial)",
+            "placeholder": "Property Type",
+            "type": "text"
+        },
+        {
+            "name": "totalRatings",
+            "label": "Total Ratings of Seller/Agent",
+            "placeholder": "Ratings",
+            "type": "number"
+        },
+        {
+            "name": "nearBy",
+            "label": "Nearby",
+            "placeholder": "Nearby Locations",
+            "type": "text"
+        },
+        {
+            "name": "keyHighlights",
+            "label": "Key Highlights",
+            "placeholder": "Key Highlights",
+            "type": "text"
+        },
+        {
+            "name": "certificatesIncluded",
+            "label": "Certificates Included (e.g., RERA)",
+            "placeholder": "Certificates Included",
+            "type": "text"
+        },
+        {
+            "name": "amenitiesFeatures",
+            "label": "Amenities/Features",
+            "placeholder": "Amenities",
+            "type": "text"
+        },
+        {
+            "name": "sizeDetails",
+            "label": "Size, Bedrooms, Bathrooms",
+            "placeholder": "Size/Bedrooms/Bathrooms",
+            "type": "text"
+        },
+        {
+            "name": "longDescription",
+            "label": "Long Description",
+            "placeholder": "Detailed Description",
+            "type": "text"
+        },
+        {
+            "name": "moreFromSeller",
+            "label": "More Properties from Same Seller",
+            "placeholder": "Enter Seller Info",
+            "type": "text"
+        },
+        {
+            "name": "similarProperties",
+            "label": "Similar Properties from Other Sellers",
+            "placeholder": "Similar Properties",
+            "type": "text"
+        },
+        {
+            "name": "wishlist",
+            "label": "Add/Remove to Wishlist",
+            "placeholder": "Add/Remove",
+            "type": "text"
+        },
+        {
+            "name": "addressWithMap",
+            "label": "Address with Map",
+            "placeholder": "Enter address",
+            "type": "text"
+        },
+        {
+            "name": "enquiryForm",
+            "label": "Enquiry Form (Contact Dealer)",
+            "placeholder": "Enquiry details",
+            "type": "text"
+        }
+    ],
+    "productInformation": [
+        {
+          "name": "title",
+          "label": "Product Title",
+          "placeholder": "Course Title",
+          "type": "text"
+        },
+        {
+          "name": "location",
+          "label": "Location",
+          "placeholder": "Location",
+          "type": "text"
+        },
+        {
+          "name": "price",
+          "label": "Price",
+          "placeholder": "Price",
+          "type": "number"
+        },
+        {
+          "name": "size",
+          "label": "Size",
+          "placeholder": "Size",
+          "type": "text"
+        },
+        {
+          "name": "bhk",
+          "label": "BHK",
+          "placeholder": "BHK",
+          "type": "text"
+        },
+        {
+          "name": "image",
+          "label": "Image URL",
+          "placeholder": "Image URL",
+          "type": "url"
+        },
+        {
+          "name": "postedDate",
+          "label": "Posted Date",
+          "placeholder": "Posted Date",
+          "type": "date"
+        },
+        {
+          "name": "ratings",
+          "label": "Ratings (0-5)",
+          "placeholder": "Ratings",
+          "type": "number"
+        },
+        {
+          "name": "postedBy",
+          "label": "Posted By",
+          "placeholder": "Posted By",
+          "type": "text"
+        },
+        {
+          "name": "contactDealer",
+          "label": "Contact Dealer/Seller",
+          "placeholder": "Contact Details",
+          "type": "text"
+        }
+      ]      
 }

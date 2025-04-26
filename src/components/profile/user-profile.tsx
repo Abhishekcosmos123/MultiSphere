@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 
 import ProfileHeader from "@/components/profile/profile-header";
@@ -48,7 +48,7 @@ export const UserProfile = ({
     fetchContent();
   }, [contentUrl]);
 
-  const heroTitle = moduleContent?.popularCourses?.carouselTitle || "Recommended Courses";
+  const heroTitle = moduleContent?.popularCourses?.carouselTitle || "My Courses";
   const heroCourses = moduleContent?.popularCourses?.popularCourses || [];
 
   return (
@@ -111,6 +111,8 @@ export const UserProfile = ({
           courses={heroCourses}
           module={selected || ""}
           profile={true}
+          productDetailsFields={moduleContent?.productDetailsFields || []}
+          productInformation={moduleContent?.productInformation || []}
         />
       </div>
     </>

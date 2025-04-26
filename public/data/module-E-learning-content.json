@@ -662,5 +662,159 @@
   "ctaContent": {
     "heading": "Come Teach with us?",
     "backgroundImage": "/ebook.png"
-  }
+  },
+  "productInformation": [
+    {
+      "name": "title",
+      "label": "Title",
+      "placeholder": "Enter course title",
+      "type": "text"
+    },
+    {
+      "name": "shortDescription",
+      "label": "Short Description",
+      "placeholder": "Enter a brief description",
+      "type": "text"
+    },
+    {
+      "name": "ratings",
+      "label": "Ratings",
+      "placeholder": "Enter rating (0-5)",
+      "type": "number"
+    },
+    {
+      "name": "courseLength",
+      "label": "Course Length",
+      "placeholder": "e.g. 5 hours",
+      "type": "text"
+    },
+    {
+      "name": "courseChapters",
+      "label": "Course Chapters",
+      "placeholder": "Number of chapters",
+      "type": "number"
+    },
+    {
+      "name": "image",
+      "label": "Image URL",
+      "placeholder": "Enter image URL",
+      "type": "url"
+    },
+    {
+      "name": "price",
+      "label": "Price",
+      "placeholder": "Enter price",
+      "type": "number"
+    },
+    {
+      "name": "postedBy",
+      "label": "Posted By",
+      "placeholder": "Instructor or Seller name",
+      "type": "text"
+    }
+  ],
+  "productDetailsFields": [
+    {
+      "name": "category",
+      "label": "Category",
+      "placeholder": "Select category",
+      "type": "text"
+    },
+    {
+      "name": "topic",
+      "label": "Topic",
+      "placeholder": "Enter topic",
+      "type": "text"
+    },
+    {
+      "name": "media",
+      "label": "Pics/Videos (URLs)",
+      "placeholder": "Enter image or video URLs",
+      "type": "url"
+    },
+    {
+      "name": "postedDate",
+      "label": "Posted on Date",
+      "placeholder": "YYYY-MM-DD",
+      "type": "date"
+    },
+    {
+      "name": "language",
+      "label": "Language",
+      "placeholder": "Course language",
+      "type": "text"
+    },
+    {
+      "name": "totalRatings",
+      "label": "Total Ratings",
+      "placeholder": "Total ratings (0-5)",
+      "type": "number"
+    },
+    {
+      "name": "totalLearners",
+      "label": "Total Learners",
+      "placeholder": "Number of learners",
+      "type": "number"
+    },
+    {
+      "name": "learnings",
+      "label": "Learnings Listing",
+      "placeholder": "What learners will gain",
+      "type": "textarea"
+    },
+    {
+      "name": "skills",
+      "label": "Skillset Included",
+      "placeholder": "Skills taught in course",
+      "type": "text"
+    },
+    {
+      "name": "inclusions",
+      "label": "Course Inclusive",
+      "placeholder": "What’s included (e.g., certificate, lifetime access)",
+      "type": "text"
+    },
+    {
+      "name": "courseContent",
+      "label": "Course Content (Chapters)",
+      "placeholder": "List of chapters/modules",
+      "type": "textarea"
+    },
+    {
+      "name": "prerequisites",
+      "label": "Pre-requisites",
+      "placeholder": "Required knowledge or tools",
+      "type": "text"
+    },
+    {
+      "name": "longDescription",
+      "label": "Long Description",
+      "placeholder": "Full course details",
+      "type": "textarea"
+    },
+    {
+      "name": "reviews",
+      "label": "List of Reviews",
+      "placeholder": "User feedback/reviews",
+      "type": "textarea"
+    },
+    {
+      "name": "moreFromTrainer",
+      "label": "More Courses from Same Trainer",
+      "placeholder": "Course titles or links",
+      "type": "text"
+    },
+    {
+      "name": "similarCourses",
+      "label": "Similar Courses from Other Trainers",
+      "placeholder": "Similar course titles or links",
+      "type": "text"
+    },
+    {
+      "name": "practiceQuiz",
+      "label": "Practice Quiz",
+      "placeholder": "Quiz or assessment info",
+      "type": "text"
+    }
+  ]    
 }

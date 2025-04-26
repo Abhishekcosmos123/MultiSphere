@@ -9,7 +9,7 @@ class ApiClient {
   constructor() {
     this.client = axios.create({
       // baseURL: API_BASE_URL,
-      baseURL: "https://bf48-116-72-195-90.ngrok-free.app/v1",
+      baseURL: "https://4b09-116-75-197-163.ngrok-free.app/v1",
       headers: {
         'Content-Type': 'application/json',
       },

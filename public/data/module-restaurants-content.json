@@ -553,5 +553,117 @@
     "ctaContent": {
         "heading": "Streamline Service, Delight Your Guests!",
         "backgroundImage": "/restaurants.png"
-    }
+    },
+    "productInformation": [
+        {
+            "name": "dishName",
+            "label": "Dish Name",
+            "placeholder": "Enter dish name",
+            "type": "text"
+        },
+        {
+            "name": "shortDescription",
+            "label": "Short Description",
+            "placeholder": "Brief description of the dish",
+            "type": "text"
+        },
+        {
+            "name": "ratings",
+            "label": "Ratings",
+            "placeholder": "Enter ratings (0-5)",
+            "type": "number"
+        },
+        {
+            "name": "isVeg",
+            "label": "Veg/Non-Veg",
+            "placeholder": "Is the dish vegetarian?",
+            "type": "boolean"
+        },
+        {
+            "name": "distance",
+            "label": "Distance",
+            "placeholder": "Distance from user (in km)",
+            "type": "number"
+        },
+        {
+            "name": "image",
+            "label": "Image URL",
+            "placeholder": "Image of the dish",
+            "type": "url"
+        },
+        {
+            "name": "price",
+            "label": "Price",
+            "placeholder": "Price of the dish",
+            "type": "number"
+        },
+        {
+            "name": "postedBy",
+            "label": "Posted By",
+            "placeholder": "Restaurant or Chef Name",
+            "type": "text"
+        }
+    ],
+    "productDetailsFields": [
+        {
+            "name": "picsVideos",
+            "label": "Pics/Videos (URLs)",
+            "placeholder": "Enter Pics/Videos URLs",
+            "type": "url"
+        },
+        {
+            "name": "title",
+            "label": "Title",
+            "placeholder": "Dish Title",
+            "type": "text"
+        },
+        {
+            "name": "shortDescription",
+            "label": "Short Description",
+            "placeholder": "Brief description of the dish",
+            "type": "text"
+        },
+        {
+            "name": "price",
+            "label": "Price",
+            "placeholder": "Price of the dish",
+            "type": "number"
+        },
+        {
+            "name": "postedBy",
+            "label": "Posted By",
+            "placeholder": "Restaurant or Chef Name",
+            "type": "text"
+        },
+        {
+            "name": "totalRatings",
+            "label": "Total Ratings of Seller",
+            "placeholder": "Ratings of Seller",
+            "type": "number"
+        },
+        {
+            "name": "menuFromSameRestaurant",
+            "label": "Menu from Same Restaurant",
+            "placeholder": "Other items from the same restaurant",
+            "type": "text"
+        },
+        {
+            "name": "listOfReviews",
+            "label": "List of Reviews",
+            "placeholder": "Customer reviews",
+            "type": "text"
+        },
+        {
+            "name": "similarDishes",
+            "label": "Similar Dishes from Other Sellers",
+            "placeholder": "Dishes from other sellers",
+            "type": "text"
+        },
+        {
+            "name": "addressWithMap",
+            "label": "Address with Map",
+            "placeholder": "Restaurant Address",
+            "type": "text"
+        }
+    ]
 }

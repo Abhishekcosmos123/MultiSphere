@@ -452,5 +452,165 @@
   "ctaContent": {
     "heading": "Effortlessly Manage and Grow Your Customer Relationships!",
     "backgroundImage": "/crm.jpg"
-  }
+  },
+  "productInformation": [
+    {
+      "name": "title",
+      "label": "Title",
+      "placeholder": "Job/Service Title",
+      "type": "text"
+    },
+    {
+      "name": "shortDescription",
+      "label": "Short Description",
+      "placeholder": "Brief description of the job or service",
+      "type": "text"
+    },
+    {
+      "name": "ratings",
+      "label": "Ratings",
+      "placeholder": "Rating (0-5)",
+      "type": "number"
+    },
+    {
+      "name": "postedDate",
+      "label": "Posted Date",
+      "placeholder": "Date when job/service was posted",
+      "type": "date"
+    },
+    {
+      "name": "skillSetExp",
+      "label": "Skill Set & Experience",
+      "placeholder": "Required skill set and experience",
+      "type": "text"
+    },
+    {
+      "name": "companyImage",
+      "label": "Company Image",
+      "placeholder": "Company Logo or Image URL",
+      "type": "url"
+    },
+    {
+      "name": "priceBudget",
+      "label": "Price/Budget",
+      "placeholder": "Price or Budget for the job/service",
+      "type": "number"
+    },
+    {
+      "name": "postedBy",
+      "label": "Posted By",
+      "placeholder": "Name of the company or recruiter",
+      "type": "text"
+    },
+    {
+      "name": "applyNow",
+      "label": "Apply Now",
+      "placeholder": "Link to apply or application process",
+      "type": "url"
+    }
+  ],
+  "productDetailsFields": [
+    {
+      "name": "city",
+      "label": "City",
+      "placeholder": "City where job is located",
+      "type": "text"
+    },
+    {
+      "name": "jobTitle",
+      "label": "Job Title",
+      "placeholder": "Title of the job position",
+      "type": "text"
+    },
+    {
+      "name": "companyImage",
+      "label": "Company Image",
+      "placeholder": "Company logo or image URL",
+      "type": "url"
+    },
+    {
+      "name": "title",
+      "label": "Title",
+      "placeholder": "Job/Service Title",
+      "type": "text"
+    },
+    {
+      "name": "shortDescription",
+      "label": "Short Description",
+      "placeholder": "Brief description of the job or service",
+      "type": "text"
+    },
+    {
+      "name": "budget",
+      "label": "Budget",
+      "placeholder": "Salary or budget for the position",
+      "type": "number"
+    },
+    {
+      "name": "postedBy",
+      "label": "Posted By",
+      "placeholder": "Name of the company or recruiter",
+      "type": "text"
+    },
+    {
+      "name": "postedDate",
+      "label": "Posted on Date",
+      "placeholder": "Date when job was posted",
+      "type": "date"
+    },
+    {
+      "name": "jobType",
+      "label": "Job Type",
+      "placeholder": "e.g. Remote, Permanent, Contract",
+      "type": "text"
+    },
+    {
+      "name": "totalRatings",
+      "label": "Total Ratings of Company",
+      "placeholder": "Company rating (0-5)",
+      "type": "number"
+    },
+    {
+      "name": "experienceEducationIndustry",
+      "label": "Experience, Education, Industry Certifications Needed",
+      "placeholder": "Experience, education, and certifications required",
+      "type": "text"
+    },
+    {
+      "name": "skillSetIncluded",
+      "label": "Skillset Included",
+      "placeholder": "Skills required for the job",
+      "type": "text"
+    },
+    {
+      "name": "benefitsPerks",
+      "label": "Benefits & Perks",
+      "placeholder": "List of benefits and perks",
+      "type": "text"
+    },
+    {
+      "name": "jobDescription",
+      "label": "Job Description",
+      "placeholder": "Detailed description of the job role",
+      "type": "text"
+    },
+    {
+      "name": "moreJobsFromCompany",
+      "label": "More Jobs from Same Company",
+      "placeholder": "List of other jobs from the same company",
+      "type": "text"
+    },
+    {
+      "name": "similarJobsFromOtherCompanies",
+      "label": "Similar Jobs from Other Companies",
+      "placeholder": "List of similar jobs from other companies",
+      "type": "text"
+    },
+    {
+      "name": "addressWithMap",
+      "label": "Address with Map",
+      "placeholder": "Company address with map location",
+      "type": "text"
+    }
+  ]
 }
